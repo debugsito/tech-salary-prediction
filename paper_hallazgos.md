@@ -51,6 +51,14 @@ Este estudio desarrolla un pipeline de predicción salarial con embeddings semá
 **Hallazgo clave:** El ensamble y Ridge son prácticamente equivalentes en desempeño; las mejoras de boosting avanzado son marginales, lo que respalda la hipótesis de una señal lineal dominante.
 
 ## Figuras generadas en el notebook (para incluir en el paper)
+- **Figura 0:** Missingness (top 10 variables).
+
+  ![Figura 0 - Missingness](figures/fig_missingness.png)
+
+- **Figura 0b:** Distribución del salario (raw vs log1p) tras clipping.
+
+  ![Figura 0b - Distribución del target](figures/fig_target_distributions.png)
+
 - **Figura 1:** Barras comparativas de RMSE/MAE/$R^2$/MAPE por modelo.
 
   ![Figura 1 - Métricas por modelo](figures/fig_model_metrics.png)
