@@ -1,0 +1,32 @@
+# Dependencias de la cadena de análisis, con las versiones exactas empleadas en
+# la ejecución documentada en el Capítulo IV (8 de septiembre de 2026).
+#
+# Las versiones se fijan y no se declaran como mínimos: la reproducibilidad
+# exige que una instalación posterior obtenga el mismo entorno, y una versión
+# posterior de cualquiera de estas bibliotecas podría alterar los resultados.
+#
+# Python 3.14
+
+# Datos
+pandas==3.0.5
+numpy==2.5.2
+pyarrow==25.0.1
+openpyxl==3.1.5
+
+# Modelado y contraste estadístico
+scikit-learn==1.9.0
+scipy==1.18.1
+xgboost==3.4.1
+lightgbm==4.7.0
+catboost==1.2.10
+
+# Explicabilidad
+shap==0.52.0
+
+# Figuras
+matplotlib==3.11.1
+
+# Cuaderno reproducible
+nbformat==5.11.1
+nbconvert==7.17.1
+ipykernel==7.3.0

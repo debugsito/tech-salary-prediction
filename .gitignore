@@ -1,0 +1,23 @@
+# Entornos virtuales y caché
+.venv
+.venv*
+.idea
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Datos descargables desde la fuente oficial. La procedencia y el procedimiento
+# están documentados en el Capítulo III de la tesis; src/carga_encuesta.py
+# los obtiene automáticamente.
+datos/descargas/
+datos/procesados/
+
+# Artefactos regenerables
+catboost_info/
+*.log
+*.pkl
+*.joblib
+*.npz
+
+# Salida del cuaderno de trabajo, que no debe pisar resultados/ ni figuras/
+salida_cuaderno/
