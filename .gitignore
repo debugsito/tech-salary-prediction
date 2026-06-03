@@ -1,0 +1,11 @@
+# Entornos virtuales y caché
+.venv
+.venv*
+.idea
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Datos de la encuesta; src/carga_encuesta.py los descarga de la fuente oficial
+datos/descargas/
+datos/procesados/

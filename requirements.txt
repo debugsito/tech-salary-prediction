@@ -1,0 +1,14 @@
+pandas
+numpy
+pyarrow
+openpyxl
+scikit-learn
+scipy
+xgboost
+lightgbm
+catboost
+shap
+matplotlib
+nbformat
+nbconvert
+ipykernel
