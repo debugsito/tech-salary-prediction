@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 from sklearn.dummy import DummyRegressor
 from sklearn.linear_model import Ridge
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import RepeatedStratifiedKFold, train_test_split
 from sklearn.pipeline import Pipeline
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -45,6 +45,16 @@ from src.registro_modelos import construir_modelos  # noqa: E402
 SEMILLA = 42
 N_PARTICIONES = 5
 
+# La validación cruzada se repite para disponer de suficientes observaciones
+# pareadas en el contraste de significancia.
+#
+# Motivo: la prueba de rangos con signo de Wilcoxon con cinco pares tiene un
+# valor p mínimo alcanzable de 0.0625, superior al nivel de significación
+# adoptado. Con solo cinco particiones **ninguna hipótesis podría aceptarse**,
+# con independencia de la magnitud de la diferencia observada. Con cuatro
+# repeticiones se obtienen veinte observaciones pareadas, cuyo valor p mínimo
+# alcanzable es de 8 × 10⁻⁶.
+N_REPETICIONES = 4
 
 PROPORCION_PRUEBA = 0.20
 
@@ -73,9 +83,10 @@ def construir_configuraciones() -> dict:
 
 def evaluar(X, y, estratos, modelos, codificacion, df_ref, n_jobs=1):
     """Validación cruzada de una estrategia de codificación sobre todos los modelos."""
-    particionador = StratifiedKFold(n_splits=N_PARTICIONES, shuffle=True,
-                                    random_state=SEMILLA)
-    n_total = N_PARTICIONES
+    particionador = RepeatedStratifiedKFold(n_splits=N_PARTICIONES,
+                                            n_repeats=N_REPETICIONES,
+                                            random_state=SEMILLA)
+    n_total = N_PARTICIONES * N_REPETICIONES
     filas = []
 
     for i, (idx_tr, idx_va) in enumerate(particionador.split(X, estratos)):
@@ -101,7 +112,8 @@ def evaluar(X, y, estratos, modelos, codificacion, df_ref, n_jobs=1):
             m.update({"modelo": nombre, "codificacion": codificacion,
                       "particion": i, "segundos": round(time.perf_counter() - t0, 1)})
             filas.append(m)
-        print(f"    partición {i + 1}/{N_PARTICIONES} completada")
+        if (i + 1) % N_PARTICIONES == 0:
+            print(f"    repetición {(i + 1) // N_PARTICIONES}/{N_REPETICIONES} completada")
 
     return pd.DataFrame(filas)
 
@@ -274,6 +286,8 @@ def main():
         "anio": args.anio,
         "semilla": SEMILLA,
         "n_particiones": N_PARTICIONES,
+        "n_repeticiones": N_REPETICIONES,
+        "n_pares_contraste": N_PARTICIONES * N_REPETICIONES,
         "estratificacion": ESTRATO,
         "n_total": int(len(df)),
         "n_entrenamiento": int(len(X_ent)),
