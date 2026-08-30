@@ -9,3 +9,13 @@ __pycache__/
 # Datos de la encuesta; src/carga_encuesta.py los descarga de la fuente oficial
 datos/descargas/
 datos/procesados/
+
+# Artefactos regenerables
+catboost_info/
+*.log
+*.pkl
+*.joblib
+*.npz
+
+# Salida del cuaderno de trabajo; no debe pisar resultados/ ni figuras/
+salida_cuaderno/
