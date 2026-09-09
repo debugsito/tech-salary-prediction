@@ -1,0 +1,153 @@
+{
+ "fuente": "BLS OEWS, nacional, mayo 2025 (mediana salarial anual, vía API)",
+ "edicion_encuesta": "2025",
+ "pais": "United States of America",
+ "n_usa": 3808,
+ "n_roles_comparados": 9,
+ "mediana_razon_muestra_oficial": 1.08,
+ "rango_razon_muestra_oficial": [
+  0.878,
+  1.519
+ ],
+ "mediana_razon_predicha_oficial": 1.024,
+ "roles_sin_mapeo_defendible": [
+  {
+   "rol": "Architect, software or solutions",
+   "n": 239
+  },
+  {
+   "rol": "DevOps engineer or professional",
+   "n": 110
+  },
+  {
+   "rol": "Data engineer",
+   "n": 96
+  },
+  {
+   "rol": "Other (please specify):",
+   "n": 74
+  },
+  {
+   "rol": "AI/ML engineer",
+   "n": 65
+  },
+  {
+   "rol": "Cloud infrastructure engineer",
+   "n": 59
+  },
+  {
+   "rol": "Senior executive (C-suite, VP, etc.)",
+   "n": 38
+  }
+ ],
+ "comparaciones": [
+  {
+   "rol": "Developer, full-stack",
+   "soc": "15-1252",
+   "ocupacion": "Software Developers",
+   "n_muestra_usa": 1449,
+   "n_prueba_usa": 290,
+   "mediana_oficial": 148100,
+   "mediana_muestra": 140000,
+   "razon_muestra_oficial": 0.945,
+   "mediana_predicha": 140090,
+   "razon_predicha_oficial": 0.946
+  },
+  {
+   "rol": "Developer, back-end",
+   "soc": "15-1252",
+   "ocupacion": "Software Developers",
+   "n_muestra_usa": 617,
+   "n_prueba_usa": 137,
+   "mediana_oficial": 148100,
+   "mediana_muestra": 176000,
+   "razon_muestra_oficial": 1.188,
+   "mediana_predicha": 175510,
+   "razon_predicha_oficial": 1.185
+  },
+  {
+   "rol": "Developer, desktop or enterprise applications",
+   "soc": "15-1252",
+   "ocupacion": "Software Developers",
+   "n_muestra_usa": 215,
+   "n_prueba_usa": 53,
+   "mediana_oficial": 148100,
+   "mediana_muestra": 130000,
+   "razon_muestra_oficial": 0.878,
+   "mediana_predicha": 136173,
+   "razon_predicha_oficial": 0.919
+  },
+  {
+   "rol": "Developer, front-end",
+   "soc": "15-1254",
+   "ocupacion": "Web Developers",
+   "n_muestra_usa": 162,
+   "n_prueba_usa": 23,
+   "mediana_oficial": 98770,
+   "mediana_muestra": 150000,
+   "razon_muestra_oficial": 1.519,
+   "mediana_predicha": null,
+   "razon_predicha_oficial": null
+  },
+  {
+   "rol": "Engineering manager",
+   "soc": "11-3021",
+   "ocupacion": "Computer and Information Systems Managers",
+   "n_muestra_usa": 162,
+   "n_prueba_usa": 36,
+   "mediana_oficial": 192160,
+   "mediana_muestra": 200045,
+   "razon_muestra_oficial": 1.041,
+   "mediana_predicha": 211871,
+   "razon_predicha_oficial": 1.103
+  },
+  {
+   "rol": "Developer, embedded applications or devices",
+   "soc": "15-1252",
+   "ocupacion": "Software Developers",
+   "n_muestra_usa": 149,
+   "n_prueba_usa": 29,
+   "mediana_oficial": 148100,
+   "mediana_muestra": 136000,
+   "razon_muestra_oficial": 0.918,
+   "mediana_predicha": null,
+   "razon_predicha_oficial": null
+  },
+  {
+   "rol": "Developer, mobile",
+   "soc": "15-1252",
+   "ocupacion": "Software Developers",
+   "n_muestra_usa": 99,
+   "n_prueba_usa": 19,
+   "mediana_oficial": 148100,
+   "mediana_muestra": 175000,
+   "razon_muestra_oficial": 1.182,
+   "mediana_predicha": null,
+   "razon_predicha_oficial": null
+  },
+  {
+   "rol": "Data scientist",
+   "soc": "15-2051",
+   "ocupacion": "Data Scientists",
+   "n_muestra_usa": 52,
+   "n_prueba_usa": 7,
+   "mediana_oficial": 126800,
+   "mediana_muestra": 137000,
+   "razon_muestra_oficial": 1.08,
+   "mediana_predicha": null,
+   "razon_predicha_oficial": null
+  },
+  {
+   "rol": "Developer, QA or test",
+   "soc": "15-1253",
+   "ocupacion": "Software Quality Assurance Analysts and Testers",
+   "n_muestra_usa": 32,
+   "n_prueba_usa": 3,
+   "mediana_oficial": 111490,
+   "mediana_muestra": 122000,
+   "razon_muestra_oficial": 1.094,
+   "mediana_predicha": null,
+   "razon_predicha_oficial": null
+  }
+ ]
+}

@@ -1,0 +1,160 @@
+{
+ "ediciones": {
+  "2022": {
+   "n": 28951,
+   "mejor_configuracion": "CatBoost/onehot",
+   "r2_mejor": 0.7752,
+   "r2_ridge": 0.7516,
+   "hg_significativos": "20/20",
+   "he1_por_modelo": {
+    "Ridge": {
+     "diferencia": -0.0032,
+     "significativo": true
+    },
+    "LightGBM": {
+     "diferencia": -0.0083,
+     "significativo": true
+    },
+    "XGBoost": {
+     "diferencia": -0.0044,
+     "significativo": true
+    },
+    "CatBoost": {
+     "diferencia": -0.0035,
+     "significativo": true
+    },
+    "HistGradientBoosting": {
+     "diferencia": -0.0043,
+     "significativo": true
+    }
+   },
+   "pesos_shap": {
+    "Geográfico": 39.0,
+    "Tecnologías": 24.8,
+    "Capital humano": 23.8,
+    "Organizacional": 11.1,
+    "Demográfico": 1.3
+   },
+   "orden_bloques": [
+    "Geográfico",
+    "Tecnologías",
+    "Capital humano",
+    "Organizacional",
+    "Demográfico"
+   ],
+   "equidad_region": {
+    "razon_relativa": 2.417,
+    "peor_servido": "South Asia",
+    "significativo": false
+   }
+  },
+  "2023": {
+   "n": 37622,
+   "mejor_configuracion": "XGBoost/target",
+   "r2_mejor": 0.7863,
+   "r2_ridge": 0.7544,
+   "hg_significativos": "20/20",
+   "he1_por_modelo": {
+    "CatBoost": {
+     "diferencia": 0.0027,
+     "significativo": true
+    },
+    "Ridge": {
+     "diferencia": -0.0039,
+     "significativo": true
+    },
+    "XGBoost": {
+     "diferencia": 0.004,
+     "significativo": true
+    },
+    "LightGBM": {
+     "diferencia": -0.0008,
+     "significativo": false
+    },
+    "HistGradientBoosting": {
+     "diferencia": 0.0004,
+     "significativo": false
+    }
+   },
+   "pesos_shap": {
+    "Geográfico": 35.3,
+    "Tecnologías": 26.2,
+    "Capital humano": 22.2,
+    "Organizacional": 14.9,
+    "Demográfico": 1.5
+   },
+   "orden_bloques": [
+    "Geográfico",
+    "Tecnologías",
+    "Capital humano",
+    "Organizacional",
+    "Demográfico"
+   ],
+   "equidad_region": {
+    "razon_relativa": 2.332,
+    "peor_servido": "Latin America & Caribbean",
+    "significativo": true
+   }
+  },
+  "2025": {
+   "n": 15340,
+   "mejor_configuracion": "CatBoost/target",
+   "r2_mejor": 0.7761,
+   "r2_ridge": 0.7451,
+   "hg_significativos": "20/20",
+   "he1_por_modelo": {
+    "CatBoost": {
+     "diferencia": 0.0077,
+     "significativo": true
+    },
+    "LightGBM": {
+     "diferencia": 0.0078,
+     "significativo": true
+    },
+    "XGBoost": {
+     "diferencia": 0.0094,
+     "significativo": true
+    },
+    "HistGradientBoosting": {
+     "diferencia": 0.0074,
+     "significativo": true
+    },
+    "Ridge": {
+     "diferencia": 0.0009,
+     "significativo": false
+    }
+   },
+   "pesos_shap": {
+    "Geográfico": 32.5,
+    "Tecnologías": 28.3,
+    "Capital humano": 18.8,
+    "Organizacional": 18.3,
+    "Demográfico": 2.1
+   },
+   "orden_bloques": [
+    "Geográfico",
+    "Tecnologías",
+    "Capital humano",
+    "Organizacional",
+    "Demográfico"
+   ],
+   "equidad_region": {
+    "razon_relativa": 2.458,
+    "peor_servido": "Middle East, North Africa, Afghanistan & Pakistan",
+    "significativo": true
+   }
+  }
+ },
+ "sintesis": {
+  "mejor_es_ensamblado_con_objetivo": false,
+  "hg_todas": true,
+  "geografico_primero_nominal": true,
+  "demografico_ultimo": true,
+  "region_peor_servida": [
+   "Latin America & Caribbean",
+   "Middle East, North Africa, Afghanistan & Pakistan",
+   "South Asia"
+  ],
+  "he1_depende_del_modelo_en_todas": false
+ }
+}

@@ -1,0 +1,123 @@
+{
+ "n_subconjunto": 37506,
+ "n_total": 37622,
+ "paises_excluidos": {
+  "Taiwan": 78,
+  "Venezuela, Bolivarian Republic of...": 38
+ },
+ "fuente_ppp": "Banco Mundial, PA.NUS.PRVT.PP / PA.NUS.FCRF, año 2023",
+ "descriptivo": {
+  "nominal": {
+   "por_renta": {
+    "High income": 86897,
+    "Lower middle income": 16964,
+    "Upper middle income": 33758
+   },
+   "por_region": {
+    "East Asia & Pacific": 72714,
+    "Europe & Central Asia": 64254,
+    "Latin America & Caribbean": 34290,
+    "Middle East, North Africa, Afghanistan & Pakistan": 65483,
+    "North America": 142000,
+    "South Asia": 18388,
+    "Sub-Saharan Africa": 34827
+   },
+   "razon_usa_latam": 4.37,
+   "razon_renta_alta_baja": 5.12
+  },
+  "ppa": {
+   "por_renta": {
+    "High income": 105750,
+    "Lower middle income": 69242,
+    "Upper middle income": 81378
+   },
+   "por_region": {
+    "East Asia & Pacific": 89474,
+    "Europe & Central Asia": 88994,
+    "Latin America & Caribbean": 73918,
+    "Middle East, North Africa, Afghanistan & Pakistan": 79267,
+    "North America": 145000,
+    "South Asia": 76915,
+    "Sub-Saharan Africa": 88174
+   },
+   "razon_usa_latam": 2.03,
+   "razon_renta_alta_baja": 1.53
+  }
+ },
+ "dispersion_intra_pais_invariante": {
+  "diferencia_maxima": 0.0001,
+  "nominal": {
+   "High income": 0.471,
+   "Lower middle income": 0.81,
+   "Upper middle income": 0.756
+  }
+ },
+ "modelo": {
+  "nominal": {
+   "r2": 0.792,
+   "mae_escala": 24700,
+   "pesos_shap": {
+    "Geográfico": 35.1,
+    "Tecnologías": 26.1,
+    "Capital humano": 22.4,
+    "Organizacional": 14.9,
+    "Demográfico": 1.4
+   },
+   "equidad_renta": {
+    "error_relativo": {
+     "High income": 0.3007,
+     "Lower middle income": 0.5602,
+     "Upper middle income": 0.517
+    },
+    "razon_disparidad": 1.863,
+    "peor_servido": "Lower middle income"
+   },
+   "equidad_region": {
+    "error_relativo": {
+     "East Asia & Pacific": 0.2671,
+     "Europe & Central Asia": 0.2738,
+     "Latin America & Caribbean": 0.5483,
+     "Middle East, North Africa, Afghanistan & Pakistan": 0.346,
+     "North America": 0.284,
+     "South Asia": 0.5243,
+     "Sub-Saharan Africa": 0.3338
+    },
+    "razon_disparidad": 2.053,
+    "peor_servido": "Latin America & Caribbean"
+   }
+  },
+  "ppa": {
+   "r2": 0.6474,
+   "mae_escala": 32645,
+   "pesos_shap": {
+    "Tecnologías": 30.9,
+    "Capital humano": 27.4,
+    "Geográfico": 21.8,
+    "Organizacional": 18.2,
+    "Demográfico": 1.8
+   },
+   "equidad_renta": {
+    "error_relativo": {
+     "High income": 0.2927,
+     "Lower middle income": 0.5449,
+     "Upper middle income": 0.5736
+    },
+    "razon_disparidad": 1.96,
+    "peor_servido": "Upper middle income"
+   },
+   "equidad_region": {
+    "error_relativo": {
+     "East Asia & Pacific": 0.309,
+     "Europe & Central Asia": 0.2941,
+     "Latin America & Caribbean": 0.6808,
+     "Middle East, North Africa, Afghanistan & Pakistan": 0.3234,
+     "North America": 0.2822,
+     "South Asia": 0.5182,
+     "Sub-Saharan Africa": 0.3515
+    },
+    "razon_disparidad": 2.412,
+    "peor_servido": "Latin America & Caribbean"
+   }
+  }
+ }
+}

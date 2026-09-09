@@ -1,0 +1,13 @@
+estrategia,grupo,n,mae_usd,mae_relativo,sesgo_usd
+sin_mitigacion,High income,6406,26286,29.8,-5640
+sin_mitigacion,Lower middle income,403,9846,58.0,-5423
+sin_mitigacion,Upper middle income,716,17688,51.5,-7097
+reponderacion,High income,6406,26730,30.3,-5937
+reponderacion,Lower middle income,403,9934,58.6,-5260
+reponderacion,Upper middle income,716,17767,51.7,-6918
+submuestreo,High income,6406,28751,32.6,-6574
+submuestreo,Lower middle income,403,10039,59.2,-5034
+submuestreo,Upper middle income,716,18395,53.6,-7267
+sobremuestreo,High income,6406,26850,30.5,-5762
+sobremuestreo,Lower middle income,403,9984,58.9,-5297
+sobremuestreo,Upper middle income,716,17841,51.9,-6833

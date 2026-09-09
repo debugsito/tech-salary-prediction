@@ -1,0 +1,130 @@
+{
+  "n_total": 7525,
+  "n_grupos": 8,
+  "n_grupos_suficientes": 7,
+  "por_grupo": {
+    "Associate degree (A.A., A.S., etc.)": {
+      "n": 250,
+      "suficiente_para_inferencia": true,
+      "mae": 22515.56025253198,
+      "mae_relativo": 0.2917694962035531,
+      "mape": 0.33396518102233824,
+      "rmse": 36379.15545958701,
+      "sesgo_sistematico": -2492.5418477765397,
+      "sesgo_relativo": -0.03229978161925826,
+      "mediana_real": 77168.99999999997,
+      "mediana_pred": 75167.95762496989
+    },
+    "Bachelor’s degree (B.A., B.S., B.Eng., etc.)": {
+      "n": 3692,
+      "suficiente_para_inferencia": true,
+      "mae": 24676.735151632798,
+      "mae_relativo": 0.2909117559181235,
+      "mape": 0.29007392915609226,
+      "rmse": 42684.15299221453,
+      "sesgo_sistematico": -5294.807948678285,
+      "sesgo_relativo": -0.06242000281375627,
+      "mediana_real": 84825.50000000004,
+      "mediana_pred": 83983.21658003185
+    },
+    "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)": {
+      "n": 2028,
+      "suficiente_para_inferencia": true,
+      "mae": 25816.867520303527,
+      "mae_relativo": 0.33483175347976146,
+      "mape": 0.2665159255879393,
+      "rmse": 50583.98613890171,
+      "sesgo_sistematico": -7871.459680803217,
+      "sesgo_relativo": -0.10208886284503031,
+      "mediana_real": 77104.0,
+      "mediana_pred": 76383.06397027083
+    },
+    "Primary/elementary school": {
+      "n": 24,
+      "suficiente_para_inferencia": false,
+      "mae": 21345.203453782986,
+      "mae_relativo": 0.4234529277147843,
+      "mape": 0.3484666482618586,
+      "rmse": 33967.65315010657,
+      "sesgo_sistematico": 1209.4294042329282,
+      "sesgo_relativo": 0.023993044769784824,
+      "mediana_real": 50407.499999999985,
+      "mediana_pred": 59526.396145776
+    },
+    "Professional degree (JD, MD, Ph.D, Ed.D, etc.)": {
+      "n": 279,
+      "suficiente_para_inferencia": true,
+      "mae": 28453.433127424683,
+      "mae_relativo": 0.32743861269577434,
+      "mape": 0.330839457703353,
+      "rmse": 47005.89444674185,
+      "sesgo_sistematico": -7262.921772945767,
+      "sesgo_relativo": -0.08358081145431685,
+      "mediana_real": 86896.99999999994,
+      "mediana_pred": 87530.5886327216
+    },
+    "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)": {
+      "n": 317,
+      "suficiente_para_inferencia": true,
+      "mae": 19126.276991723345,
+      "mae_relativo": 0.31176183787385875,
+      "mape": 0.2728079366576588,
+      "rmse": 33632.01816266488,
+      "sesgo_sistematico": -4475.4415310049835,
+      "sesgo_relativo": -0.07295052129627193,
+      "mediana_real": 61348.999999999956,
+      "mediana_pred": 61813.23531305973
+    },
+    "Some college/university study without earning a degree": {
+      "n": 867,
+      "suficiente_para_inferencia": true,
+      "mae": 23519.004810939066,
+      "mae_relativo": 0.31576339313587065,
+      "mape": 0.3181259779254213,
+      "rmse": 37892.15884177338,
+      "sesgo_sistematico": -4400.520232177137,
+      "sesgo_relativo": -0.0590808672069752,
+      "mediana_real": 74483.00000000004,
+      "mediana_pred": 74646.57899078351
+    },
+    "Something else": {
+      "n": 68,
+      "suficiente_para_inferencia": true,
+      "mae": 15095.348393664273,
+      "mae_relativo": 0.27107490785397464,
+      "mape": 0.2648970319438367,
+      "rmse": 24538.279812655393,
+      "sesgo_sistematico": -461.8571791900599,
+      "sesgo_relativo": -0.008293806080235248,
+      "mediana_real": 55686.999999999956,
+      "mediana_pred": 57034.87308243553
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 13358.08473376041,
+    "razon_disparidad_absoluta": 1.8849139738548188,
+    "grupo_peor_servido_absoluto": "Professional degree (JD, MD, Ph.D, Ed.D, etc.)",
+    "razon_disparidad_relativa": 1.2352001007047542,
+    "coeficiente_variacion_relativo": 0.0683773997604343,
+    "grupo_peor_servido_relativo": "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)",
+    "supera_umbral_razon": false,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 7871.459680803217,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 7409.602501613157,
+    "perdida_acotada_cumple": true,
+    "umbral_zeta": 30734.765207892637
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 3.6382170030382164,
+    "p_valor": 0.7254988867511555,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "Professional degree (JD, MD, Ph.D, Ed.D, etc.)",
+      "grupo_prediccion_baja": "Something else",
+      "distancia_ks": 0.3170461733080329,
+      "p_valor": 2.214875151476516e-05
+    }
+  }
+}

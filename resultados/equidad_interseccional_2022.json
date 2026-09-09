@@ -1,0 +1,58 @@
+{
+  "subgrupos": [
+    {
+      "genero": "Hombres",
+      "region": "América Latina",
+      "n": 362,
+      "suficiente": true,
+      "mediana_real": 27054.0,
+      "mae": 14798.015745047047,
+      "mae_relativo": 0.5469806958323001,
+      "sesgo": -2377.5477530969433
+    },
+    {
+      "genero": "Hombres",
+      "region": "Resto del mundo",
+      "n": 4948,
+      "suficiente": true,
+      "mediana_real": 69186.0,
+      "mae": 24082.150479340606,
+      "mae_relativo": 0.34807837538433506,
+      "sesgo": -7648.8353966209515
+    },
+    {
+      "genero": "Mujeres",
+      "region": "América Latina",
+      "n": 17,
+      "suficiente": false,
+      "mediana_real": 24924.000000000004,
+      "mae": 17922.63528262868,
+      "mae_relativo": 0.7190914493110526,
+      "sesgo": -2990.786132812507
+    },
+    {
+      "genero": "Mujeres",
+      "region": "Resto del mundo",
+      "n": 269,
+      "suficiente": true,
+      "mediana_real": 65053.00000000003,
+      "mae": 23470.22418462476,
+      "mae_relativo": 0.36078619256029315,
+      "sesgo": -1472.340105134757
+    }
+  ],
+  "por_region": {
+    "América Latina": {
+      "hombres": 0.5469806958323001,
+      "mujeres": 0.7190914493110526,
+      "diferencia_pp": 17.211075347875248,
+      "n_mujeres": 17
+    },
+    "Resto del mundo": {
+      "hombres": 0.34807837538433506,
+      "mujeres": 0.36078619256029315,
+      "diferencia_pp": 1.2707817175958092,
+      "n_mujeres": 269
+    }
+  }
+}
