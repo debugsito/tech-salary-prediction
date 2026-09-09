@@ -1,0 +1,118 @@
+{
+  "n_total": 3068,
+  "n_grupos": 7,
+  "n_grupos_suficientes": 6,
+  "por_grupo": {
+    "East Asia & Pacific": {
+      "n": 196,
+      "suficiente_para_inferencia": true,
+      "mae": 24520.851485734434,
+      "mae_relativo": 0.3392386968503146,
+      "mape": 0.29852726182921174,
+      "rmse": 50897.32922119007,
+      "sesgo_sistematico": -9352.353437187032,
+      "sesgo_relativo": -0.12938703186390849,
+      "mediana_real": 72281.99999999999,
+      "mediana_pred": 71294.04260614299
+    },
+    "Europe & Central Asia": {
+      "n": 1607,
+      "suficiente_para_inferencia": true,
+      "mae": 19362.13976239716,
+      "mae_relativo": 0.25975851248872633,
+      "mape": 0.270909022581638,
+      "rmse": 30821.753429976434,
+      "sesgo_sistematico": -4994.462295154214,
+      "sesgo_relativo": -0.06700468607244821,
+      "mediana_real": 74538.99999999996,
+      "mediana_pred": 73557.07976461068
+    },
+    "Latin America & Caribbean": {
+      "n": 134,
+      "suficiente_para_inferencia": true,
+      "mae": 16753.12470039704,
+      "mae_relativo": 0.42351323264607316,
+      "mape": 0.4842034820297921,
+      "rmse": 25477.390078959244,
+      "sesgo_sistematico": -1820.7100212192731,
+      "sesgo_relativo": -0.04602692337026539,
+      "mediana_real": 39557.5,
+      "mediana_pred": 41315.901827060254
+    },
+    "Middle East, North Africa, Afghanistan & Pakistan": {
+      "n": 61,
+      "suficiente_para_inferencia": true,
+      "mae": 15304.605484449137,
+      "mae_relativo": 0.638596573664739,
+      "mape": 0.6539120830573227,
+      "rmse": 22271.220624710128,
+      "sesgo_sistematico": -789.1937956734439,
+      "sesgo_relativo": -0.032929725263850615,
+      "mediana_real": 23966.000000000004,
+      "mediana_pred": 21860.89192157873
+    },
+    "North America": {
+      "n": 885,
+      "suficiente_para_inferencia": true,
+      "mae": 42962.91474387186,
+      "mae_relativo": 0.2864194316258123,
+      "mape": 0.24658686411004183,
+      "rmse": 78433.85539964217,
+      "sesgo_sistematico": -9818.094816091676,
+      "sesgo_relativo": -0.06545396544061115,
+      "mediana_real": 150000.00000000006,
+      "mediana_pred": 151343.90733973324
+    },
+    "South Asia": {
+      "n": 157,
+      "suficiente_para_inferencia": true,
+      "mae": 9575.003629298202,
+      "mae_relativo": 0.4845404397195593,
+      "mape": 0.42546943882539756,
+      "rmse": 14434.764994927604,
+      "sesgo_sistematico": -3770.0752801907856,
+      "sesgo_relativo": -0.19078362836854354,
+      "mediana_real": 19760.99999999998,
+      "mediana_pred": 18712.04309333365
+    },
+    "Sub-Saharan Africa": {
+      "n": 28,
+      "suficiente_para_inferencia": false,
+      "mae": 14713.986594616299,
+      "mae_relativo": 0.3182744420807973,
+      "mape": 0.355894759148331,
+      "rmse": 29644.84783726484,
+      "sesgo_sistematico": -8699.560236597166,
+      "sesgo_relativo": -0.18817793959825582,
+      "mediana_real": 46230.5,
+      "mediana_pred": 48841.75675503515
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 33387.91111457365,
+    "razon_disparidad_absoluta": 4.486986784256793,
+    "grupo_peor_servido_absoluto": "North America",
+    "razon_disparidad_relativa": 2.4584240475755514,
+    "coeficiente_variacion_relativo": 0.3196330117847968,
+    "grupo_peor_servido_relativo": "Middle East, North Africa, Afghanistan & Pakistan",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 9818.094816091676,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 9028.901020418232,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 32202.164233728683
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 16.57223710970902,
+    "p_valor": 0.005386745804893435,
+    "significativo": true,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "North America",
+      "grupo_prediccion_baja": "South Asia",
+      "distancia_ks": 0.9695922847169743,
+      "p_valor": 2.3290034192097166e-159
+    }
+  }
+}

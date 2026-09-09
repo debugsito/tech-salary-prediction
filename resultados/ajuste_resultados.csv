@@ -1,0 +1,5 @@
+modelo,r2_cv_interna,r2_prueba,mae_usd_prueba,segundos,mejores_parametros
+Ridge,0.7497,0.7501,26606,27.0,"{""alpha"": 24.65833}"
+XGBoost,0.7867,0.7884,24414,100.9,"{""colsample_bytree"": 0.71967, ""learning_rate"": 0.01986, ""max_depth"": 9, ""min_child_weight"": 17, ""n_estimators"": 763, ""reg_alpha"": 0.12121, ""reg_lambda"": 3.98477, ""subsample"": 0.65573}"
+LightGBM,0.7861,0.7878,24462,228.2,"{""colsample_bytree"": 0.61639, ""learning_rate"": 0.01361, ""min_child_samples"": 66, ""n_estimators"": 762, ""num_leaves"": 123, ""reg_lambda"": 1.525, ""subsample"": 0.83697}"
+HistGradientBoosting,0.7826,0.7845,24798,155.9,"{""l2_regularization"": 0.26373, ""learning_rate"": 0.04468, ""max_depth"": 9, ""max_iter"": 627, ""max_leaf_nodes"": 22, ""min_samples_leaf"": 51}"

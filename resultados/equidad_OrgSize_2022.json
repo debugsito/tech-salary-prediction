@@ -1,0 +1,166 @@
+{
+  "n_total": 5791,
+  "n_grupos": 11,
+  "n_grupos_suficientes": 9,
+  "por_grupo": {
+    "1,000 to 4,999 employees": {
+      "n": 727,
+      "suficiente_para_inferencia": true,
+      "mae": 26780.40328553363,
+      "mae_relativo": 0.35874138706157466,
+      "mape": 0.316106996379039,
+      "rmse": 52511.05141197449,
+      "sesgo_sistematico": -6048.5022104472855,
+      "sesgo_relativo": -0.08102372654682832,
+      "mediana_real": 74651.00000000006,
+      "mediana_pred": 78242.04823253391
+    },
+    "10 to 19 employees": {
+      "n": 490,
+      "suficiente_para_inferencia": true,
+      "mae": 19370.89380794257,
+      "mae_relativo": 0.3877746288173634,
+      "mape": 0.36146422196922295,
+      "rmse": 42547.79481941123,
+      "sesgo_sistematico": -5313.398990978116,
+      "sesgo_relativo": -0.10636583638904024,
+      "mediana_real": 49954.0,
+      "mediana_pred": 49905.271515352724
+    },
+    "10,000 or more employees": {
+      "n": 808,
+      "suficiente_para_inferencia": true,
+      "mae": 31456.208841309744,
+      "mae_relativo": 0.37815670078393093,
+      "mape": 0.3195694533076023,
+      "rmse": 55589.40483158327,
+      "sesgo_sistematico": -10134.61918695027,
+      "sesgo_relativo": -0.12183522098205482,
+      "mediana_real": 83183.00000000004,
+      "mediana_pred": 87097.5848584105
+    },
+    "100 to 499 employees": {
+      "n": 1223,
+      "suficiente_para_inferencia": true,
+      "mae": 21985.170994535667,
+      "mae_relativo": 0.3298501319470636,
+      "mape": 0.3081666758208735,
+      "rmse": 43102.98741435452,
+      "sesgo_sistematico": -6477.6183725343335,
+      "sesgo_relativo": -0.0971856564324302,
+      "mediana_real": 66651.99999999996,
+      "mediana_pred": 65757.81742196153
+    },
+    "2 to 9 employees": {
+      "n": 445,
+      "suficiente_para_inferencia": true,
+      "mae": 25480.119421285275,
+      "mae_relativo": 0.4977363537522522,
+      "mape": 0.4346888718941557,
+      "rmse": 59131.393956152984,
+      "sesgo_sistematico": -11057.634227102706,
+      "sesgo_relativo": -0.2160031689932551,
+      "mediana_real": 51191.999999999956,
+      "mediana_pred": 49767.231666519394
+    },
+    "20 to 99 employees": {
+      "n": 1283,
+      "suficiente_para_inferencia": true,
+      "mae": 18542.292791266016,
+      "mae_relativo": 0.31879328779427174,
+      "mape": 0.31032358183250874,
+      "rmse": 42149.10742267593,
+      "sesgo_sistematico": -4539.5552432223685,
+      "sesgo_relativo": -0.07804750779214584,
+      "mediana_real": 58163.99999999998,
+      "mediana_pred": 58290.87307040268
+    },
+    "5,000 to 9,999 employees": {
+      "n": 259,
+      "suficiente_para_inferencia": true,
+      "mae": 34059.936935649646,
+      "mae_relativo": 0.42764152544571826,
+      "mape": 0.33152081734712724,
+      "rmse": 74775.86216480569,
+      "sesgo_sistematico": -12839.45836975642,
+      "sesgo_relativo": -0.16120656868840155,
+      "mediana_real": 79645.99999999993,
+      "mediana_pred": 82110.39977055311
+    },
+    "500 to 999 employees": {
+      "n": 454,
+      "suficiente_para_inferencia": true,
+      "mae": 21262.335411430024,
+      "mae_relativo": 0.3072147870456585,
+      "mape": 0.30985109772923625,
+      "rmse": 36763.161525717944,
+      "sesgo_sistematico": -7031.353970643132,
+      "sesgo_relativo": -0.10159448014222126,
+      "mediana_real": 69209.99999999999,
+      "mediana_pred": 66858.24737606398
+    },
+    "I don’t know": {
+      "n": 71,
+      "suficiente_para_inferencia": true,
+      "mae": 14881.312034235989,
+      "mae_relativo": 0.2242106917711682,
+      "mape": 0.4015772514886271,
+      "rmse": 19835.024954243796,
+      "sesgo_sistematico": 1122.4254671948943,
+      "sesgo_relativo": 0.016911129198982904,
+      "mediana_real": 66372.00000000006,
+      "mediana_pred": 64566.479906961285
+    },
+    "Just me - I am a freelancer, sole proprietor, etc.": {
+      "n": 26,
+      "suficiente_para_inferencia": false,
+      "mae": 32404.666784824283,
+      "mae_relativo": 0.5855718312716157,
+      "mape": 0.48081358192057244,
+      "rmse": 50127.65146343747,
+      "sesgo_sistematico": -5998.779589153849,
+      "sesgo_relativo": -0.10840155748988234,
+      "mediana_real": 55338.499999999956,
+      "mediana_pred": 61258.524289538655
+    },
+    "No declarado": {
+      "n": 5,
+      "suficiente_para_inferencia": false,
+      "mae": 18457.68993548683,
+      "mae_relativo": 0.30762816559144707,
+      "mape": 0.5922213101180726,
+      "rmse": 23223.978738412752,
+      "sesgo_sistematico": 8688.502119476101,
+      "sesgo_relativo": 0.14480836865793498,
+      "mediana_real": 60000.000000000015,
+      "mediana_pred": 58042.57600876912
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 19178.624901413656,
+    "razon_disparidad_absoluta": 2.2887724454195477,
+    "grupo_peor_servido_absoluto": "5,000 to 9,999 employees",
+    "razon_disparidad_relativa": 2.2199492353390853,
+    "coeficiente_variacion_relativo": 0.204475637151194,
+    "grupo_peor_servido_relativo": "2 to 9 employees",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 12839.45836975642,
+    "sesgo_todos_mismo_signo": false,
+    "rango_sesgo": 13961.883836951314,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 29541.52861626608
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 10.857532064314,
+    "p_valor": 0.2099030417433897,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "10,000 or more employees",
+      "grupo_prediccion_baja": "2 to 9 employees",
+      "distancia_ks": 0.31794971631994673,
+      "p_valor": 3.5706675888817655e-26
+    }
+  }
+}

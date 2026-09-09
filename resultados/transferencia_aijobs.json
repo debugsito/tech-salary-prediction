@@ -1,0 +1,93 @@
+{
+ "fuente": "aijobs.net salaries (CC0), año 2023, tiempo completo",
+ "n_descargadas": 151445,
+ "n_2023_ft": 8507,
+ "n_retenidas": 7113,
+ "paises": 27,
+ "fraccion_usa": 0.907,
+ "anclas_experiencia": {
+  "principal": {
+   "EN": 2,
+   "MI": 5,
+   "SE": 9,
+   "EX": 15
+  },
+  "alternativa": {
+   "EN": 1,
+   "MI": 4,
+   "SE": 8,
+   "EX": 12
+  }
+ },
+ "externa": {
+  "principal": {
+   "RMSE_log": 0.4436,
+   "MAE_log": 0.3531,
+   "MedAE_log": 0.3028,
+   "R2": -0.037,
+   "RMSE_USD": 71594.8772,
+   "MAE_USD": 51649.4123,
+   "MedAE_USD": 36554.7812,
+   "MAPE": 30.0342
+  },
+  "alternativa": {
+   "RMSE_log": 0.4656,
+   "MAE_log": 0.374,
+   "MedAE_log": 0.3181,
+   "R2": -0.1428,
+   "RMSE_USD": 74255.7205,
+   "MAE_USD": 54046.3371,
+   "MedAE_USD": 38568.7969,
+   "MAPE": 30.7004
+  }
+ },
+ "control_completa": {
+  "RMSE_log": 0.374,
+  "MAE_log": 0.2725,
+  "MedAE_log": 0.2013,
+  "R2": 0.7862,
+  "RMSE_USD": 43949.6725,
+  "MAE_USD": 24587.8122,
+  "MedAE_USD": 14148.1562,
+  "MAPE": 28.9158
+ },
+ "control_enmascarada": {
+  "RMSE_log": 0.4631,
+  "MAE_log": 0.3458,
+  "MedAE_log": 0.2619,
+  "R2": 0.6723,
+  "RMSE_USD": 57129.9536,
+  "MAE_USD": 31379.331,
+  "MedAE_USD": 16715.8594,
+  "MAPE": 31.328
+ },
+ "diagnostico": {
+  "mediana_real": 150000,
+  "mediana_predicha": 125587,
+  "razon_global": 0.837,
+  "var_log_externa": 0.19,
+  "var_log_prueba_propia": 0.654,
+  "r2_solo_usa": -0.131,
+  "mape_solo_usa": 29.2
+ },
+ "por_rol": {
+  "Data or business analyst": {
+   "n": 1354,
+   "mediana_fuente": 105500,
+   "mediana_predicha": 115693,
+   "razon": 1.097
+  },
+  "Data scientist or machine learning specialist": {
+   "n": 3691,
+   "mediana_fuente": 170000,
+   "mediana_predicha": 125985,
+   "razon": 0.741
+  },
+  "Engineer, data": {
+   "n": 2068,
+   "mediana_fuente": 145000,
+   "mediana_predicha": 125587,
+   "razon": 0.866
+  }
+ }
+}

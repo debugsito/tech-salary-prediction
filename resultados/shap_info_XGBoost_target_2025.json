@@ -1,0 +1,84 @@
+{
+  "estimador": "TreeExplainer",
+  "n_explicadas": 3068,
+  "n_variables": 192,
+  "top_10": [
+    {
+      "variable": "Country",
+      "shap_medio_abs": 0.4312348961830139,
+      "ic_inferior": 0.41887861490249634,
+      "ic_superior": 0.4442152678966522,
+      "importancia_impureza": 0.13528986275196075
+    },
+    {
+      "variable": "WorkExp_num",
+      "shap_medio_abs": 0.12893326580524445,
+      "ic_inferior": 0.12566110491752625,
+      "ic_superior": 0.13249829411506653,
+      "importancia_impureza": 0.02468770183622837
+    },
+    {
+      "variable": "YearsCode_num",
+      "shap_medio_abs": 0.0609239861369133,
+      "ic_inferior": 0.059562258422374725,
+      "ic_superior": 0.06235988065600395,
+      "importancia_impureza": 0.007501326501369476
+    },
+    {
+      "variable": "income_group_High income",
+      "shap_medio_abs": 0.0384550616145134,
+      "ic_inferior": 0.03718288242816925,
+      "ic_superior": 0.039792750030756,
+      "importancia_impureza": 0.10853242874145508
+    },
+    {
+      "variable": "OrgSize_Less than 20 employees",
+      "shap_medio_abs": 0.037449825555086136,
+      "ic_inferior": 0.03614109382033348,
+      "ic_superior": 0.03876686468720436,
+      "importancia_impureza": 0.012024637311697006
+    },
+    {
+      "variable": "DevType",
+      "shap_medio_abs": 0.036286287009716034,
+      "ic_inferior": 0.03519219532608986,
+      "ic_superior": 0.037443965673446655,
+      "importancia_impureza": 0.007660423405468464
+    },
+    {
+      "variable": "OrgSize_10,000 or more employees",
+      "shap_medio_abs": 0.032735228538513184,
+      "ic_inferior": 0.03166162222623825,
+      "ic_superior": 0.03388841077685356,
+      "importancia_impureza": 0.00996800884604454
+    },
+    {
+      "variable": "language__php",
+      "shap_medio_abs": 0.02619142271578312,
+      "ic_inferior": 0.025208579376339912,
+      "ic_superior": 0.0270987655967474,
+      "importancia_impureza": 0.012761213816702366
+    },
+    {
+      "variable": "RemoteWork_Remote",
+      "shap_medio_abs": 0.024749966338276863,
+      "ic_inferior": 0.02429039217531681,
+      "ic_superior": 0.02523060142993927,
+      "importancia_impureza": 0.006077049300074577
+    },
+    {
+      "variable": "platform__homebrew",
+      "shap_medio_abs": 0.020073577761650085,
+      "ic_inferior": 0.01946757733821869,
+      "ic_superior": 0.020694341510534286,
+      "importancia_impureza": 0.010899979621171951
+    }
+  ],
+  "ruta_valores": "results/shap_values_XGBoost_target_2025.npz",
+  "ruta_resumen": "results/shap_summary_XGBoost_target_2025.csv",
+  "spearman_shap_vs_impureza": {
+    "rho": 0.6509,
+    "p_valor": 0.0,
+    "n_variables": 192
+  }
+}

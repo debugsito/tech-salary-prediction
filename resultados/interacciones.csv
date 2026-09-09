@@ -1,0 +1,133 @@
+variable,modulada_por,fuerza,redundante
+income_group_High income,Country,1.2354,True
+YearsCodePro_num,YearsCode_num,0.96,True
+YearsCode_num,YearsCodePro_num,0.9446,True
+income_group_High income,YearsCode_num,0.3158,False
+income_group_High income,YearsCodePro_num,0.2692,False
+language__typescript,DevType,0.2651,False
+Country,YearsCode_num,0.2433,False
+Country,YearsCodePro_num,0.2144,False
+database__microsoft_sql_server,DevType,0.2127,False
+YearsCode_num,DevType,0.1935,False
+Country,DevType,0.1751,False
+YearsCode_num,Country,0.168,False
+RemoteWork_Remote,Country,0.1597,False
+platform__amazon_web_services_(aws),DevType,0.1588,False
+income_group_High income,DevType,0.1454,False
+RemoteWork_In-person,YearsCodePro_num,0.1423,False
+language__php,DevType,0.138,False
+YearsCodePro_num,DevType,0.136,False
+database__microsoft_sql_server,YearsCodePro_num,0.1351,False
+DevType,YearsCode_num,0.126,False
+platform__amazon_web_services_(aws),Country,0.1241,False
+"OrgSize_10,000 or more employees",Country,0.1228,False
+"OrgSize_10,000 or more employees",DevType,0.1217,False
+YearsCodePro_num,Country,0.1071,False
+language__typescript,YearsCode_num,0.1036,False
+language__typescript,YearsCodePro_num,0.1026,False
+DevType,YearsCodePro_num,0.0983,False
+RemoteWork_In-person,YearsCode_num,0.0969,False
+database__microsoft_sql_server,YearsCode_num,0.0942,False
+RemoteWork_Remote,YearsCodePro_num,0.0929,False
+language__php,Country,0.0915,False
+RemoteWork_Remote,DevType,0.0884,False
+RemoteWork_In-person,Country,0.0884,False
+RemoteWork_In-person,DevType,0.0753,False
+language__php,YearsCodePro_num,0.0674,False
+platform__amazon_web_services_(aws),YearsCodePro_num,0.063,False
+RemoteWork_Remote,YearsCode_num,0.0516,False
+platform__amazon_web_services_(aws),YearsCode_num,0.0477,False
+language__typescript,Country,0.0473,False
+"OrgSize_10,000 or more employees",YearsCode_num,0.0465,False
+DevType,Country,0.046,False
+language__php,YearsCode_num,0.0453,False
+database__microsoft_sql_server,Country,0.0381,False
+"OrgSize_10,000 or more employees",YearsCodePro_num,0.0214,False
+Country,"OrgSize_10,000 or more employees",0.0,False
+Country,income_group_High income,0.0,True
+YearsCodePro_num,RemoteWork_In-person,0.0,False
+YearsCodePro_num,database__microsoft_sql_server,0.0,False
+income_group_High income,RemoteWork_Remote,0.0,False
+income_group_High income,platform__amazon_web_services_(aws),0.0,False
+income_group_High income,"OrgSize_10,000 or more employees",0.0,False
+income_group_High income,language__php,0.0,False
+DevType,income_group_High income,0.0,False
+income_group_High income,RemoteWork_In-person,0.0,False
+income_group_High income,language__typescript,0.0,False
+income_group_High income,database__microsoft_sql_server,0.0,False
+YearsCodePro_num,"OrgSize_10,000 or more employees",0.0,False
+YearsCodePro_num,income_group_High income,0.0,False
+YearsCodePro_num,platform__amazon_web_services_(aws),0.0,False
+YearsCodePro_num,language__php,0.0,False
+YearsCodePro_num,language__typescript,0.0,False
+YearsCodePro_num,RemoteWork_Remote,0.0,False
+Country,RemoteWork_In-person,0.0,False
+Country,database__microsoft_sql_server,0.0,False
+Country,RemoteWork_Remote,0.0,False
+Country,language__typescript,0.0,False
+Country,platform__amazon_web_services_(aws),0.0,False
+Country,language__php,0.0,False
+YearsCode_num,database__microsoft_sql_server,0.0,False
+YearsCode_num,RemoteWork_In-person,0.0,False
+YearsCode_num,RemoteWork_Remote,0.0,False
+YearsCode_num,language__typescript,0.0,False
+YearsCode_num,platform__amazon_web_services_(aws),0.0,False
+YearsCode_num,language__php,0.0,False
+YearsCode_num,income_group_High income,0.0,False
+YearsCode_num,"OrgSize_10,000 or more employees",0.0,False
+"OrgSize_10,000 or more employees",language__typescript,0.0,False
+"OrgSize_10,000 or more employees",RemoteWork_In-person,0.0,False
+"OrgSize_10,000 or more employees",database__microsoft_sql_server,0.0,False
+DevType,RemoteWork_Remote,0.0,False
+"OrgSize_10,000 or more employees",income_group_High income,0.0,False
+"OrgSize_10,000 or more employees",language__php,0.0,False
+"OrgSize_10,000 or more employees",platform__amazon_web_services_(aws),0.0,False
+"OrgSize_10,000 or more employees",RemoteWork_Remote,0.0,False
+DevType,platform__amazon_web_services_(aws),0.0,False
+DevType,language__php,0.0,False
+DevType,"OrgSize_10,000 or more employees",0.0,False
+DevType,RemoteWork_In-person,0.0,False
+DevType,database__microsoft_sql_server,0.0,False
+DevType,language__typescript,0.0,False
+language__php,platform__amazon_web_services_(aws),0.0,False
+platform__amazon_web_services_(aws),income_group_High income,0.0,False
+platform__amazon_web_services_(aws),language__php,0.0,False
+platform__amazon_web_services_(aws),"OrgSize_10,000 or more employees",0.0,False
+language__php,RemoteWork_In-person,0.0,False
+language__php,RemoteWork_Remote,0.0,False
+language__php,database__microsoft_sql_server,0.0,False
+language__php,language__typescript,0.0,False
+language__php,income_group_High income,0.0,False
+language__php,"OrgSize_10,000 or more employees",0.0,False
+RemoteWork_Remote,RemoteWork_In-person,0.0,False
+RemoteWork_Remote,database__microsoft_sql_server,0.0,False
+RemoteWork_Remote,language__typescript,0.0,False
+RemoteWork_Remote,platform__amazon_web_services_(aws),0.0,False
+RemoteWork_Remote,"OrgSize_10,000 or more employees",0.0,False
+RemoteWork_Remote,language__php,0.0,False
+platform__amazon_web_services_(aws),language__typescript,0.0,False
+RemoteWork_Remote,income_group_High income,0.0,False
+platform__amazon_web_services_(aws),RemoteWork_Remote,0.0,False
+platform__amazon_web_services_(aws),RemoteWork_In-person,0.0,False
+platform__amazon_web_services_(aws),database__microsoft_sql_server,0.0,False
+language__typescript,"OrgSize_10,000 or more employees",0.0,False
+language__typescript,RemoteWork_Remote,0.0,False
+language__typescript,platform__amazon_web_services_(aws),0.0,False
+language__typescript,language__php,0.0,False
+language__typescript,income_group_High income,0.0,False
+database__microsoft_sql_server,"OrgSize_10,000 or more employees",0.0,False
+database__microsoft_sql_server,income_group_High income,0.0,False
+language__typescript,RemoteWork_In-person,0.0,False
+language__typescript,database__microsoft_sql_server,0.0,False
+database__microsoft_sql_server,language__typescript,0.0,False
+database__microsoft_sql_server,RemoteWork_Remote,0.0,False
+database__microsoft_sql_server,language__php,0.0,False
+database__microsoft_sql_server,platform__amazon_web_services_(aws),0.0,False
+RemoteWork_In-person,income_group_High income,0.0,False
+database__microsoft_sql_server,RemoteWork_In-person,0.0,False
+RemoteWork_In-person,"OrgSize_10,000 or more employees",0.0,False
+RemoteWork_In-person,language__php,0.0,False
+RemoteWork_In-person,platform__amazon_web_services_(aws),0.0,False
+RemoteWork_In-person,RemoteWork_Remote,0.0,False
+RemoteWork_In-person,language__typescript,0.0,False
+RemoteWork_In-person,database__microsoft_sql_server,0.0,False
