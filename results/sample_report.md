@@ -15,30 +15,31 @@
 | 3 | Desarrollador profesional | 32,266 | 2,791 |
 | 4 | País con al menos 30 observaciones | 31,567 | 699 |
 | 5 | Compensación dentro de [0.2, 6] veces la mediana del país | 29,213 | 2,354 |
+| 6 | Coherencia entre años declarados y tramo de edad | 28,951 | 262 |
 
-**Muestra efectiva: 29,213 observaciones en 76 países.**
+**Muestra efectiva: 28,951 observaciones en 76 países.**
 
 ### Variable dependiente
 
 | Estadístico | Valor |
 | :--- | ---: |
-| Mediana | \$66,372 |
-| Media | \$84,520 |
-| Percentil 25 | \$37,325 |
-| Percentil 75 | \$110,403 |
+| Mediana | \$66,540 |
+| Media | \$84,616 |
+| Percentil 25 | \$37,392 |
+| Percentil 75 | \$110,563 |
 | Mínimo | \$1,500 |
 | Máximo | \$870,000 |
-| Asimetría | 2.79 |
+| Asimetría | 2.80 |
 | Asimetría tras log1p | -0.67 |
 
 ### Composición
 
 | Ámbito | N | % | Mediana |
 | :--- | ---: | ---: | ---: |
-| Muestra global | 29,213 | 100.0 % | \$66,372 |
-| Estados Unidos | 7,153 | 24.5 % | \$140,000 |
-| América Latina | 1,998 | 6.8 % | \$27,420 |
-| Perú | 56 | 0.2 % | \$19,248 |
+| Muestra global | 28,951 | 100.0 % | \$66,540 |
+| Estados Unidos | 7,115 | 24.6 % | \$140,000 |
+| América Latina | 1,973 | 6.8 % | \$27,420 |
+| Perú | 55 | 0.2 % | \$19,296 |
 
 Razón entre la mediana de Estados Unidos y la de América Latina: **5.11 : 1**.
 
@@ -46,22 +47,22 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **5.11 : 1**.
 
 | Grupo | N | Mediana |
 | :--- | ---: | ---: |
-| High income | 23,008 | \$79,983 |
-| Lower middle income | 2,511 | \$15,477 |
-| Upper middle income | 3,694 | \$26,630 |
+| High income | 22,844 | \$79,983 |
+| Lower middle income | 2,471 | \$15,477 |
+| Upper middle income | 3,636 | \$26,650 |
 
 ### Género
 
-- Hombres: 26,946 · Mujeres: 1,348 · No binarias: 441
-- Mediana: hombres \$66,372 · mujeres \$63,985 · brecha bruta **3.6 %**
-- América Latina: hombres \$27,600 · mujeres \$23,676 · brecha bruta **14.2 %** (N mujeres = 89)
+- Hombres: 26,705 · Mujeres: 1,333 · No binarias: 438
+- Mediana: hombres \$66,372 · mujeres \$63,986 · brecha bruta **3.6 %**
+- América Latina: hombres \$27,600 · mujeres \$23,280 · brecha bruta **15.7 %** (N mujeres = 86)
 
 ### Cardinalidad y cobertura
 
 | Variable | Categorías | Cobertura |
 | :--- | ---: | ---: |
 | `Country` | 76 | 100.0 % |
-| `DevType` | 4861 | 100.0 % |
+| `DevType` | 4821 | 100.0 % |
 | `EdLevel` | 10 | 100.0 % |
 | `OrgSize` | 11 | 100.0 % |
 | `RemoteWork` | 4 | 100.0 % |
@@ -86,16 +87,17 @@ Lenguajes distintos declarados: **42**. Mediana por respondente: **5**.
 | 3 | Desarrollador profesional | 40,410 | 3,366 |
 | 4 | País con al menos 30 observaciones | 39,682 | 728 |
 | 5 | Compensación dentro de [0.2, 6] veces la mediana del país | 37,964 | 1,718 |
+| 6 | Coherencia entre años declarados y tramo de edad | 37,622 | 342 |
 
-**Muestra efectiva: 37,964 observaciones en 78 países.**
+**Muestra efectiva: 37,622 observaciones en 78 países.**
 
 ### Variable dependiente
 
 | Estadístico | Valor |
 | :--- | ---: |
 | Mediana | \$78,175 |
-| Media | \$96,218 |
-| Percentil 25 | \$48,330 |
+| Media | \$96,319 |
+| Percentil 25 | \$48,468 |
 | Percentil 75 | \$125,000 |
 | Mínimo | \$1,225 |
 | Máximo | \$900,000 |
@@ -106,20 +108,20 @@ Lenguajes distintos declarados: **42**. Mediana por respondente: **5**.
 
 | Ámbito | N | % | Mediana |
 | :--- | ---: | ---: | ---: |
-| Muestra global | 37,964 | 100.0 % | \$78,175 |
-| Estados Unidos | 10,322 | 27.2 % | \$150,000 |
-| América Latina | 1,944 | 5.1 % | \$33,180 |
+| Muestra global | 37,622 | 100.0 % | \$78,175 |
+| Estados Unidos | 10,253 | 27.3 % | \$150,000 |
+| América Latina | 1,912 | 5.1 % | \$33,034 |
 | Perú | 48 | 0.1 % | \$29,877 |
 
-Razón entre la mediana de Estados Unidos y la de América Latina: **4.52 : 1**.
+Razón entre la mediana de Estados Unidos y la de América Latina: **4.54 : 1**.
 
 ### Por nivel de renta
 
 | Grupo | N | Mediana |
 | :--- | ---: | ---: |
-| High income | 32,285 | \$86,743 |
-| Lower middle income | 2,050 | \$16,964 |
-| Upper middle income | 3,629 | \$33,717 |
+| High income | 32,027 | \$86,743 |
+| Lower middle income | 2,017 | \$16,964 |
+| Upper middle income | 3,578 | \$33,758 |
 
 ### Cardinalidad y cobertura
 
@@ -151,28 +153,29 @@ Lenguajes distintos declarados: **51**. Mediana por respondente: **5**.
 | 3 | Desarrollador profesional | 16,891 | 2,609 |
 | 4 | País con al menos 30 observaciones | 16,296 | 595 |
 | 5 | Compensación dentro de [0.2, 6] veces la mediana del país | 15,364 | 932 |
+| 6 | Coherencia entre años declarados y tramo de edad | 15,340 | 24 |
 
-**Muestra efectiva: 15,364 observaciones en 60 países.**
+**Muestra efectiva: 15,340 observaciones en 60 países.**
 
 ### Variable dependiente
 
 | Estadístico | Valor |
 | :--- | ---: |
 | Mediana | \$83,531 |
-| Media | \$101,292 |
+| Media | \$101,174 |
 | Percentil 25 | \$52,207 |
 | Percentil 75 | \$130,000 |
 | Mínimo | \$1,033 |
 | Máximo | \$909,000 |
-| Asimetría | 2.76 |
+| Asimetría | 2.77 |
 | Asimetría tras log1p | -0.95 |
 
 ### Composición
 
 | Ámbito | N | % | Mediana |
 | :--- | ---: | ---: | ---: |
-| Muestra global | 15,364 | 100.0 % | \$83,531 |
-| Estados Unidos | 3,819 | 24.9 % | \$155,000 |
+| Muestra global | 15,340 | 100.0 % | \$83,531 |
+| Estados Unidos | 3,808 | 24.8 % | \$155,000 |
 | América Latina | 711 | 4.6 % | \$36,407 |
 | Perú | 0 | 0.0 % | — |
 
@@ -182,9 +185,9 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **4.26 : 1**.
 
 | Grupo | N | Mediana |
 | :--- | ---: | ---: |
-| High income | 12,858 | \$93,972 |
+| High income | 12,836 | \$93,972 |
 | Lower middle income | 924 | \$16,274 |
-| Upper middle income | 1,582 | \$35,347 |
+| Upper middle income | 1,580 | \$35,364 |
 
 ### Cardinalidad y cobertura
 

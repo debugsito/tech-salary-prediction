@@ -4,14 +4,14 @@
 
 | Subgrupo | N | Mediana real | MAE | MAE/mediana | Sesgo |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Mujeres · América Latina *(descriptivo)* | 20 | \$20,070 | \$12,616 | 62.9 % | \$-1,636 |
-| Hombres · América Latina | 388 | \$27,996 | \$15,013 | 53.6 % | \$-3,224 |
-| Hombres · Resto del mundo | 4,987 | \$70,000 | \$24,198 | 34.6 % | \$-6,923 |
-| Mujeres · Resto del mundo | 267 | \$70,152 | \$23,999 | 34.2 % | \$-5,782 |
+| Mujeres · América Latina *(descriptivo)* | 17 | \$24,924 | \$17,923 | 71.9 % | \$-2,991 |
+| Hombres · América Latina | 362 | \$27,054 | \$14,798 | 54.7 % | \$-2,378 |
+| Mujeres · Resto del mundo | 269 | \$65,053 | \$23,470 | 36.1 % | \$-1,472 |
+| Hombres · Resto del mundo | 4,948 | \$69,186 | \$24,082 | 34.8 % | \$-7,649 |
 
 ## Brecha del error relativo por región
 
 | Región | Hombres | Mujeres | Diferencia | N mujeres |
 | :--- | ---: | ---: | ---: | ---: |
-| América Latina | 53.6 % | 62.9 % | +9.2 pp | 20 |
-| Resto del mundo | 34.6 % | 34.2 % | -0.4 pp | 267 |
+| América Latina | 54.7 % | 71.9 % | +17.2 pp | 17 |
+| Resto del mundo | 34.8 % | 36.1 % | +1.3 pp | 269 |

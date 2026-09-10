@@ -1,84 +1,84 @@
 {
   "estimador": "TreeExplainer",
-  "n_explicadas": 2000,
-  "n_variables": 159,
+  "n_explicadas": 7525,
+  "n_variables": 162,
   "top_10": [
     {
       "variable": "Country",
-      "shap_medio_abs": 0.431138277053833,
-      "ic_inferior": 0.4154234230518341,
-      "ic_superior": 0.4449382424354553,
-      "importancia_impureza": 0.14920975267887115
+      "shap_medio_abs": 0.4222847521305084,
+      "ic_inferior": 0.4153520464897156,
+      "ic_superior": 0.42986011505126953,
+      "importancia_impureza": 0.13527150452136993
     },
     {
       "variable": "YearsCodePro_num",
-      "shap_medio_abs": 0.13915373384952545,
-      "ic_inferior": 0.135295107960701,
-      "ic_superior": 0.1432201862335205,
-      "importancia_impureza": 0.028936905786395073
+      "shap_medio_abs": 0.15830734372138977,
+      "ic_inferior": 0.1560927778482437,
+      "ic_superior": 0.16049045324325562,
+      "importancia_impureza": 0.035349879413843155
     },
     {
-      "variable": "YearsCode_num",
-      "shap_medio_abs": 0.03863910958170891,
-      "ic_inferior": 0.03745070844888687,
-      "ic_superior": 0.03983648866415024,
-      "importancia_impureza": 0.009537783451378345
+      "variable": "income_group_High income",
+      "shap_medio_abs": 0.0461132749915123,
+      "ic_inferior": 0.04497204348444939,
+      "ic_superior": 0.047295309603214264,
+      "importancia_impureza": 0.21329113841056824
     },
     {
       "variable": "DevType",
-      "shap_medio_abs": 0.03787436708807945,
-      "ic_inferior": 0.036444295197725296,
-      "ic_superior": 0.039338309317827225,
-      "importancia_impureza": 0.007926344871520996
+      "shap_medio_abs": 0.03872952237725258,
+      "ic_inferior": 0.037916142493486404,
+      "ic_superior": 0.03947368636727333,
+      "importancia_impureza": 0.007231860421597958
     },
     {
       "variable": "OrgSize_10,000 or more employees",
-      "shap_medio_abs": 0.03460915759205818,
-      "ic_inferior": 0.032948680222034454,
-      "ic_superior": 0.03639465942978859,
-      "importancia_impureza": 0.015633191913366318
+      "shap_medio_abs": 0.03607020527124405,
+      "ic_inferior": 0.035199567675590515,
+      "ic_superior": 0.036912962794303894,
+      "importancia_impureza": 0.017209168523550034
+    },
+    {
+      "variable": "YearsCode_num",
+      "shap_medio_abs": 0.03220218047499657,
+      "ic_inferior": 0.031645629554986954,
+      "ic_superior": 0.03279592841863632,
+      "importancia_impureza": 0.005048707593232393
     },
     {
       "variable": "language__php",
-      "shap_medio_abs": 0.0308001060038805,
-      "ic_inferior": 0.029530595988035202,
-      "ic_superior": 0.03206698223948479,
-      "importancia_impureza": 0.02141084522008896
+      "shap_medio_abs": 0.03081483021378517,
+      "ic_inferior": 0.030196642503142357,
+      "ic_superior": 0.031503137201070786,
+      "importancia_impureza": 0.019976479932665825
     },
     {
       "variable": "platform__amazon_web_services_(aws)",
-      "shap_medio_abs": 0.02737048827111721,
-      "ic_inferior": 0.027073273435235023,
-      "ic_superior": 0.027674110606312752,
-      "importancia_impureza": 0.018925633281469345
+      "shap_medio_abs": 0.030155280604958534,
+      "ic_inferior": 0.02999962866306305,
+      "ic_superior": 0.03030708245933056,
+      "importancia_impureza": 0.02222878858447075
     },
     {
       "variable": "RemoteWork_Remote",
-      "shap_medio_abs": 0.02494046464562416,
-      "ic_inferior": 0.02441231720149517,
-      "ic_superior": 0.025429144501686096,
-      "importancia_impureza": 0.010737073607742786
+      "shap_medio_abs": 0.023928388953208923,
+      "ic_inferior": 0.023692211136221886,
+      "ic_superior": 0.02419326640665531,
+      "importancia_impureza": 0.01069092657417059
     },
     {
       "variable": "language__typescript",
-      "shap_medio_abs": 0.02419058419764042,
-      "ic_inferior": 0.02379899099469185,
-      "ic_superior": 0.024591153487563133,
-      "importancia_impureza": 0.0056908815167844296
-    },
-    {
-      "variable": "WorkExp_num",
-      "shap_medio_abs": 0.02298220992088318,
-      "ic_inferior": 0.022053280845284462,
-      "ic_superior": 0.023972442373633385,
-      "importancia_impureza": 0.007439995184540749
+      "shap_medio_abs": 0.02225024253129959,
+      "ic_inferior": 0.022072339430451393,
+      "ic_superior": 0.022434387356042862,
+      "importancia_impureza": 0.0057925013825297356
     }
   ],
   "ruta_valores": "results/shap_values_XGBoost_target_2023.npz",
   "ruta_resumen": "results/shap_summary_XGBoost_target_2023.csv",
   "spearman_shap_vs_impureza": {
-    "rho": 0.7757,
+    "rho": 0.7487,
     "p_valor": 0.0,
-    "n_variables": 159
+    "n_variables": 162
   }
 }

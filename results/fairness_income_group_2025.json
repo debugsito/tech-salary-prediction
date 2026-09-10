@@ -1,70 +1,70 @@
 {
-  "n_total": 3073,
+  "n_total": 3068,
   "n_grupos": 3,
   "n_grupos_suficientes": 3,
   "por_grupo": {
     "High income": {
-      "n": 2572,
+      "n": 2567,
       "suficiente_para_inferencia": true,
-      "mae": 30208.257718657256,
-      "mae_relativo": 0.3175404461028596,
-      "mape": 0.2616306030156603,
-      "rmse": 57151.54779593965,
-      "sesgo_sistematico": -7970.110545783832,
-      "sesgo_relativo": -0.08377949108379754,
-      "mediana_real": 95132.00000000006,
-      "mediana_pred": 95160.9728920286
+      "mae": 28023.7014135405,
+      "mae_relativo": 0.29876014300149767,
+      "mape": 0.2408235922874688,
+      "rmse": 53619.63687802499,
+      "sesgo_sistematico": -6976.797261479379,
+      "sesgo_relativo": -0.07437950172152852,
+      "mediana_real": 93800.00000000006,
+      "mediana_pred": 92168.63288483847
     },
     "Lower middle income": {
       "n": 185,
       "suficiente_para_inferencia": true,
-      "mae": 10146.977505041426,
-      "mae_relativo": 0.6841273938134722,
-      "mape": 0.6022322769377845,
-      "rmse": 15143.975999713628,
-      "sesgo_sistematico": -4504.400656101074,
-      "sesgo_relativo": -0.30369475836711646,
-      "mediana_real": 14832.00000000001,
-      "mediana_pred": 15163.375152404604
+      "mae": 8892.758752994632,
+      "mae_relativo": 0.5464396431728293,
+      "mape": 0.5105973989563551,
+      "rmse": 13626.131935784217,
+      "sesgo_sistematico": -3548.722043318961,
+      "sesgo_relativo": -0.21806083589277117,
+      "mediana_real": 16274.000000000013,
+      "mediana_pred": 15349.197059697392
     },
     "Upper middle income": {
       "n": 316,
       "suficiente_para_inferencia": true,
-      "mae": 18976.152169201734,
-      "mae_relativo": 0.579123879793748,
-      "mape": 0.6171388425040101,
-      "rmse": 29531.422924704,
-      "sesgo_sistematico": -5896.579862927475,
-      "sesgo_relativo": -0.17995482842272645,
-      "mediana_real": 32766.999999999985,
-      "mediana_pred": 36363.11710385968
+      "mae": 17262.626514854357,
+      "mae_relativo": 0.4899840059849096,
+      "mape": 0.5726977719809375,
+      "rmse": 27483.124312027718,
+      "sesgo_sistematico": -3512.118405079678,
+      "sesgo_relativo": -0.09968829738240971,
+      "mediana_real": 35231.000000000015,
+      "mediana_pred": 39093.81506058536
     }
   },
   "agregados": {
-    "disparidad_absoluta": 20061.280213615828,
-    "razon_disparidad_absoluta": 2.9770695464386887,
+    "disparidad_absoluta": 19130.94266054587,
+    "razon_disparidad_absoluta": 3.151294462374067,
     "grupo_peor_servido_absoluto": "High income",
-    "razon_disparidad_relativa": 2.154457494186002,
-    "coeficiente_variacion_relativo": 0.2925279748977134,
+    "razon_disparidad_relativa": 1.8290245736362833,
+    "coeficiente_variacion_relativo": 0.23813994462931493,
     "grupo_peor_servido_relativo": "Lower middle income",
     "supera_umbral_razon": true,
     "invierte_al_normalizar": true,
-    "sesgo_maximo_absoluto": 7970.110545783832,
+    "sesgo_maximo_absoluto": 6976.797261479379,
     "sesgo_todos_mismo_signo": true,
-    "rango_sesgo": 3465.7098896827583,
+    "rango_sesgo": 3464.678856399701,
     "perdida_acotada_cumple": true,
-    "umbral_zeta": 34806.90435864504
+    "umbral_zeta": 32202.164233728683
   },
   "contrastes": {
     "prueba": "Kruskal-Wallis",
-    "estadistico": 6.948797997600195,
-    "p_valor": 0.03098044751532117,
-    "significativo": true,
+    "estadistico": 3.2770502013354417,
+    "p_valor": 0.19426635441462037,
+    "significativo": false,
     "paridad_estadistica": {
       "grupo_prediccion_alta": "High income",
       "grupo_prediccion_baja": "Lower middle income",
-      "distancia_ks": 0.9006557101424909,
-      "p_valor": 9.135766852873212e-165
+      "distancia_ks": 0.864965939839333,
+      "p_valor": 5.126866629024407e-145
     }
   }
 }

@@ -70,7 +70,7 @@ def importancia_por_impureza(modelo, nombres: list[str]) -> dict | None:
 def explicar(tuberia, X_entrenamiento: pd.DataFrame, X_prueba: pd.DataFrame,
              nombres: list[str] | None = None,
              directorio: str = "results", etiqueta: str = "modelo",
-             n_fondo: int = 500, n_explicar: int = 2000,
+             n_fondo: int = 500, n_explicar: int = 20000,
              semilla: int = 42) -> dict:
     """Calcula, exporta y resume los valores SHAP de una tubería ya ajustada.
 
@@ -100,6 +100,11 @@ def explicar(tuberia, X_entrenamiento: pd.DataFrame, X_prueba: pd.DataFrame,
     # La muestra a explicar se limita por coste, no por conveniencia: se
     # extrae al azar con semilla fija y su tamaño se registra, de modo que la
     # cobertura del análisis quede declarada y sea reproducible.
+    #
+    # El valor por defecto cubre el conjunto de prueba completo en este trabajo.
+    # Se fijó tras comprobar que con 2,000 observaciones los estratos de menor
+    # renta quedaban con poco más de un centenar de casos, insuficientes para
+    # examinar interacciones dentro de ellos.
     if len(X_pru_t) > n_explicar:
         idx = rng.choice(len(X_pru_t), n_explicar, replace=False)
         X_muestra = X_pru_t[idx]

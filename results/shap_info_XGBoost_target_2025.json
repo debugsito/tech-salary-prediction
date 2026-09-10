@@ -5,79 +5,79 @@
   "top_10": [
     {
       "variable": "Country",
-      "shap_medio_abs": 0.4353509247303009,
-      "ic_inferior": 0.4198980927467346,
-      "ic_superior": 0.44973552227020264,
-      "importancia_impureza": 0.13286125659942627
+      "shap_medio_abs": 0.4351204037666321,
+      "ic_inferior": 0.41935962438583374,
+      "ic_superior": 0.45182543992996216,
+      "importancia_impureza": 0.13528986275196075
     },
     {
       "variable": "WorkExp_num",
-      "shap_medio_abs": 0.13975971937179565,
-      "ic_inferior": 0.1356254518032074,
-      "ic_superior": 0.1437271684408188,
-      "importancia_impureza": 0.025283541530370712
+      "shap_medio_abs": 0.13079926371574402,
+      "ic_inferior": 0.12670093774795532,
+      "ic_superior": 0.1346655786037445,
+      "importancia_impureza": 0.02468770183622837
     },
     {
       "variable": "YearsCode_num",
-      "shap_medio_abs": 0.0542711578309536,
-      "ic_inferior": 0.05260033160448074,
-      "ic_superior": 0.05595584958791733,
-      "importancia_impureza": 0.006732302252203226
+      "shap_medio_abs": 0.06122702732682228,
+      "ic_inferior": 0.059469424188137054,
+      "ic_superior": 0.06291927397251129,
+      "importancia_impureza": 0.007501326501369476
     },
     {
       "variable": "income_group_High income",
-      "shap_medio_abs": 0.0423591285943985,
-      "ic_inferior": 0.0404525063931942,
-      "ic_superior": 0.04433436319231987,
-      "importancia_impureza": 0.09665481746196747
-    },
-    {
-      "variable": "OrgSize_10,000 or more employees",
-      "shap_medio_abs": 0.03538993373513222,
-      "ic_inferior": 0.033964093774557114,
-      "ic_superior": 0.03703334555029869,
-      "importancia_impureza": 0.010630970820784569
-    },
-    {
-      "variable": "DevType",
-      "shap_medio_abs": 0.034199588000774384,
-      "ic_inferior": 0.03280382603406906,
-      "ic_superior": 0.035810686647892,
-      "importancia_impureza": 0.006989500019699335
+      "shap_medio_abs": 0.03910114988684654,
+      "ic_inferior": 0.03753086179494858,
+      "ic_superior": 0.0407840721309185,
+      "importancia_impureza": 0.10853242874145508
     },
     {
       "variable": "OrgSize_Less than 20 employees",
-      "shap_medio_abs": 0.03388601168990135,
-      "ic_inferior": 0.03228351101279259,
-      "ic_superior": 0.03542475774884224,
-      "importancia_impureza": 0.01211355347186327
+      "shap_medio_abs": 0.03830299898982048,
+      "ic_inferior": 0.036625951528549194,
+      "ic_superior": 0.040142722427845,
+      "importancia_impureza": 0.012024637311697006
+    },
+    {
+      "variable": "DevType",
+      "shap_medio_abs": 0.03673141822218895,
+      "ic_inferior": 0.035178281366825104,
+      "ic_superior": 0.03815412148833275,
+      "importancia_impureza": 0.007660423405468464
+    },
+    {
+      "variable": "OrgSize_10,000 or more employees",
+      "shap_medio_abs": 0.0328560471534729,
+      "ic_inferior": 0.031422246247529984,
+      "ic_superior": 0.03420466184616089,
+      "importancia_impureza": 0.00996800884604454
     },
     {
       "variable": "language__php",
-      "shap_medio_abs": 0.025592047721147537,
-      "ic_inferior": 0.024449577555060387,
-      "ic_superior": 0.026749741286039352,
-      "importancia_impureza": 0.01531487237662077
+      "shap_medio_abs": 0.026738425716757774,
+      "ic_inferior": 0.02558770589530468,
+      "ic_superior": 0.027972733601927757,
+      "importancia_impureza": 0.012761213816702366
     },
     {
       "variable": "RemoteWork_Remote",
-      "shap_medio_abs": 0.0238037109375,
-      "ic_inferior": 0.023309925571084023,
-      "ic_superior": 0.024355314671993256,
-      "importancia_impureza": 0.006231614388525486
+      "shap_medio_abs": 0.024800507351756096,
+      "ic_inferior": 0.02426726557314396,
+      "ic_superior": 0.02532736025750637,
+      "importancia_impureza": 0.006077049300074577
     },
     {
       "variable": "platform__homebrew",
-      "shap_medio_abs": 0.020146360620856285,
-      "ic_inferior": 0.01951931230723858,
-      "ic_superior": 0.02089410275220871,
-      "importancia_impureza": 0.011839928105473518
+      "shap_medio_abs": 0.01997995376586914,
+      "ic_inferior": 0.0192660354077816,
+      "ic_superior": 0.02068674936890602,
+      "importancia_impureza": 0.010899979621171951
     }
   ],
   "ruta_valores": "results/shap_values_XGBoost_target_2025.npz",
   "ruta_resumen": "results/shap_summary_XGBoost_target_2025.csv",
   "spearman_shap_vs_impureza": {
-    "rho": 0.6399,
+    "rho": 0.6507,
     "p_valor": 0.0,
     "n_variables": 192
   }

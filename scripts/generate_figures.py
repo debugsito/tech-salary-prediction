@@ -411,6 +411,113 @@ def fig_residuos(salida, df, resultados: Path):
     return guardar(fig, "residuos", salida)
 
 
+def fig_interaccion_experiencia(salida, resultados: Path, df):
+    """Retorno de la experiencia según el nivel de renta del país.
+
+    Es la interacción sustantiva que sostiene la segunda parte del criterio de
+    HE3: la contribución de la experiencia al salario estimado depende del
+    mercado, dependencia que una medida de importancia por variable no puede
+    expresar.
+    """
+    import numpy as np
+    from sklearn.model_selection import train_test_split
+    from sklearn.pipeline import Pipeline
+
+    from src.feature_pipeline_so import construir_preprocesador, preparar_xy
+    from src.model_registry import build_models
+
+    npz = resultados / "shap_values_XGBoost_target_2023.npz"
+    if not npz.exists():
+        return None
+    datos = np.load(npz, allow_pickle=True)
+    valores, nombres = datos["shap_values"], list(datos["feature_names"])
+    if "YearsCodePro_num" not in nombres:
+        return None
+    k = nombres.index("YearsCodePro_num")
+
+    X, y, A = preparar_xy(df)
+    X_ent, X_pru, y_ent, _, _, A_pru = train_test_split(
+        X, y, A, test_size=0.2, random_state=42, stratify=df["income_group"])
+    tub = Pipeline([("preprocesador", construir_preprocesador(df, "target")),
+                    ("modelo", build_models()["XGBoost"])])
+    tub.fit(X_ent, y_ent)
+
+    idx = datos["indices"]
+    anios = X_pru["YearsCodePro_num"].to_numpy()[idx]
+    renta = A_pru["income_group"].to_numpy()[idx]
+    shap_exp = valores[:, k]
+
+    grupos = [("High income", "Renta alta", AZUL),
+              ("Upper middle income", "Renta media-alta", AMBAR),
+              ("Lower middle income", "Renta media-baja", NARANJA)]
+
+    fig, ax = plt.subplots(figsize=(ANCHO, 3.6))
+    tramos = np.array([0, 2, 5, 8, 12, 18, 25, 50])
+    centros = (tramos[:-1] + tramos[1:]) / 2
+
+    for clave, etiqueta, color in grupos:
+        m = (renta == clave) & np.isfinite(anios)
+        if m.sum() < 50:
+            continue
+        medias, xs = [], []
+        for a, b, c in zip(tramos[:-1], tramos[1:], centros):
+            sel = m & (anios >= a) & (anios < b)
+            if sel.sum() >= 20:
+                medias.append(shap_exp[sel].mean())
+                xs.append(c)
+        ax.plot(xs, medias, marker="o", markersize=5, linewidth=2,
+                color=color, label=f"{etiqueta}  (n = {m.sum():,})")
+
+    ax.axhline(0, color=TINTA_3, linewidth=0.8, zorder=0)
+    ax.set_xlabel("Años de experiencia profesional", fontsize=9)
+    ax.set_ylabel("Contribución media al salario estimado\n(escala logarítmica)", fontsize=9)
+    ax.set_title("Retorno de la experiencia según el nivel de renta del país",
+                 loc="left")
+    ax.legend(loc="upper left", fontsize=8)
+    ax.grid(alpha=0.6)
+    ax.set_axisbelow(True)
+    fig.text(0.02, -0.07,
+             "La contribución de la experiencia al salario estimado no es la misma en todos los mercados: "
+             "su pendiente\ndifiere según el nivel de renta del país. Una medida de importancia por variable "
+             "asigna un único valor a la\nexperiencia y no puede expresar esta dependencia.",
+             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+    return guardar(fig, "interaccion_experiencia_renta", salida)
+
+
+def fig_mitigacion(salida, resultados: Path):
+    """Compromiso entre exactitud y equidad de las estrategias de mitigación."""
+    ruta = resultados / "mitigacion_resultados.csv"
+    if not ruta.exists():
+        return None
+    m = pd.read_csv(ruta)
+    etq = {"sin_mitigacion": "Sin mitigación", "reponderacion": "Reponderación",
+           "submuestreo": "Submuestreo", "sobremuestreo": "Sobremuestreo"}
+
+    fig, ax = plt.subplots(figsize=(ANCHO, 3.4))
+    for _, r in m.iterrows():
+        base = r.estrategia == "sin_mitigacion"
+        ax.scatter(r.razon_disparidad_renta, r.R2, s=150 if base else 110,
+                   color=NARANJA if base else AZUL, zorder=3,
+                   edgecolors="white", linewidths=1.5)
+        ax.annotate(etq.get(r.estrategia, r.estrategia),
+                    (r.razon_disparidad_renta, r.R2),
+                    xytext=(0, 13), textcoords="offset points",
+                    ha="center", fontsize=8.5, color=TINTA_2,
+                    fontweight="bold" if base else "normal")
+    ax.set_xlabel("Razón de disparidad del error entre grupos de renta  →  peor equidad", fontsize=9)
+    ax.set_ylabel("R² sobre el conjunto de prueba", fontsize=9)
+    ax.set_title("Compromiso entre exactitud y equidad", loc="left")
+    ax.grid(alpha=0.6)
+    ax.set_axisbelow(True)
+    ax.margins(0.16, 0.22)
+    fig.text(0.02, -0.07,
+             "Ninguna estrategia de mitigación reduce la disparidad de forma apreciable. El submuestreo es "
+             "la única que\nla mueve (−0.13), a costa de 0.036 puntos de R². La disparidad no procede del "
+             "desbalance de la muestra\nsino de la mayor heterogeneidad salarial intrínseca de esos mercados.",
+             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+    return guardar(fig, "mitigacion_compromiso", salida)
+
+
 FIGURAS = {
     "dist_compensacion": lambda d, r, s: fig_distribucion(d, s),
     "composicion_renta": lambda d, r, s: fig_composicion(d, s),
@@ -419,6 +526,8 @@ FIGURAS = {
     "equidad_por_region": lambda d, r, s: fig_equidad(s, r),
     "residuos": lambda d, r, s: fig_residuos(s, d, r),
     "ia_compensacion": lambda d, r, s: fig_ia(s, r),
+    "interaccion_experiencia_renta": lambda d, r, s: fig_interaccion_experiencia(s, r, d),
+    "mitigacion_compromiso": lambda d, r, s: fig_mitigacion(s, r),
 }
 
 

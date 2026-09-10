@@ -3,56 +3,56 @@
     {
       "genero": "Hombres",
       "region": "América Latina",
-      "n": 388,
+      "n": 362,
       "suficiente": true,
-      "mediana_real": 27996.0,
-      "mae": 15012.880999063707,
-      "mae_relativo": 0.5362509286706568,
-      "sesgo": -3224.3102763067805
+      "mediana_real": 27054.0,
+      "mae": 14798.015745047047,
+      "mae_relativo": 0.5469806958323001,
+      "sesgo": -2377.5477530969433
     },
     {
       "genero": "Hombres",
       "region": "Resto del mundo",
-      "n": 4987,
+      "n": 4948,
       "suficiente": true,
-      "mediana_real": 70000.00000000001,
-      "mae": 24197.691700080362,
-      "mae_relativo": 0.34568131000114793,
-      "sesgo": -6922.539330188177
+      "mediana_real": 69186.0,
+      "mae": 24082.150479340606,
+      "mae_relativo": 0.34807837538433506,
+      "sesgo": -7648.8353966209515
     },
     {
       "genero": "Mujeres",
       "region": "América Latina",
-      "n": 20,
+      "n": 17,
       "suficiente": false,
-      "mediana_real": 20069.999999999985,
-      "mae": 12616.490625000004,
-      "mae_relativo": 0.6286243460388646,
-      "sesgo": -1635.819140625
+      "mediana_real": 24924.000000000004,
+      "mae": 17922.63528262868,
+      "mae_relativo": 0.7190914493110526,
+      "sesgo": -2990.786132812507
     },
     {
       "genero": "Mujeres",
       "region": "Resto del mundo",
-      "n": 267,
+      "n": 269,
       "suficiente": true,
-      "mediana_real": 70151.99999999999,
-      "mae": 23999.419049552314,
-      "mae_relativo": 0.34210598485506216,
-      "sesgo": -5782.049890639634
+      "mediana_real": 65053.00000000003,
+      "mae": 23470.22418462476,
+      "mae_relativo": 0.36078619256029315,
+      "sesgo": -1472.340105134757
     }
   ],
   "por_region": {
     "América Latina": {
-      "hombres": 0.5362509286706568,
-      "mujeres": 0.6286243460388646,
-      "diferencia_pp": 9.237341736820781,
-      "n_mujeres": 20
+      "hombres": 0.5469806958323001,
+      "mujeres": 0.7190914493110526,
+      "diferencia_pp": 17.211075347875248,
+      "n_mujeres": 17
     },
     "Resto del mundo": {
-      "hombres": 0.34568131000114793,
-      "mujeres": 0.34210598485506216,
-      "diferencia_pp": -0.35753251460857727,
-      "n_mujeres": 267
+      "hombres": 0.34807837538433506,
+      "mujeres": 0.36078619256029315,
+      "diferencia_pp": 1.2707817175958092,
+      "n_mujeres": 269
     }
   }
 }

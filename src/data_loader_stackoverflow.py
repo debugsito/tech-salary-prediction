@@ -71,6 +71,20 @@ N_MIN_PAIS = 30
 # en la edición 2023, conservando el 95.7 % de las observaciones.
 PLAUSIBILIDAD = (0.20, 6.0)
 
+# Edad mínima a la que se considera plausible haber empezado a programar. Por
+# debajo, la combinación de tramo de edad y años declarados es incompatible.
+# Se fija en 8 y no en un valor mayor porque iniciarse en la programación en la
+# infancia es frecuente en esta población: con umbral 12 se descartarían 527
+# observaciones que no son necesariamente erróneas.
+EDAD_MIN_INICIO = 8
+
+# Extremos superiores de cada tramo de edad, para la comprobación anterior.
+TRAMO_EDAD_MAX = {
+    "Under 18 years old": 18, "18-24 years old": 24, "25-34 years old": 34,
+    "35-44 years old": 44, "45-54 years old": 54, "55-64 years old": 64,
+    "65 years or older": 99,
+}
+
 # Columnas que se conservan cuando existen en la edición. Las ausentes se
 # omiten sin error: el esquema varía entre ediciones (solo 33 campos son
 # comunes entre 2022 y 2025) y el diseño lo contempla.
@@ -127,6 +141,11 @@ def parsear_anios(serie: pd.Series) -> pd.Series:
         "50 or more years": "51",
     })
     return pd.to_numeric(s, errors="coerce")
+
+
+def _anios(df: pd.DataFrame, columna: str) -> pd.Series | None:
+    """Años declarados en una columna, en forma numérica, o None si no existe."""
+    return parsear_anios(df[columna]) if columna in df.columns else None
 
 
 def normalizar_ausentes(df: pd.DataFrame, columnas: list[str]) -> pd.DataFrame:
@@ -259,6 +278,29 @@ def cargar_encuesta(anio: str = "2023",
         registro.append({
             "paso": 5,
             "criterio": f"Compensación dentro de [{inf:g}, {sup:g}] veces la mediana del país",
+            "n": len(df), "descartados": n - len(df)})
+
+        # 6. Coherencia interna de las variables declaradas.
+        #
+        # Se descartan dos combinaciones lógicamente imposibles. La primera es
+        # declarar más años de experiencia profesional programando que años
+        # totales programando. La segunda, haber empezado a programar antes de
+        # una edad mínima plausible, deducida del extremo superior del tramo de
+        # edad declarado. En ambos casos se trata de errores de captura, no de
+        # observaciones atípicas: no admiten interpretación literal.
+        n = len(df)
+        coherente = pd.Series(True, index=df.index)
+        aos, pro = _anios(df, "YearsCode"), _anios(df, "YearsCodePro")
+        if aos is not None and pro is not None:
+            coherente &= ~(pro > aos).fillna(False)
+        if aos is not None and "Age" in df.columns:
+            edad_max = df["Age"].map(TRAMO_EDAD_MAX)
+            inicio = edad_max - aos
+            coherente &= ~(inicio < EDAD_MIN_INICIO).fillna(False)
+        df = df[coherente]
+        registro.append({
+            "paso": 6,
+            "criterio": "Coherencia entre años declarados y tramo de edad",
             "n": len(df), "descartados": n - len(df)})
 
     df = df.reset_index(drop=True)

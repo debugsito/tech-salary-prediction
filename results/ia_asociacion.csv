@@ -1,20 +1,20 @@
 variable,categoria,n,mediana_usd,media_usd,diferencia_pct
 AIAgents,"Yes, I use AI agents at work monthly or infrequently",1117,92000.0,109939.94538943599,0.0
-AIAgents,"Yes, I use AI agents at work weekly",1297,91072.0,111508.27447956824,-1.0
-AIAgents,"No, and I don't plan to",5531,83531.0,99170.35020791901,-9.2
-AIAgents,"No, I use AI exclusively in copilot/autocomplete mode",2169,83046.0,97937.35638543108,-9.7
-AIAgents,"No, but I plan to",2465,83000.0,101199.31277890467,-9.8
-AIAgents,"Yes, I use AI agents at work daily",1972,81210.0,102328.45943204868,-11.7
+AIAgents,"Yes, I use AI agents at work weekly",1293,90491.0,111304.66976024749,-1.6
+AIAgents,"No, and I don't plan to",5522,83531.0,99119.87739949294,-9.2
+AIAgents,"No, I use AI exclusively in copilot/autocomplete mode",2166,83023.0,97814.56001846722,-9.8
+AIAgents,"No, but I plan to",2463,83000.0,101214.56516443362,-9.8
+AIAgents,"Yes, I use AI agents at work daily",1969,81210.0,102041.64906043677,-11.7
 AISelect,"No, but I plan to soon",643,89331.0,103050.2099533437,0.0
-AISelect,"No, and I don't plan to",2178,87550.0,105312.13728191,-2.0
-AISelect,"Yes, I use AI tools monthly or infrequently",1980,84845.5,103507.37777777777,-5.0
-AISelect,"Yes, I use AI tools weekly",2761,82370.0,102503.51285766027,-7.8
-AISelect,"Yes, I use AI tools daily",7453,81685.0,98885.19240574265,-8.6
-AIThreat,No,10160,84691.0,101837.0845472441,0.0
-AIThreat,Yes,2036,81870.0,103681.57367387033,-3.3
-AIThreat,I'm not sure,3158,81210.0,98048.80367321089,-4.1
-LearnCodeAI,"Yes, I learned how to use AI-enabled tools required for my job or to benefit my ",6228,89834.0,108687.1204238921,0.0
-LearnCodeAI,"Yes, I learned how to use AI-enabled tools for my personal curiosity and/or hobb",4410,81262.0,97934.13673469388,-9.5
-LearnCodeAI,"No, I learned something that was not related to AI or AI enablement for my perso",1549,80503.0,93239.64428663654,-10.4
-LearnCodeAI,"No, I didn't spend time learning in the past year",1451,80000.0,95646.16402481048,-10.9
-LearnCodeAI,"No, I learned something that was not related to AI or AI enablement as required ",1713,80000.0,95055.33975481612,-10.9
+AISelect,"No, and I don't plan to",2172,87550.0,105072.03084714549,-2.0
+AISelect,"Yes, I use AI tools monthly or infrequently",1976,84845.5,103526.1052631579,-5.0
+AISelect,"Yes, I use AI tools weekly",2758,82240.5,102375.86802030457,-7.9
+AISelect,"Yes, I use AI tools daily",7445,81685.0,98818.59341840161,-8.6
+AIThreat,No,10141,84691.0,101660.58307859185,0.0
+AIThreat,Yes,2034,81870.0,103709.71878072764,-3.3
+AIThreat,I'm not sure,3155,81210.0,98026.35911251981,-4.1
+LearnCodeAI,"Yes, I learned how to use AI-enabled tools required for my job or to benefit my ",6221,89713.0,108582.78894068478,0.0
+LearnCodeAI,"Yes, I learned how to use AI-enabled tools for my personal curiosity and/or hobb",4402,81262.0,97859.91640163562,-9.4
+LearnCodeAI,"No, I learned something that was not related to AI or AI enablement for my perso",1547,80412.0,93083.52230122818,-10.4
+LearnCodeAI,"No, I didn't spend time learning in the past year",1448,80000.0,95473.63328729282,-10.8
+LearnCodeAI,"No, I learned something that was not related to AI or AI enablement as required ",1709,80000.0,94836.00117027502,-10.8
