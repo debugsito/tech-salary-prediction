@@ -317,15 +317,83 @@ herramientas.
 > la adopción carezca de efecto sobre la compensación.
 """),
 (MD, """
-## 8. Síntesis
+## 7. Optimización de hiperparámetros
+
+La búsqueda se realiza **exclusivamente sobre el conjunto de entrenamiento**, con
+una validación cruzada interna. Si la selección de la configuración emplease las
+observaciones del conjunto de prueba, la evaluación posterior sobre ellas dejaría
+de ser independiente.
+"""),
+(CODE, """
+tun = pd.read_csv(RAIZ / "results/tuning_resultados.csv")
+print(tun[["modelo", "r2_cv_interna", "r2_prueba", "mae_usd_prueba"]].to_string(index=False))
+
+import json as _json
+alpha = _json.loads(tun.loc[tun.modelo == "Ridge", "mejores_parametros"].iloc[0])["alpha"]
+print(f"\\nRidge: alpha óptimo = {alpha:.2f}  (valor por defecto: 1.0)")
+print("El desempeño no mejora pese a la reconfiguración: la limitación del modelo")
+print("lineal es de forma funcional, no de ajuste de hiperparámetros.")
+"""),
+(MD, """
+## 8. Interacciones entre predictores
+
+La importancia por reducción de impureza asigna a cada variable un único número
+y **no puede expresar que el efecto de una variable dependa del valor de otra**.
+Los valores SHAP sí, al asignar una atribución distinta a cada observación.
+"""),
+(CODE, """
+inter = pd.read_csv(RAIZ / "results/interacciones.csv")
+sust = inter[~inter.redundante].head(6)
+print("Interacciones sustantivas de mayor fuerza:\\n")
+print(sust[["variable", "modulada_por", "fuerza"]].to_string(index=False))
+print(f"\\n({int(inter.redundante.sum())} pares descartados por redundancia entre variables)")
+"""),
+(MD, """
+## 9. ¿Puede corregirse la disparidad regional?
+
+El 85 % de las observaciones procede de países de renta alta. Cabe preguntarse si
+la disparidad detectada responde a ese desequilibrio.
+"""),
+(CODE, """
+mit = pd.read_csv(RAIZ / "results/mitigacion_resultados.csv")
+print(mit[["estrategia", "n_entrenamiento", "R2", "MAE_USD",
+           "razon_disparidad_renta"]].to_string(index=False))
+
+grp = pd.read_csv(RAIZ / "results/mitigacion_por_grupo.csv")
+print("\\nError relativo por grupo y estrategia (%):\\n")
+print(grp.pivot_table(index="grupo", columns="estrategia",
+                      values="mae_relativo", observed=True).to_string())
+"""),
+(MD, """
+**El error de los grupos minoritarios empeora ligeramente con todas las
+estrategias.** Lo poco que desciende la razón de disparidad no procede de servir
+mejor a esos grupos, sino de servir peor al mayoritario.
+
+La causa se encuentra en la propia variable dependiente.
+"""),
+(CODE, """
+disp = (df.groupby("income_group", observed=True)
+        .apply(lambda g: g.groupby("Country")["salary_log"].std().median(),
+               include_groups=False)
+        .rename("desv_tipica_intra_pais").to_frame())
+disp["razon_vs_renta_alta"] = (disp.desv_tipica_intra_pais /
+                               disp.loc["High income", "desv_tipica_intra_pais"])
+print(disp.round(3).to_string())
+print("\\nLa dispersión salarial DENTRO de cada país es sustancialmente mayor en los")
+print("mercados de menor renta. El salario es allí intrínsecamente menos predecible")
+print("con las variables disponibles: la disparidad no responde a un déficit de")
+print("representación, sino a heterogeneidad intrínseca del fenómeno.")
+"""),
+(MD, """
+## 10. Síntesis
 
 | Hipótesis | Veredicto |
 |---|---|
 | **HG** — más exacto que la línea base, explicable y auditable | Se acepta |
 | **HE1** — la codificación por objetivo supera a la disyuntiva | **Se rechaza**: el efecto cambia de signo según la familia del modelo |
 | **HE2** — el capital humano predice más que lo demográfico | Se acepta, pero el bloque geográfico supera a ambos |
-| **HE3** — SHAP revela lo que la impureza no captura | Se acepta (ρ = 0.776) |
-| **HE4** — hay disparidades sistemáticas del error | Se acepta parcialmente: regional sí, de género no |
+| **HE3** — SHAP revela lo que la impureza no captura | Se acepta (ρ = 0.749) y 8 interacciones documentadas |
+| **HE4** — hay disparidades sistemáticas del error | Se acepta parcialmente: regional sí, de género no. Su origen es la heterogeneidad intrínseca, no el desbalance |
 | **HE5** — la asociación IA-salario no persiste tras el control | Se acepta |
 
 **Hallazgo principal:** el país concentra una contribución tres veces superior a la de
