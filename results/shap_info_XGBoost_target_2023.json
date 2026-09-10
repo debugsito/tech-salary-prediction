@@ -1,0 +1,84 @@
+{
+  "estimador": "TreeExplainer",
+  "n_explicadas": 2000,
+  "n_variables": 159,
+  "top_10": [
+    {
+      "variable": "Country",
+      "shap_medio_abs": 0.431138277053833,
+      "ic_inferior": 0.4154234230518341,
+      "ic_superior": 0.4449382424354553,
+      "importancia_impureza": 0.14920975267887115
+    },
+    {
+      "variable": "YearsCodePro_num",
+      "shap_medio_abs": 0.13915373384952545,
+      "ic_inferior": 0.135295107960701,
+      "ic_superior": 0.1432201862335205,
+      "importancia_impureza": 0.028936905786395073
+    },
+    {
+      "variable": "YearsCode_num",
+      "shap_medio_abs": 0.03863910958170891,
+      "ic_inferior": 0.03745070844888687,
+      "ic_superior": 0.03983648866415024,
+      "importancia_impureza": 0.009537783451378345
+    },
+    {
+      "variable": "DevType",
+      "shap_medio_abs": 0.03787436708807945,
+      "ic_inferior": 0.036444295197725296,
+      "ic_superior": 0.039338309317827225,
+      "importancia_impureza": 0.007926344871520996
+    },
+    {
+      "variable": "OrgSize_10,000 or more employees",
+      "shap_medio_abs": 0.03460915759205818,
+      "ic_inferior": 0.032948680222034454,
+      "ic_superior": 0.03639465942978859,
+      "importancia_impureza": 0.015633191913366318
+    },
+    {
+      "variable": "language__php",
+      "shap_medio_abs": 0.0308001060038805,
+      "ic_inferior": 0.029530595988035202,
+      "ic_superior": 0.03206698223948479,
+      "importancia_impureza": 0.02141084522008896
+    },
+    {
+      "variable": "platform__amazon_web_services_(aws)",
+      "shap_medio_abs": 0.02737048827111721,
+      "ic_inferior": 0.027073273435235023,
+      "ic_superior": 0.027674110606312752,
+      "importancia_impureza": 0.018925633281469345
+    },
+    {
+      "variable": "RemoteWork_Remote",
+      "shap_medio_abs": 0.02494046464562416,
+      "ic_inferior": 0.02441231720149517,
+      "ic_superior": 0.025429144501686096,
+      "importancia_impureza": 0.010737073607742786
+    },
+    {
+      "variable": "language__typescript",
+      "shap_medio_abs": 0.02419058419764042,
+      "ic_inferior": 0.02379899099469185,
+      "ic_superior": 0.024591153487563133,
+      "importancia_impureza": 0.0056908815167844296
+    },
+    {
+      "variable": "WorkExp_num",
+      "shap_medio_abs": 0.02298220992088318,
+      "ic_inferior": 0.022053280845284462,
+      "ic_superior": 0.023972442373633385,
+      "importancia_impureza": 0.007439995184540749
+    }
+  ],
+  "ruta_valores": "results/shap_values_XGBoost_target_2023.npz",
+  "ruta_resumen": "results/shap_summary_XGBoost_target_2023.csv",
+  "spearman_shap_vs_impureza": {
+    "rho": 0.7757,
+    "p_valor": 0.0,
+    "n_variables": 159
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "anio": "2023",
+  "semilla": 42,
+  "n_particiones": 5,
+  "n_repeticiones": 4,
+  "n_pares_contraste": 20,
+  "estratificacion": "income_group",
+  "n_total": 37964,
+  "n_entrenamiento": 30371,
+  "n_prueba": 7593,
+  "n_predictores": 118,
+  "codificaciones": [
+    "target",
+    "onehot"
+  ],
+  "modelos": [
+    "Baseline_media",
+    "Baseline_mediana",
+    "Ridge",
+    "HistGradientBoosting",
+    "XGBoost",
+    "LightGBM",
+    "CatBoost"
+  ],
+  "submuestra": null,
+  "python": "3.14.7",
+  "duracion_segundos": 231.7
+}

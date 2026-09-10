@@ -1,0 +1,118 @@
+{
+  "n_total": 7593,
+  "n_grupos": 7,
+  "n_grupos_suficientes": 7,
+  "por_grupo": {
+    "East Asia & Pacific": {
+      "n": 441,
+      "suficiente_para_inferencia": true,
+      "mae": 19804.402565919445,
+      "mae_relativo": 0.2726789927703733,
+      "mape": 0.2950061303597529,
+      "rmse": 34399.023411231145,
+      "sesgo_sistematico": -4874.944876933891,
+      "sesgo_relativo": -0.06712118956524102,
+      "mediana_real": 72629.00000000001,
+      "mediana_pred": 70449.41538325352
+    },
+    "Europe & Central Asia": {
+      "n": 3711,
+      "suficiente_para_inferencia": true,
+      "mae": 17756.81163829054,
+      "mae_relativo": 0.27635340427507304,
+      "mape": 0.2624527607464658,
+      "rmse": 28144.30054927503,
+      "sesgo_sistematico": -3975.7984743761444,
+      "sesgo_relativo": -0.06187627967715856,
+      "mediana_real": 64253.99999999998,
+      "mediana_pred": 65688.30602969263
+    },
+    "Latin America & Caribbean": {
+      "n": 376,
+      "suficiente_para_inferencia": true,
+      "mae": 17903.04503521218,
+      "mae_relativo": 0.5503464451887358,
+      "mape": 0.49463031348808745,
+      "rmse": 28538.197832521542,
+      "sesgo_sistematico": -5650.671913124751,
+      "sesgo_relativo": -0.17370381374785962,
+      "mediana_real": 32530.500000000022,
+      "mediana_pred": 35938.18630422298
+    },
+    "Middle East, North Africa, Afghanistan & Pakistan": {
+      "n": 177,
+      "suficiente_para_inferencia": true,
+      "mae": 23757.016343947464,
+      "mae_relativo": 0.3703527264556014,
+      "mape": 0.8255055190241197,
+      "rmse": 42011.28619594121,
+      "sesgo_sistematico": -6378.879129373875,
+      "sesgo_relativo": -0.099441581513927,
+      "mediana_real": 64147.0,
+      "mediana_pred": 60983.98870836656
+    },
+    "North America": {
+      "n": 2467,
+      "suficiente_para_inferencia": true,
+      "mae": 40947.66025232581,
+      "mae_relativo": 0.28239765691259155,
+      "mape": 0.25918507552928666,
+      "rmse": 67057.67540160693,
+      "sesgo_sistematico": -9901.083083550277,
+      "sesgo_relativo": -0.06828333161069151,
+      "mediana_real": 145000.00000000012,
+      "mediana_pred": 144627.36363579016
+    },
+    "South Asia": {
+      "n": 353,
+      "suficiente_para_inferencia": true,
+      "mae": 8641.47955337714,
+      "mae_relativo": 0.4750675950179842,
+      "mape": 0.4907201071449595,
+      "rmse": 12931.633283603596,
+      "sesgo_sistematico": -1592.8430552789453,
+      "sesgo_relativo": -0.08756696290703375,
+      "mediana_real": 18190.000000000015,
+      "mediana_pred": 19066.590027668604
+    },
+    "Sub-Saharan Africa": {
+      "n": 68,
+      "suficiente_para_inferencia": true,
+      "mae": 15050.344392782443,
+      "mae_relativo": 0.4002006113963477,
+      "mape": 0.41768416494669247,
+      "rmse": 21920.684590609926,
+      "sesgo_sistematico": -2249.2329182710973,
+      "sesgo_relativo": -0.05980888978836648,
+      "mediana_real": 37606.999999999985,
+      "mediana_pred": 35225.528437785484
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 32306.180698948672,
+    "razon_disparidad_absoluta": 4.73850108646305,
+    "grupo_peor_servido_absoluto": "North America",
+    "razon_disparidad_relativa": 2.0182942572777876,
+    "coeficiente_variacion_relativo": 0.26678786172349017,
+    "grupo_peor_servido_relativo": "Latin America & Caribbean",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 9901.083083550277,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 8308.240028271332,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 31387.058756795774
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 11.812002143891732,
+    "p_valor": 0.06629664185034344,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "North America",
+      "grupo_prediccion_baja": "South Asia",
+      "distancia_ks": 0.9846012693331007,
+      "p_valor": 5.4e-323
+    }
+  }
+}

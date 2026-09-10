@@ -1,0 +1,178 @@
+{
+  "n_total": 5843,
+  "n_grupos": 12,
+  "n_grupos_suficientes": 4,
+  "por_grupo": {
+    "Man": {
+      "n": 5375,
+      "suficiente_para_inferencia": true,
+      "mae": 23534.676549714764,
+      "mae_relativo": 0.3565860083290116,
+      "mape": 0.3295597467329476,
+      "rmse": 45765.742904774525,
+      "sesgo_sistematico": -6655.578887232707,
+      "sesgo_relativo": -0.1008421043520107,
+      "mediana_real": 66000.0,
+      "mediana_pred": 64871.817796165196
+    },
+    "Man;Non-binary, genderqueer, or gender non-conforming": {
+      "n": 23,
+      "suficiente_para_inferencia": false,
+      "mae": 31904.04888650023,
+      "mae_relativo": 0.3544894320722247,
+      "mape": 0.33381511693495797,
+      "rmse": 40741.79875953982,
+      "sesgo_sistematico": -10349.441033444791,
+      "sesgo_relativo": -0.11499378926049766,
+      "mediana_real": 90000.00000000001,
+      "mediana_pred": 85355.45623820576
+    },
+    "Man;Or, in your own words:": {
+      "n": 10,
+      "suficiente_para_inferencia": false,
+      "mae": 14840.562372882574,
+      "mae_relativo": 0.3162714284501918,
+      "mape": 0.34325137317751236,
+      "rmse": 22487.196112041645,
+      "sesgo_sistematico": 10868.572023082123,
+      "sesgo_relativo": 0.2316232170038919,
+      "mediana_real": 46923.5,
+      "mediana_pred": 71432.16160921258
+    },
+    "Man;Woman": {
+      "n": 2,
+      "suficiente_para_inferencia": false,
+      "mae": 2869.9167891217194,
+      "mae_relativo": 0.09734306076898902,
+      "mape": 0.40271598847452195,
+      "rmse": 3254.035386485374,
+      "sesgo_sistematico": 2869.9167891217194,
+      "sesgo_relativo": 0.09734306076898902,
+      "mediana_real": 29482.500000000007,
+      "mediana_pred": 32352.416789121726
+    },
+    "Man;Woman;Non-binary, genderqueer, or gender non-conforming": {
+      "n": 1,
+      "suficiente_para_inferencia": false,
+      "mae": 7530.4628349749255,
+      "mae_relativo": 0.080904862964126,
+      "mape": 0.080904862964126,
+      "rmse": 7530.4628349749255,
+      "sesgo_sistematico": -7530.4628349749255,
+      "sesgo_relativo": -0.080904862964126,
+      "mediana_real": 93078.00000000007,
+      "mediana_pred": 85547.53716502515
+    },
+    "No declarado": {
+      "n": 70,
+      "suficiente_para_inferencia": true,
+      "mae": 36157.40292755594,
+      "mae_relativo": 0.38320194717406325,
+      "mape": 0.3707442606948061,
+      "rmse": 62306.511405258534,
+      "sesgo_sistematico": -11147.846726790769,
+      "sesgo_relativo": -0.11814666504293063,
+      "mediana_real": 94356.00000000006,
+      "mediana_pred": 82899.71549562243
+    },
+    "Non-binary, genderqueer, or gender non-conforming": {
+      "n": 46,
+      "suficiente_para_inferencia": true,
+      "mae": 22938.049313033436,
+      "mae_relativo": 0.3038152226891845,
+      "mape": 0.3953433519231354,
+      "rmse": 35997.924428577826,
+      "sesgo_sistematico": -4896.537398940687,
+      "sesgo_relativo": -0.06485479998596934,
+      "mediana_real": 75500.00000000003,
+      "mediana_pred": 76020.18965700673
+    },
+    "Or, in your own words:": {
+      "n": 16,
+      "suficiente_para_inferencia": false,
+      "mae": 41857.143378926856,
+      "mae_relativo": 0.5604941600574037,
+      "mape": 0.33292269546860775,
+      "rmse": 83403.60778989254,
+      "sesgo_sistematico": -29286.064241556,
+      "sesgo_relativo": -0.39215929835102237,
+      "mediana_real": 74679.0,
+      "mediana_pred": 60175.4674766705
+    },
+    "Or, in your own words:;Non-binary, genderqueer, or gender non-conforming": {
+      "n": 2,
+      "suficiente_para_inferencia": false,
+      "mae": 10101.692253315807,
+      "mae_relativo": 0.06458572800738971,
+      "mape": 0.058593905098009116,
+      "rmse": 12638.578758045373,
+      "sesgo_sistematico": 7595.359546632084,
+      "sesgo_relativo": 0.04856135125637891,
+      "mediana_real": 156407.5,
+      "mediana_pred": 164002.85954663207
+    },
+    "Or, in your own words:;Woman;Non-binary, genderqueer, or gender non-conforming": {
+      "n": 1,
+      "suficiente_para_inferencia": false,
+      "mae": 27149.238140943962,
+      "mae_relativo": 0.7726460851768441,
+      "mape": 0.7726460851768441,
+      "rmse": 27149.238140943962,
+      "sesgo_sistematico": 27149.238140943962,
+      "sesgo_relativo": 0.7726460851768441,
+      "mediana_real": 35138.00000000002,
+      "mediana_pred": 62287.238140943984
+    },
+    "Woman": {
+      "n": 287,
+      "suficiente_para_inferencia": true,
+      "mae": 23206.183500296724,
+      "mae_relativo": 0.34896516541799555,
+      "mape": 0.3326277344007811,
+      "rmse": 58973.724445760396,
+      "sesgo_sistematico": -5493.113928896954,
+      "sesgo_relativo": -0.08260321697589398,
+      "mediana_real": 66500.00000000006,
+      "mediana_pred": 68418.1197304895
+    },
+    "Woman;Non-binary, genderqueer, or gender non-conforming": {
+      "n": 10,
+      "suficiente_para_inferencia": false,
+      "mae": 28586.555385655247,
+      "mae_relativo": 0.32484722029153684,
+      "mape": 0.3131528837336076,
+      "rmse": 37689.21711086899,
+      "sesgo_sistematico": 1949.2608844841075,
+      "sesgo_relativo": 0.02215069186913758,
+      "mediana_real": 88000.00000000001,
+      "mediana_pred": 90160.78533905908
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 13219.3536145225,
+    "razon_disparidad_absoluta": 1.5763067920083005,
+    "grupo_peor_servido_absoluto": "No declarado",
+    "razon_disparidad_relativa": 1.261299364074639,
+    "coeficiente_variacion_relativo": 0.08207754488424039,
+    "grupo_peor_servido_relativo": "No declarado",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": false,
+    "sesgo_maximo_absoluto": 11147.846726790769,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 6251.309327850082,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 29660.198319967367
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 2.6157723483884183,
+    "p_valor": 0.4547311576217036,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "No declarado",
+      "grupo_prediccion_baja": "Man",
+      "distancia_ks": 0.19914950166112957,
+      "p_valor": 0.007054305063767377
+    }
+  }
+}

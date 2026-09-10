@@ -1,0 +1,130 @@
+{
+  "n_total": 7593,
+  "n_grupos": 8,
+  "n_grupos_suficientes": 6,
+  "por_grupo": {
+    "18-24 years old": {
+      "n": 743,
+      "suficiente_para_inferencia": true,
+      "mae": 15273.229077301556,
+      "mae_relativo": 0.351528932915245,
+      "mape": 0.3487200106092813,
+      "rmse": 25545.510518715197,
+      "sesgo_sistematico": -3729.288288745089,
+      "sesgo_relativo": -0.08583337066712142,
+      "mediana_real": 43447.99999999997,
+      "mediana_pred": 41806.7377784479
+    },
+    "25-34 years old": {
+      "n": 3640,
+      "suficiente_para_inferencia": true,
+      "mae": 22950.5073045445,
+      "mae_relativo": 0.32770053979502406,
+      "mape": 0.30226530739649066,
+      "rmse": 42215.30696818858,
+      "sesgo_sistematico": -5379.174596267355,
+      "sesgo_relativo": -0.07680694790129731,
+      "mediana_real": 70034.99999999997,
+      "mediana_pred": 70160.34075951608
+    },
+    "35-44 years old": {
+      "n": 2208,
+      "suficiente_para_inferencia": true,
+      "mae": 28594.733211423143,
+      "mae_relativo": 0.30712679596390224,
+      "mape": 0.28629959903518104,
+      "rmse": 49244.091563489725,
+      "sesgo_sistematico": -7403.115136981645,
+      "sesgo_relativo": -0.07951446916331896,
+      "mediana_real": 93103.99999999996,
+      "mediana_pred": 90422.8126887778
+    },
+    "45-54 years old": {
+      "n": 704,
+      "suficiente_para_inferencia": true,
+      "mae": 29730.882048474097,
+      "mae_relativo": 0.28143184305859065,
+      "mape": 0.2757533722208849,
+      "rmse": 50802.608559384855,
+      "sesgo_sistematico": -5016.048729234686,
+      "sesgo_relativo": -0.047481801462821785,
+      "mediana_real": 105641.49999999997,
+      "mediana_pred": 104238.32392825553
+    },
+    "55-64 years old": {
+      "n": 251,
+      "suficiente_para_inferencia": true,
+      "mae": 38886.6624864185,
+      "mae_relativo": 0.3535151135128957,
+      "mape": 0.29416448865452843,
+      "rmse": 60444.35633088993,
+      "sesgo_sistematico": -10538.035412903335,
+      "sesgo_relativo": -0.09580032193548493,
+      "mediana_real": 109999.99999999991,
+      "mediana_pred": 110350.22276717934
+    },
+    "65 years or older": {
+      "n": 43,
+      "suficiente_para_inferencia": true,
+      "mae": 43855.367058008516,
+      "mae_relativo": 0.36546139215007084,
+      "mape": 0.38856564543938227,
+      "rmse": 68842.20730079034,
+      "sesgo_sistematico": -10057.945388574666,
+      "sesgo_relativo": -0.08381621157145552,
+      "mediana_real": 120000.00000000004,
+      "mediana_pred": 129632.76571551182
+    },
+    "No declarado": {
+      "n": 2,
+      "suficiente_para_inferencia": false,
+      "mae": 8055.342573865386,
+      "mae_relativo": 0.0761227037659564,
+      "mape": 0.10334242806479366,
+      "rmse": 9689.855073780953,
+      "sesgo_sistematico": -5385.605571200907,
+      "sesgo_relativo": -0.050893783068506664,
+      "mediana_real": 105820.49999999996,
+      "mediana_pred": 100434.89442879905
+    },
+    "Under 18 years old": {
+      "n": 2,
+      "suficiente_para_inferencia": false,
+      "mae": 19769.22613302823,
+      "mae_relativo": 0.4254008033445564,
+      "mape": 0.4084029727286913,
+      "rmse": 21679.516147874052,
+      "sesgo_sistematico": 8898.264915539741,
+      "sesgo_relativo": 0.19147583309390037,
+      "mediana_real": 46472.000000000015,
+      "mediana_pred": 55370.26491553975
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 28582.13798070696,
+    "razon_disparidad_absoluta": 2.8713880238452365,
+    "grupo_peor_servido_absoluto": "65 years or older",
+    "razon_disparidad_relativa": 1.2985786831307014,
+    "coeficiente_variacion_relativo": 0.08850906749527658,
+    "grupo_peor_servido_relativo": "65 years or older",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": false,
+    "sesgo_maximo_absoluto": 10538.035412903335,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 6808.747124158246,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 31387.058756795774
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 3.293664666296536,
+    "p_valor": 0.6548117577109129,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "65 years or older",
+      "grupo_prediccion_baja": "18-24 years old",
+      "distancia_ks": 0.7354533788224984,
+      "p_valor": 9.151702150652588e-23
+    }
+  }
+}

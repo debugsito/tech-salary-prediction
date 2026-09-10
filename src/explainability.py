@@ -1,101 +1,192 @@
-"""Explainability utilities using SHAP for model interpretation."""
-import os
+"""Cálculo de valores SHAP para la interpretación del modelo.
+
+Selecciona el algoritmo específico para cada familia de modelos —`TreeExplainer`
+para los ensamblados basados en árboles y `LinearExplainer` para los modelos
+lineales— en lugar del estimador basado en núcleo, cuya complejidad lo hace
+impracticable sobre muestras de decenas de miles de observaciones (§3.6.2).
+
+Los valores calculados se exportan como artefacto y no únicamente los gráficos
+derivados de ellos, para permitir su verificación independiente. La confusión
+entre los valores SHAP y la importancia por reducción de impureza fue uno de los
+hallazgos de la auditoría documentada en §2.1.1, de modo que este módulo calcula
+ambas magnitudes y las exporta por separado para hacer posible su comparación,
+que es el objeto de la hipótesis HE3.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-import shap
-import matplotlib.pyplot as plt
-from sklearn.pipeline import Pipeline
 
 
-def explain_model(pipe: Pipeline, X_train: pd.DataFrame, X_test: pd.DataFrame,
-                  output_dir: str = 'results', sample_size: int = 100) -> dict:
+def _elegir_estimador(modelo, X_fondo: np.ndarray):
+    """Devuelve el estimador SHAP adecuado a la familia del modelo.
+
+    Se prefiere siempre el algoritmo específico. El estimador basado en núcleo
+    queda como último recurso y se advierte de su coste, dado que aproxima los
+    valores mediante remuestreo y su complejidad crece con el número de variables.
     """
-    Calculate SHAP values for the best trained model and generate summary plot.
+    import shap
 
-    Parameters
-    ----------
-    pipe : Pipeline
-        Fitted sklearn pipeline with preprocessor and model.
-    X_train : pd.DataFrame
-        Training features (used for background distribution).
-    X_test : pd.DataFrame
-        Test features for SHAP explanation.
-    output_dir : str
-        Directory to save outputs.
-    sample_size : int
-        Number of background samples for SHAP.
+    familia_arbol = (
+        "HistGradientBoostingRegressor", "XGBRegressor", "LGBMRegressor",
+        "CatBoostRegressor", "RandomForestRegressor", "ExtraTreesRegressor",
+        "GradientBoostingRegressor", "DecisionTreeRegressor",
+    )
+    familia_lineal = ("Ridge", "Lasso", "ElasticNet", "LinearRegression")
+    nombre = type(modelo).__name__
 
-    Returns
-    -------
-    dict with top 5 features and SHAP summary path.
+    if nombre in familia_arbol:
+        return shap.TreeExplainer(modelo), "TreeExplainer"
+    if nombre in familia_lineal:
+        return shap.LinearExplainer(modelo, X_fondo), "LinearExplainer"
+
+    print(f"  Aviso: no hay estimador específico para {nombre}; "
+          f"se recurre al basado en núcleo, de coste considerable.")
+    return shap.KernelExplainer(modelo.predict, shap.sample(X_fondo, 100)), "KernelExplainer"
+
+
+def importancia_por_impureza(modelo, nombres: list[str]) -> dict | None:
+    """Importancia por reducción de impureza, si el modelo la expone.
+
+    Se calcula para poder contrastarla con la atribución SHAP (hipótesis HE3).
+    Son magnitudes distintas: la primera mide cuánto emplea el modelo una
+    variable para particionar el espacio; la segunda, la contribución marginal
+    atribuible de esa variable a cada predicción.
     """
-    os.makedirs(output_dir, exist_ok=True)
+    if hasattr(modelo, "feature_importances_"):
+        valores = np.asarray(modelo.feature_importances_, dtype=float)
+    elif hasattr(modelo, "coef_"):
+        valores = np.abs(np.asarray(modelo.coef_, dtype=float)).ravel()
+    else:
+        return None
+    if len(valores) != len(nombres):
+        return None
+    return {n: float(v) for n, v in zip(nombres, valores)}
 
-    # Extract preprocessor and model from pipeline
-    preprocessor = pipe.named_steps['preprocessor']
-    model = pipe.named_steps['model']
 
-    # Transform data through preprocessor
-    X_train_proc = preprocessor.transform(X_train)
-    X_test_proc = preprocessor.transform(X_test)
+def explicar(tuberia, X_entrenamiento: pd.DataFrame, X_prueba: pd.DataFrame,
+             nombres: list[str] | None = None,
+             directorio: str = "results", etiqueta: str = "modelo",
+             n_fondo: int = 500, n_explicar: int = 2000,
+             semilla: int = 42) -> dict:
+    """Calcula, exporta y resume los valores SHAP de una tubería ya ajustada.
 
-    # Get feature names after transformation
-    feature_names = _get_feature_names(preprocessor, X_train)
+    Devuelve un diccionario con la importancia media por variable y las rutas de
+    los artefactos generados.
+    """
+    import shap
 
-    # Sample background for SHAP (KernelExplainer for broader compatibility)
-    background = shap.sample(pd.DataFrame(X_train_proc, columns=feature_names),
-                             min(sample_size, len(X_train_proc)))
+    salida = Path(directorio)
+    salida.mkdir(parents=True, exist_ok=True)
 
-    # Use KernelExplainer (works with any model)
-    explainer = shap.KernelExplainer(model.predict, background)
+    preprocesador = tuberia.named_steps["preprocesador"]
+    modelo = tuberia.named_steps["modelo"]
 
-    # Sample test data for efficiency
-    test_sample = pd.DataFrame(X_test_proc, columns=feature_names)
-    if len(test_sample) > 200:
-        test_sample = test_sample.sample(200, random_state=42)
+    X_ent_t = np.asarray(preprocesador.transform(X_entrenamiento), dtype=float)
+    X_pru_t = np.asarray(preprocesador.transform(X_prueba), dtype=float)
 
-    # Calculate SHAP values
-    shap_values = explainer.shap_values(test_sample)
+    if nombres is None or len(nombres) != X_ent_t.shape[1]:
+        nombres = [f"x{i}" for i in range(X_ent_t.shape[1])]
 
-    # Handle multi-output (take first output if array of arrays)
-    if isinstance(shap_values, list):
-        shap_values = shap_values[0]
+    rng = np.random.default_rng(semilla)
+    if len(X_ent_t) > n_fondo:
+        X_fondo = X_ent_t[rng.choice(len(X_ent_t), n_fondo, replace=False)]
+    else:
+        X_fondo = X_ent_t
 
-    # Get top 5 features by mean absolute SHAP value
-    mean_abs_shap = np.abs(shap_values).mean(axis=0)
-    top_indices = np.argsort(mean_abs_shap)[-5:][::-1]
-    top_features = [(feature_names[i], float(mean_abs_shap[i])) for i in top_indices]
+    # La muestra a explicar se limita por coste, no por conveniencia: se
+    # extrae al azar con semilla fija y su tamaño se registra, de modo que la
+    # cobertura del análisis quede declarada y sea reproducible.
+    if len(X_pru_t) > n_explicar:
+        idx = rng.choice(len(X_pru_t), n_explicar, replace=False)
+        X_muestra = X_pru_t[idx]
+    else:
+        idx = np.arange(len(X_pru_t))
+        X_muestra = X_pru_t
 
-    # Generate summary plot
-    plt.figure(figsize=(10, 6))
-    shap.summary_plot(shap_values, test_sample, feature_names=feature_names,
-                      show=False, max_display=10)
-    plot_path = os.path.join(output_dir, 'shap_summary.png')
-    plt.tight_layout()
-    plt.savefig(plot_path, dpi=150, bbox_inches='tight')
-    plt.close()
+    estimador, tipo = _elegir_estimador(modelo, X_fondo)
+    print(f"  [{etiqueta}] {tipo} sobre {len(X_muestra):,} observaciones")
 
-    return {
-        'top_5_features': top_features,
-        'shap_summary_path': plot_path,
-        'mean_abs_shap': {feature_names[i]: float(mean_abs_shap[i])
-                          for i in range(len(feature_names))}
+    valores = estimador.shap_values(X_muestra)
+    if isinstance(valores, list):
+        valores = valores[0]
+    valores = np.asarray(valores)
+
+    media_abs = np.abs(valores).mean(axis=0)
+    orden = np.argsort(media_abs)[::-1]
+
+    # Intervalos de confianza por remuestreo: la distribución muestral de la
+    # importancia media no admite forma cerrada (§3.6.3).
+    n_replicas = 1000
+    ic = {}
+    for i in orden[:30]:
+        muestras = np.abs(valores[:, i])
+        replicas = np.array([
+            muestras[rng.integers(0, len(muestras), len(muestras))].mean()
+            for _ in range(n_replicas)
+        ])
+        ic[nombres[i]] = (float(np.percentile(replicas, 2.5)),
+                          float(np.percentile(replicas, 97.5)))
+
+    ruta_valores = salida / f"shap_values_{etiqueta}.npz"
+    np.savez_compressed(ruta_valores, shap_values=valores,
+                        indices=idx, feature_names=np.array(nombres, dtype=object))
+
+    resumen = pd.DataFrame({
+        "variable": [nombres[i] for i in orden],
+        "shap_medio_abs": [float(media_abs[i]) for i in orden],
+    })
+    resumen["ic_inferior"] = resumen["variable"].map(lambda v: ic.get(v, (None, None))[0])
+    resumen["ic_superior"] = resumen["variable"].map(lambda v: ic.get(v, (None, None))[1])
+
+    impureza = importancia_por_impureza(modelo, nombres)
+    if impureza:
+        resumen["importancia_impureza"] = resumen["variable"].map(impureza)
+
+    ruta_resumen = salida / f"shap_summary_{etiqueta}.csv"
+    resumen.to_csv(ruta_resumen, index=False)
+
+    salida_dict = {
+        "estimador": tipo,
+        "n_explicadas": int(len(X_muestra)),
+        "n_variables": int(len(nombres)),
+        "top_10": resumen.head(10).to_dict("records"),
+        "ruta_valores": str(ruta_valores),
+        "ruta_resumen": str(ruta_resumen),
     }
 
+    # Correlación de rangos entre ambos ordenamientos: criterio de HE3.
+    if impureza:
+        from scipy.stats import spearmanr
+        comunes = resumen.dropna(subset=["importancia_impureza"])
+        if len(comunes) > 2:
+            rho, p = spearmanr(comunes["shap_medio_abs"], comunes["importancia_impureza"])
+            salida_dict["spearman_shap_vs_impureza"] = {
+                "rho": round(float(rho), 4), "p_valor": round(float(p), 6),
+                "n_variables": int(len(comunes)),
+            }
 
-def _get_feature_names(preprocessor, X: pd.DataFrame) -> list:
-    """Extract feature names from a fitted ColumnTransformer."""
-    feature_names = []
-    for name, transformer, columns in preprocessor.transformers_:
-        if name == 'remainder':
-            continue
-        if transformer == 'passthrough':
-            feature_names.extend(columns)
-        elif hasattr(transformer, 'get_feature_names_out'):
-            try:
-                feature_names.extend(transformer.get_feature_names_out(columns))
-            except (TypeError, ValueError):
-                feature_names.extend(columns)
-        else:
-            feature_names.extend(columns)
-    return feature_names
+    return salida_dict
+
+
+def grafico_resumen(ruta_npz: str, ruta_salida: str, max_variables: int = 20) -> str:
+    """Genera el gráfico de dispersión de valores SHAP a partir del artefacto."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import shap
+
+    datos = np.load(ruta_npz, allow_pickle=True)
+    valores = datos["shap_values"]
+    nombres = list(datos["feature_names"])
+
+    plt.figure(figsize=(10, 7))
+    shap.summary_plot(valores, features=None, feature_names=nombres,
+                      show=False, max_display=max_variables)
+    plt.tight_layout()
+    plt.savefig(ruta_salida, dpi=150, bbox_inches="tight")
+    plt.close()
+    return ruta_salida

@@ -25,7 +25,7 @@ def build_models():
     if XGBRegressor is not None:
         models['XGBoost'] = XGBRegressor(n_estimators=400, max_depth=6, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, random_state=SEED, n_jobs=-1)
     if LGBMRegressor is not None:
-        models['LightGBM'] = LGBMRegressor(n_estimators=500, num_leaves=64, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, random_state=SEED)
+        models['LightGBM'] = LGBMRegressor(n_estimators=500, num_leaves=64, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, random_state=SEED, verbose=-1)
     if CatBoostRegressor is not None:
         models['CatBoost'] = CatBoostRegressor(depth=8, learning_rate=0.05, iterations=600, loss_function='RMSE', verbose=False, random_seed=SEED)
     return models

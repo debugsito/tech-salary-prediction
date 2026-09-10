@@ -1,0 +1,130 @@
+{
+  "n_total": 7593,
+  "n_grupos": 8,
+  "n_grupos_suficientes": 8,
+  "por_grupo": {
+    "Associate degree (A.A., A.S., etc.)": {
+      "n": 259,
+      "suficiente_para_inferencia": true,
+      "mae": 21535.255803040676,
+      "mae_relativo": 0.28964312252748026,
+      "mape": 0.30010119101825755,
+      "rmse": 35133.64128177438,
+      "sesgo_sistematico": -2401.0441468351473,
+      "sesgo_relativo": -0.0322933672288893,
+      "mediana_real": 74350.99999999997,
+      "mediana_pred": 74802.2901795657
+    },
+    "Bachelor’s degree (B.A., B.S., B.Eng., etc.)": {
+      "n": 3689,
+      "suficiente_para_inferencia": true,
+      "mae": 25436.28242741317,
+      "mae_relativo": 0.30044509257297447,
+      "mape": 0.29192475718634214,
+      "rmse": 44194.01419970483,
+      "sesgo_sistematico": -6200.197356635621,
+      "sesgo_relativo": -0.07323471399961753,
+      "mediana_real": 84662.00000000001,
+      "mediana_pred": 84772.33771831918
+    },
+    "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)": {
+      "n": 2075,
+      "suficiente_para_inferencia": true,
+      "mae": 25129.301991438297,
+      "mae_relativo": 0.3241612207200408,
+      "mape": 0.30108603338688633,
+      "rmse": 44610.968175186084,
+      "sesgo_sistematico": -6115.222844958469,
+      "sesgo_relativo": -0.07888472600919061,
+      "mediana_real": 77521.00000000004,
+      "mediana_pred": 75964.69299365564
+    },
+    "Primary/elementary school": {
+      "n": 34,
+      "suficiente_para_inferencia": true,
+      "mae": 23603.944156467303,
+      "mae_relativo": 0.33800558699278727,
+      "mape": 0.42978580105649683,
+      "rmse": 32670.28959809713,
+      "sesgo_sistematico": -9832.682226219971,
+      "sesgo_relativo": -0.14080280420746602,
+      "mediana_real": 69832.99999999997,
+      "mediana_pred": 55397.50513613055
+    },
+    "Professional degree (JD, MD, Ph.D, Ed.D, etc.)": {
+      "n": 277,
+      "suficiente_para_inferencia": true,
+      "mae": 30289.098079461713,
+      "mae_relativo": 0.3772978995685261,
+      "mape": 0.32689965107859476,
+      "rmse": 55663.60597663282,
+      "sesgo_sistematico": -10249.151664097548,
+      "sesgo_relativo": -0.1276691496418434,
+      "mediana_real": 80279.00000000001,
+      "mediana_pred": 79250.69374760751
+    },
+    "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)": {
+      "n": 329,
+      "suficiente_para_inferencia": true,
+      "mae": 21612.592607949835,
+      "mae_relativo": 0.3844152219406963,
+      "mape": 0.31424328814346336,
+      "rmse": 41748.41947302435,
+      "sesgo_sistematico": -7187.218834124944,
+      "sesgo_relativo": -0.12783641339911317,
+      "mediana_real": 56222.00000000002,
+      "mediana_pred": 55993.41543085249
+    },
+    "Some college/university study without earning a degree": {
+      "n": 853,
+      "suficiente_para_inferencia": true,
+      "mae": 25607.429633828124,
+      "mae_relativo": 0.3609272806357826,
+      "mape": 0.3167395374454686,
+      "rmse": 49853.118046244395,
+      "sesgo_sistematico": -4439.327455315024,
+      "sesgo_relativo": -0.06257068394642669,
+      "mediana_real": 70948.99999999996,
+      "mediana_pred": 74296.22605110389
+    },
+    "Something else": {
+      "n": 77,
+      "suficiente_para_inferencia": true,
+      "mae": 12413.979428226052,
+      "mae_relativo": 0.2190689365631859,
+      "mape": 0.2476978037670328,
+      "rmse": 17226.432999127963,
+      "sesgo_sistematico": 2716.9731163508777,
+      "sesgo_relativo": 0.04794630236911921,
+      "mediana_real": 56666.999999999985,
+      "mediana_pred": 56395.569567537175
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 17875.11865123566,
+    "razon_disparidad_absoluta": 2.439918501120797,
+    "grupo_peor_servido_absoluto": "Professional degree (JD, MD, Ph.D, Ed.D, etc.)",
+    "razon_disparidad_relativa": 1.7547682842282828,
+    "coeficiente_variacion_relativo": 0.15724188501410627,
+    "grupo_peor_servido_relativo": "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 10249.151664097548,
+    "sesgo_todos_mismo_signo": false,
+    "rango_sesgo": 12966.124780448426,
+    "perdida_acotada_cumple": true,
+    "umbral_zeta": 31387.058756795774
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 15.044665720492048,
+    "p_valor": 0.03543109896596438,
+    "significativo": true,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "Bachelor’s degree (B.A., B.S., B.Eng., etc.)",
+      "grupo_prediccion_baja": "Primary/elementary school",
+      "distancia_ks": 0.3129574410409326,
+      "p_valor": 0.00198236882865386
+    }
+  }
+}

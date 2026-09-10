@@ -1,0 +1,118 @@
+{
+  "n_total": 3073,
+  "n_grupos": 7,
+  "n_grupos_suficientes": 5,
+  "por_grupo": {
+    "18-24 years old": {
+      "n": 279,
+      "suficiente_para_inferencia": true,
+      "mae": 13230.341899297966,
+      "mae_relativo": 0.34908553824005173,
+      "mape": 0.34775454745076384,
+      "rmse": 23686.627008341184,
+      "sesgo_sistematico": -2558.8662445172245,
+      "sesgo_relativo": -0.06751625974979482,
+      "mediana_real": 37900.000000000015,
+      "mediana_pred": 36797.35379342921
+    },
+    "25-34 years old": {
+      "n": 1207,
+      "suficiente_para_inferencia": true,
+      "mae": 24841.15589409933,
+      "mae_relativo": 0.3453566140791523,
+      "mape": 0.3269358758578434,
+      "rmse": 46977.06937828148,
+      "sesgo_sistematico": -6774.279748962223,
+      "sesgo_relativo": -0.09418009076953977,
+      "mediana_real": 71928.99999999996,
+      "mediana_pred": 71145.0524525174
+    },
+    "35-44 years old": {
+      "n": 997,
+      "suficiente_para_inferencia": true,
+      "mae": 31270.1604526381,
+      "mae_relativo": 0.31710299408427084,
+      "mape": 0.3116213925334665,
+      "rmse": 58305.866010927166,
+      "sesgo_sistematico": -8097.426073735782,
+      "sesgo_relativo": -0.08211400310039128,
+      "mediana_real": 98611.99999999996,
+      "mediana_pred": 97491.31184102845
+    },
+    "45-54 years old": {
+      "n": 414,
+      "suficiente_para_inferencia": true,
+      "mae": 36677.385199833334,
+      "mae_relativo": 0.32659601075522526,
+      "mape": 0.313461756102488,
+      "rmse": 72479.31120840074,
+      "sesgo_sistematico": -11885.308206799238,
+      "sesgo_relativo": -0.10583345093408157,
+      "mediana_real": 112302.00000000009,
+      "mediana_pred": 108389.12779445876
+    },
+    "55-64 years old": {
+      "n": 153,
+      "suficiente_para_inferencia": true,
+      "mae": 30269.822891670814,
+      "mae_relativo": 0.24405439769465864,
+      "mape": 0.23292543123531864,
+      "rmse": 41883.74179145729,
+      "sesgo_sistematico": -6911.87334830826,
+      "sesgo_relativo": -0.05572788096580848,
+      "mediana_real": 124028.99999999999,
+      "mediana_pred": 123710.32427401863
+    },
+    "65 years or older": {
+      "n": 22,
+      "suficiente_para_inferencia": false,
+      "mae": 39203.21945097572,
+      "mae_relativo": 0.35571381409106,
+      "mape": 0.44896796990557425,
+      "rmse": 54146.4911809642,
+      "sesgo_sistematico": -13378.28977400122,
+      "sesgo_relativo": -0.12138907335088668,
+      "mediana_real": 110209.99999999999,
+      "mediana_pred": 118841.85999367735
+    },
+    "No declarado": {
+      "n": 1,
+      "suficiente_para_inferencia": false,
+      "mae": 40212.04784656022,
+      "mae_relativo": 1.7330538226332906,
+      "mape": 1.7330538226332906,
+      "rmse": 40212.04784656022,
+      "sesgo_sistematico": 40212.04784656022,
+      "sesgo_relativo": 1.7330538226332906,
+      "mediana_real": 23202.99999999999,
+      "mediana_pred": 63415.047846560214
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 23447.04330053537,
+    "razon_disparidad_absoluta": 2.7722174890869242,
+    "grupo_peor_servido_absoluto": "45-54 years old",
+    "razon_disparidad_relativa": 1.4303595490903616,
+    "coeficiente_variacion_relativo": 0.12029535844334367,
+    "grupo_peor_servido_relativo": "18-24 years old",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 11885.308206799238,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 9326.441962282013,
+    "perdida_acotada_cumple": false,
+    "umbral_zeta": 34806.90435864504
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 4.165443055297146,
+    "p_valor": 0.3840783510763669,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "55-64 years old",
+      "grupo_prediccion_baja": "18-24 years old",
+      "distancia_ks": 0.7440438541007801,
+      "p_valor": 4.0809299302296226e-54
+    }
+  }
+}

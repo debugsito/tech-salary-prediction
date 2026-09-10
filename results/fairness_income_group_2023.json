@@ -1,0 +1,70 @@
+{
+  "n_total": 7593,
+  "n_grupos": 3,
+  "n_grupos_suficientes": 3,
+  "por_grupo": {
+    "High income": {
+      "n": 6457,
+      "suficiente_para_inferencia": true,
+      "mae": 27112.56642295423,
+      "mae_relativo": 0.307492842740456,
+      "mape": 0.25784577368316575,
+      "rmse": 47762.55376101683,
+      "sesgo_sistematico": -6369.05256134459,
+      "sesgo_relativo": -0.07223359261162247,
+      "mediana_real": 88173.00000000001,
+      "mediana_pred": 87617.28027408994
+    },
+    "Lower middle income": {
+      "n": 410,
+      "suficiente_para_inferencia": true,
+      "mae": 8523.79695888864,
+      "mae_relativo": 0.5024638622311154,
+      "mape": 0.5325293740986455,
+      "rmse": 12904.287895192616,
+      "sesgo_sistematico": -1946.685164367658,
+      "sesgo_relativo": -0.11475390028104562,
+      "mediana_real": 16964.0,
+      "mediana_pred": 16382.839706713046
+    },
+    "Upper middle income": {
+      "n": 726,
+      "suficiente_para_inferencia": true,
+      "mae": 16662.467967995122,
+      "mae_relativo": 0.505191176169033,
+      "mape": 0.5426232392206966,
+      "rmse": 25354.426410291173,
+      "sesgo_sistematico": -4649.907951037837,
+      "sesgo_relativo": -0.14098106423217885,
+      "mediana_real": 32982.499999999985,
+      "mediana_pred": 35586.69646433322
+    }
+  },
+  "agregados": {
+    "disparidad_absoluta": 18588.76946406559,
+    "razon_disparidad_absoluta": 3.1808085708425007,
+    "grupo_peor_servido_absoluto": "High income",
+    "razon_disparidad_relativa": 1.6429363742799283,
+    "coeficiente_variacion_relativo": 0.2111391861702287,
+    "grupo_peor_servido_relativo": "Upper middle income",
+    "supera_umbral_razon": true,
+    "invierte_al_normalizar": true,
+    "sesgo_maximo_absoluto": 6369.05256134459,
+    "sesgo_todos_mismo_signo": true,
+    "rango_sesgo": 4422.367396976932,
+    "perdida_acotada_cumple": true,
+    "umbral_zeta": 31387.058756795774
+  },
+  "contrastes": {
+    "prueba": "Kruskal-Wallis",
+    "estadistico": 4.841575406979246,
+    "p_valor": 0.08885160117066843,
+    "significativo": false,
+    "paridad_estadistica": {
+      "grupo_prediccion_alta": "High income",
+      "grupo_prediccion_baja": "Lower middle income",
+      "distancia_ks": 0.8768426778274288,
+      "p_valor": 1.2e-321
+    }
+  }
+}

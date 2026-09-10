@@ -1,0 +1,118 @@
+Auditoría de equidad — income_group — edición 2025
+  N = 3,073 · grupos: 3 (3 con tamaño suficiente)
+
+  grupo                           N        MAE  MAE/mediana       sesgo
+  Lower middle income           185     10,147        68.4 %      -4,504
+  Upper middle income           316     18,976        57.9 %      -5,897
+  High income                 2,572     30,208        31.8 %      -7,970
+
+  Razón de disparidad RELATIVA .. 2.154   SUPERA el umbral de 1.25
+  Peor servido (relativo) ....... Lower middle income
+  Coef. de variación relativo ... 0.293
+
+  [Referencia] razón absoluta ... 2.977  · peor servido: High income
+  ⚠ El grupo peor servido cambia al normalizar por la escala salarial:
+    el error absoluto no es comparable entre estos grupos.
+  Sesgo máximo absoluto ......... $7,970  · todos los grupos en la misma dirección
+
+  Kruskal-Wallis: p = 3.098e-02   diferencia significativa
+  Paridad estadística (KS): D = 0.901 entre «High income» y «Lower middle income»
+
+Auditoría de equidad — wb_region — edición 2025
+  N = 3,073 · grupos: 7 (6 con tamaño suficiente)
+
+  grupo                           N        MAE  MAE/mediana       sesgo
+  South Asia                    159     10,980        63.0 %      -5,238
+  Latin America & Caribbean     144     16,838        51.4 %        -893
+  Sub-Saharan Africa             26     22,833        46.1 %     -20,794  (descriptivo)
+  East Asia & Pacific           189     24,713        36.6 %      -7,004
+  Middle East, North Africa,     68     24,676        33.6 %      -2,440
+  North America                 927     44,923        30.4 %     -13,416
+  Europe & Central Asia       1,560     21,034        28.3 %      -4,979
+
+  Razón de disparidad RELATIVA .. 2.223   SUPERA el umbral de 1.25
+  Peor servido (relativo) ....... South Asia
+  Coef. de variación relativo ... 0.308
+
+  [Referencia] razón absoluta ... 4.091  · peor servido: North America
+  ⚠ El grupo peor servido cambia al normalizar por la escala salarial:
+    el error absoluto no es comparable entre estos grupos.
+  Sesgo máximo absoluto ......... $13,416  · todos los grupos en la misma dirección
+
+  Kruskal-Wallis: p = 3.736e-02   diferencia significativa
+  Paridad estadística (KS): D = 0.983 entre «North America» y «South Asia»
+
+Auditoría de equidad — Age — edición 2025
+  N = 3,073 · grupos: 7 (5 con tamaño suficiente)
+
+  grupo                           N        MAE  MAE/mediana       sesgo
+  No declarado                    1     40,212       173.3 %     +40,212  (descriptivo)
+  65 years or older              22     39,203        35.6 %     -13,378  (descriptivo)
+  18-24 years old               279     13,230        34.9 %      -2,559
+  25-34 years old             1,207     24,841        34.5 %      -6,774
+  45-54 years old               414     36,677        32.7 %     -11,885
+  35-44 years old               997     31,270        31.7 %      -8,097
+  55-64 years old               153     30,270        24.4 %      -6,912
+
+  Razón de disparidad RELATIVA .. 1.430   SUPERA el umbral de 1.25
+  Peor servido (relativo) ....... 18-24 years old
+  Coef. de variación relativo ... 0.120
+
+  [Referencia] razón absoluta ... 2.772  · peor servido: 45-54 years old
+  ⚠ El grupo peor servido cambia al normalizar por la escala salarial:
+    el error absoluto no es comparable entre estos grupos.
+  Sesgo máximo absoluto ......... $11,885  · todos los grupos en la misma dirección
+
+  Kruskal-Wallis: p = 3.841e-01   sin diferencia significativa
+  Paridad estadística (KS): D = 0.744 entre «55-64 years old» y «18-24 years old»
+
+Auditoría de equidad — EdLevel — edición 2025
+  N = 3,073 · grupos: 9 (6 con tamaño suficiente)
+
+  grupo                           N        MAE  MAE/mediana       sesgo
+  Professional degree (JD, M    141     39,063        40.1 %     -15,637
+  Secondary school (e.g. Ame    127     25,866        36.0 %      -5,347
+  Other (please specify):        26     23,574        34.2 %      +7,193  (descriptivo)
+  Master’s degree (M.A., M.S    904     27,335        33.3 %      -8,650
+  Bachelor’s degree (B.A., B  1,438     28,497        32.5 %      -8,083
+  Associate degree (A.A., A.    101     23,889        32.5 %      +3,335
+  Some college/university st    324     24,140        29.9 %      -3,898
+  No declarado                    2     32,235        27.6 %     -28,749  (descriptivo)
+  Primary/elementary school      10     17,582        15.1 %      -7,172  (descriptivo)
+
+  Razón de disparidad RELATIVA .. 1.340   SUPERA el umbral de 1.25
+  Peor servido (relativo) ....... Professional degree (JD, MD, Ph.D, Ed.D, etc.)
+  Coef. de variación relativo ... 0.095
+
+  [Referencia] razón absoluta ... 1.635  · peor servido: Professional degree (JD, MD, Ph.D, Ed.D, etc.)
+  Sesgo máximo absoluto ......... $15,637
+
+  Kruskal-Wallis: p = 5.129e-02   sin diferencia significativa
+  Paridad estadística (KS): D = 0.332 entre «Professional degree » y «Secondary school (e.»
+
+Auditoría de equidad — OrgSize — edición 2025
+  N = 3,073 · grupos: 10 (7 con tamaño suficiente)
+
+  grupo                           N        MAE  MAE/mediana       sesgo
+  Just me - I am a freelance     13     26,878        46.3 %     -16,955  (descriptivo)
+  5,000 to 9,999 employees      162     40,701        40.7 %     -21,861
+  500 to 999 employees          223     31,220        38.1 %     -10,004
+  10,000 or more employees      500     43,213        37.3 %     -14,591
+  Less than 20 employees        425     23,594        34.7 %      -5,380
+  1,000 to 4,999 employees      389     26,125        31.3 %      -5,259
+  100 to 499 employees          658     23,157        27.5 %      -6,527
+  I don’t know                   29     26,771        27.1 %      -2,622  (descriptivo)
+  20 to 99 employees            672     20,526        26.7 %      -1,772
+  No declarado                    2     30,161        22.3 %      -6,833  (descriptivo)
+
+  Razón de disparidad RELATIVA .. 1.525   SUPERA el umbral de 1.25
+  Peor servido (relativo) ....... 5,000 to 9,999 employees
+  Coef. de variación relativo ... 0.149
+
+  [Referencia] razón absoluta ... 2.105  · peor servido: 10,000 or more employees
+  ⚠ El grupo peor servido cambia al normalizar por la escala salarial:
+    el error absoluto no es comparable entre estos grupos.
+  Sesgo máximo absoluto ......... $21,861  · todos los grupos en la misma dirección
+
+  Kruskal-Wallis: p = 4.925e-01   sin diferencia significativa
+  Paridad estadística (KS): D = 0.362 entre «10,000 or more emplo» y «Less than 20 employe»

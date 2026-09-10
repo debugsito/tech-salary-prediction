@@ -1,0 +1,84 @@
+{
+  "estimador": "TreeExplainer",
+  "n_explicadas": 2000,
+  "n_variables": 122,
+  "top_10": [
+    {
+      "variable": "Country",
+      "shap_medio_abs": 0.49247440695762634,
+      "ic_inferior": 0.4779074788093567,
+      "ic_superior": 0.5068948268890381,
+      "importancia_impureza": 0.19060784578323364
+    },
+    {
+      "variable": "YearsCodePro_num",
+      "shap_medio_abs": 0.15522582828998566,
+      "ic_inferior": 0.15080700814723969,
+      "ic_superior": 0.15950870513916016,
+      "importancia_impureza": 0.03427855297923088
+    },
+    {
+      "variable": "DevType",
+      "shap_medio_abs": 0.07325077056884766,
+      "ic_inferior": 0.07077497988939285,
+      "ic_superior": 0.07564838975667953,
+      "importancia_impureza": 0.011036662384867668
+    },
+    {
+      "variable": "income_group_High income",
+      "shap_medio_abs": 0.061368830502033234,
+      "ic_inferior": 0.0593586266040802,
+      "ic_superior": 0.06349620223045349,
+      "importancia_impureza": 0.23146720230579376
+    },
+    {
+      "variable": "language__php",
+      "shap_medio_abs": 0.03338945284485817,
+      "ic_inferior": 0.03216416388750076,
+      "ic_superior": 0.034589312970638275,
+      "importancia_impureza": 0.018074918538331985
+    },
+    {
+      "variable": "RemoteWork_Fully remote",
+      "shap_medio_abs": 0.03055550716817379,
+      "ic_inferior": 0.02998952753841877,
+      "ic_superior": 0.0311629269272089,
+      "importancia_impureza": 0.012150568887591362
+    },
+    {
+      "variable": "YearsCode_num",
+      "shap_medio_abs": 0.027944210916757584,
+      "ic_inferior": 0.0270378477871418,
+      "ic_superior": 0.028811080381274223,
+      "importancia_impureza": 0.006795442197471857
+    },
+    {
+      "variable": "language__typescript",
+      "shap_medio_abs": 0.027291690930724144,
+      "ic_inferior": 0.026894066482782364,
+      "ic_superior": 0.027681563049554825,
+      "importancia_impureza": 0.0065404693596065044
+    },
+    {
+      "variable": "platform__aws",
+      "shap_medio_abs": 0.026834215968847275,
+      "ic_inferior": 0.026464609429240227,
+      "ic_superior": 0.027214867994189262,
+      "importancia_impureza": 0.01597709208726883
+    },
+    {
+      "variable": "OrgSize_10,000 or more employees",
+      "shap_medio_abs": 0.02608659863471985,
+      "ic_inferior": 0.024832535535097122,
+      "ic_superior": 0.02733713760972023,
+      "importancia_impureza": 0.011364791542291641
+    }
+  ],
+  "ruta_valores": "results/shap_values_XGBoost_target_2022.npz",
+  "ruta_resumen": "results/shap_summary_XGBoost_target_2022.csv",
+  "spearman_shap_vs_impureza": {
+    "rho": 0.7587,
+    "p_valor": 0.0,
+    "n_variables": 122
+  }
+}
