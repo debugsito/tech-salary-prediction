@@ -38,6 +38,18 @@ import pandas as pd
 URL_BASE = ("https://github.com/StackExchange/Survey/raw/refs/heads/main/"
             "packages/archive/{anio}/results.csv")
 
+# Raíz del proyecto, deducida de la ubicación de este módulo. Las rutas por
+# defecto se resuelven contra ella y no contra el directorio de trabajo, para
+# que el módulo funcione igual desde un script, desde un cuaderno o desde
+# cualquier otro directorio.
+RAIZ = Path(__file__).resolve().parent.parent
+
+
+def _ruta(relativa: str | Path) -> Path:
+    """Resuelve una ruta relativa contra la raíz del proyecto."""
+    p = Path(relativa)
+    return p if p.is_absolute() or p.exists() else RAIZ / p
+
 TARGET = "ConvertedCompYearly"
 
 # Umbral mínimo de observaciones por país (§3.2.4, criterio 5).
@@ -86,7 +98,7 @@ CATEGORIA_AUSENTE = "No declarado"
 
 def descargar(anio: str, data_dir: str = "data/external") -> Path:
     """Descarga la edición indicada si no está ya en disco."""
-    destino = Path(data_dir) / f"so_survey_{anio}.csv"
+    destino = _ruta(data_dir) / f"so_survey_{anio}.csv"
     if destino.exists():
         return destino
     destino.parent.mkdir(parents=True, exist_ok=True)
@@ -126,7 +138,7 @@ def normalizar_ausentes(df: pd.DataFrame, columnas: list[str]) -> pd.DataFrame:
 
 
 def cargar_referencia_paises(ruta: str = "data/reference/country_income_groups.csv") -> pd.DataFrame:
-    p = Path(ruta)
+    p = _ruta(ruta)
     if not p.exists():
         raise FileNotFoundError(
             f"No existe {p}. Generar primero con: python scripts/build_country_reference.py")
