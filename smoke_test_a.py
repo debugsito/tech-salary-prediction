@@ -12,9 +12,11 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split, KFold, cross_validate
 from sklearn.pipeline import Pipeline
+from sklearn.linear_model import Ridge
 
 from src.feature_pipeline import load_processed, precompute_text_embeddings, build_preprocessor, NUM_FEATURES, CAT_LOW, CAT_HIGH
 from src.metrics import compute_metrics
+from src.explainability import explain_model
 
 SEED = 42
 
@@ -41,7 +43,6 @@ def run_smoke_a(output_dir: str):
     preprocessor = build_preprocessor('target', emb_cols)
 
     # Solo Ridge
-    from sklearn.linear_model import Ridge
     model = Ridge(alpha=1.0)
     pipe = Pipeline([('preprocessor', preprocessor), ('model', model)])
 
@@ -73,6 +74,16 @@ def run_smoke_a(output_dir: str):
     test_metrics = compute_metrics(y_test, y_pred, prefix='test_')
     test_metrics['encoding'] = 'target'
     test_metrics['Modelo'] = 'Ridge'
+
+    # SHAP Smoke Test
+    print("Running SHAP smoke test...")
+    try:
+        # We use a very small sample for SHAP in smoke test
+        shap_results = explain_model(pipe, X_train_full, X_test, output_dir=output_dir, sample_size=10)
+        print(f"SHAP smoke test OK. Top feature: {shap_results['top_5_features'][0][0]}")
+    except Exception as e:
+        print(f"SHAP smoke test FAILED: {e}")
+        raise e
 
     # Guardar resultados
     os.makedirs(output_dir, exist_ok=True)

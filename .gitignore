@@ -1,3 +1,26 @@
+# Entornos virtuales y caché
 .venv
 .venv*
 .idea
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Datos descargables desde la fuente oficial. La procedencia y el procedimiento
+# están documentados en el Capítulo III de la tesis; src/data_loader_stackoverflow.py
+# los obtiene automáticamente.
+data/external/
+data/processed/
+
+# Conjunto de datos sintético descartado
+tech_jobs_salaries.xlsx
+
+# Artefactos regenerables
+results/smoke_a_*/
+results/quick_run/
+catboost_info/
+*.log
+*.pkl
+*.joblib
+*.npz
+results/quick_*.csv

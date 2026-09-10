@@ -1,0 +1,344 @@
+{
+  "2022": {
+    "n": 29213,
+    "n_columnas": 30,
+    "paises": 76,
+    "filtros": [
+      {
+        "paso": 0,
+        "criterio": "Respuestas totales de la edición",
+        "n": 73268,
+        "descartados": 0
+      },
+      {
+        "paso": 1,
+        "criterio": "Reporta compensación anual",
+        "n": 38071,
+        "descartados": 35197
+      },
+      {
+        "paso": 2,
+        "criterio": "Situación de empleo: asalariado",
+        "n": 35057,
+        "descartados": 3014
+      },
+      {
+        "paso": 3,
+        "criterio": "Desarrollador profesional",
+        "n": 32266,
+        "descartados": 2791
+      },
+      {
+        "paso": 4,
+        "criterio": "País con al menos 30 observaciones",
+        "n": 31567,
+        "descartados": 699
+      },
+      {
+        "paso": 5,
+        "criterio": "Compensación dentro de [0.2, 6] veces la mediana del país",
+        "n": 29213,
+        "descartados": 2354
+      }
+    ],
+    "compensacion": {
+      "mediana": 66372.0,
+      "media": 84520.16499503645,
+      "p25": 37325.0,
+      "p75": 110403.0,
+      "min": 1500.0,
+      "max": 870000.0,
+      "asimetria": 2.7940458865614874,
+      "asimetria_log": -0.6671660508541748
+    },
+    "estratos": {
+      "global": {
+        "n": 29213,
+        "mediana": 66372.0
+      },
+      "estados_unidos": {
+        "n": 7153,
+        "mediana": 140000.0
+      },
+      "latam": {
+        "n": 1998,
+        "mediana": 27420.0
+      },
+      "peru": {
+        "n": 56,
+        "mediana": 19248.0
+      }
+    },
+    "por_nivel_renta": {
+      "High income": {
+        "n": 23008,
+        "mediana": 79983.0
+      },
+      "Lower middle income": {
+        "n": 2511,
+        "mediana": 15477.0
+      },
+      "Upper middle income": {
+        "n": 3694,
+        "mediana": 26630.5
+      }
+    },
+    "cardinalidad": {
+      "Country": 76,
+      "DevType": 4861,
+      "EdLevel": 10,
+      "OrgSize": 11,
+      "RemoteWork": 4,
+      "ICorPM": 3,
+      "Age": 8,
+      "Gender": 15,
+      "income_group": 3
+    },
+    "cobertura": {
+      "Country": 100.0,
+      "DevType": 100.0,
+      "EdLevel": 100.0,
+      "OrgSize": 100.0,
+      "RemoteWork": 100.0,
+      "ICorPM": 100.0,
+      "Age": 100.0,
+      "Gender": 100.0,
+      "income_group": 100.0
+    },
+    "razon_usa_latam": 5.11,
+    "lenguajes_distintos": 42,
+    "lenguajes_mediana_por_persona": 5.0,
+    "genero": {
+      "n_hombres": 26946,
+      "n_mujeres": 1348,
+      "n_no_binario": 441,
+      "mediana_hombres": 66371.5,
+      "mediana_mujeres": 63985.0,
+      "brecha_global_pct": 3.6,
+      "n_mujeres_latam": 89,
+      "mediana_hombres_latam": 27600.0,
+      "mediana_mujeres_latam": 23676.0,
+      "brecha_latam_pct": 14.2
+    }
+  },
+  "2023": {
+    "n": 37964,
+    "n_columnas": 27,
+    "paises": 78,
+    "filtros": [
+      {
+        "paso": 0,
+        "criterio": "Respuestas totales de la edición",
+        "n": 89184,
+        "descartados": 0
+      },
+      {
+        "paso": 1,
+        "criterio": "Reporta compensación anual",
+        "n": 48019,
+        "descartados": 41165
+      },
+      {
+        "paso": 2,
+        "criterio": "Situación de empleo: asalariado",
+        "n": 43776,
+        "descartados": 4243
+      },
+      {
+        "paso": 3,
+        "criterio": "Desarrollador profesional",
+        "n": 40410,
+        "descartados": 3366
+      },
+      {
+        "paso": 4,
+        "criterio": "País con al menos 30 observaciones",
+        "n": 39682,
+        "descartados": 728
+      },
+      {
+        "paso": 5,
+        "criterio": "Compensación dentro de [0.2, 6] veces la mediana del país",
+        "n": 37964,
+        "descartados": 1718
+      }
+    ],
+    "compensacion": {
+      "mediana": 78175.0,
+      "media": 96218.15556843326,
+      "p25": 48330.25,
+      "p75": 125000.0,
+      "min": 1225.0,
+      "max": 900000.0,
+      "asimetria": 2.557565139654708,
+      "asimetria_log": -0.819433004466636
+    },
+    "estratos": {
+      "global": {
+        "n": 37964,
+        "mediana": 78175.0
+      },
+      "estados_unidos": {
+        "n": 10322,
+        "mediana": 150000.0
+      },
+      "latam": {
+        "n": 1944,
+        "mediana": 33180.5
+      },
+      "peru": {
+        "n": 48,
+        "mediana": 29877.0
+      }
+    },
+    "por_nivel_renta": {
+      "High income": {
+        "n": 32285,
+        "mediana": 86743.0
+      },
+      "Lower middle income": {
+        "n": 2050,
+        "mediana": 16964.0
+      },
+      "Upper middle income": {
+        "n": 3629,
+        "mediana": 33717.0
+      }
+    },
+    "cardinalidad": {
+      "Country": 78,
+      "DevType": 34,
+      "EdLevel": 8,
+      "OrgSize": 11,
+      "RemoteWork": 3,
+      "Industry": 13,
+      "ICorPM": 3,
+      "Age": 8,
+      "income_group": 3
+    },
+    "cobertura": {
+      "Country": 100.0,
+      "DevType": 100.0,
+      "EdLevel": 100.0,
+      "OrgSize": 100.0,
+      "RemoteWork": 100.0,
+      "Industry": 100.0,
+      "ICorPM": 100.0,
+      "Age": 100.0,
+      "income_group": 100.0
+    },
+    "razon_usa_latam": 4.52,
+    "lenguajes_distintos": 51,
+    "lenguajes_mediana_por_persona": 5.0
+  },
+  "2025": {
+    "n": 15364,
+    "n_columnas": 29,
+    "paises": 60,
+    "filtros": [
+      {
+        "paso": 0,
+        "criterio": "Respuestas totales de la edición",
+        "n": 49191,
+        "descartados": 0
+      },
+      {
+        "paso": 1,
+        "criterio": "Reporta compensación anual",
+        "n": 23947,
+        "descartados": 25244
+      },
+      {
+        "paso": 2,
+        "criterio": "Situación de empleo: asalariado",
+        "n": 19500,
+        "descartados": 4447
+      },
+      {
+        "paso": 3,
+        "criterio": "Desarrollador profesional",
+        "n": 16891,
+        "descartados": 2609
+      },
+      {
+        "paso": 4,
+        "criterio": "País con al menos 30 observaciones",
+        "n": 16296,
+        "descartados": 595
+      },
+      {
+        "paso": 5,
+        "criterio": "Compensación dentro de [0.2, 6] veces la mediana del país",
+        "n": 15364,
+        "descartados": 932
+      }
+    ],
+    "compensacion": {
+      "mediana": 83531.0,
+      "media": 101291.62861234053,
+      "p25": 52207.0,
+      "p75": 130000.0,
+      "min": 1033.0,
+      "max": 909000.0,
+      "asimetria": 2.7635497799883546,
+      "asimetria_log": -0.9493028479964601
+    },
+    "estratos": {
+      "global": {
+        "n": 15364,
+        "mediana": 83531.0
+      },
+      "estados_unidos": {
+        "n": 3819,
+        "mediana": 155000.0
+      },
+      "latam": {
+        "n": 711,
+        "mediana": 36407.0
+      },
+      "peru": {
+        "n": 0,
+        "mediana": null
+      }
+    },
+    "por_nivel_renta": {
+      "High income": {
+        "n": 12858,
+        "mediana": 93972.0
+      },
+      "Lower middle income": {
+        "n": 924,
+        "mediana": 16274.0
+      },
+      "Upper middle income": {
+        "n": 1582,
+        "mediana": 35347.0
+      }
+    },
+    "cardinalidad": {
+      "Country": 60,
+      "DevType": 31,
+      "EdLevel": 9,
+      "OrgSize": 10,
+      "RemoteWork": 6,
+      "Industry": 16,
+      "ICorPM": 3,
+      "Age": 7,
+      "income_group": 3
+    },
+    "cobertura": {
+      "Country": 100.0,
+      "DevType": 100.0,
+      "EdLevel": 100.0,
+      "OrgSize": 100.0,
+      "RemoteWork": 100.0,
+      "Industry": 100.0,
+      "ICorPM": 100.0,
+      "Age": 100.0,
+      "income_group": 100.0
+    },
+    "razon_usa_latam": 4.26,
+    "lenguajes_distintos": 42,
+    "lenguajes_mediana_por_persona": 6.0
+  }
+}

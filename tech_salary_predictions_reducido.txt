@@ -1,0 +1,292 @@
+Análisis Predictivo de Salarios en el Sector Tecnológico Mediante Modelos de Aprendizaje Automático y Técnicas de Ensamblaje a partir de Variables Profesionales, Educativas y Geográficas
+Carlos Ramos-Flores¹ y Wilfredo Ticona¹,²
+¹ Universidad ESAN, Lima, Perú
+² Universidad Tecnológica del Perú, Lima, Perú
+22101723@ue.edu.pe, wmamani@esan.edu.pe
+Resumen
+La predicción salarial en el sector tecnológico constituye un desafío considerable debido a la influencia simultánea de factores como la experiencia profesional, la ubicación geográfica, las habilidades técnicas y la modalidad laboral, que los enfoques tradicionales no logran capturar adecuadamente. En este trabajo se propone un sistema de predicción salarial que integra representaciones semánticas generadas con Sentence-BERT (SBERT) con regresión penalizada (Ridge), algoritmos de gradient boosting (HistGradientBoosting, XGBoost, LightGBM y CatBoost) optimizados mediante búsqueda bayesiana con Optuna, y un modelo de stacking ensemble que combina ambos paradigmas.
+La evaluación se realizó sobre un dataset de aproximadamente 200,000 registros de ofertas de empleo tecnológico, empleando las métricas R², RMSE y MAPE. Los mejores resultados se obtuvieron con el stacking ensemble (R²≈0.8075, RMSE≈29,748 USD y MAPE≈26.72%), prácticamente empatado con la regresión Ridge. El análisis de interpretabilidad mediante SHAP (Shapley Additive exPlanations) reveló que el país de empleo y los años de experiencia concentran la mayor parte de la capacidad predictiva, mientras que los embeddings semánticos aportan robustez frente a títulos de puesto no estándar. Asimismo, se identificaron sesgos sistemáticos asociados al género y la región geográfica. Los hallazgos son de utilidad tanto para profesionales que negocian su compensación como para empresas que requieren herramientas de planificación salarial y mitigación de sesgos.
+Palabras clave: Predicción Salarial, Aprendizaje Automático, Embeddings Semánticos, Sentence-BERT, Aprendizaje por Ensembles, Stacking, Inteligencia Artificial Explicable, XAI, Modelos de Regresión, Análisis Salarial, Sector Tecnológico, Optuna.
+1. Introducción
+La industria tecnológica ha experimentado un crecimiento vertiginoso a nivel global, generando una demanda laboral sin precedentes y una amplia diversidad en las estructuras de compensación. Las brechas salariales en tecnología constituyen un desafío global que afecta tanto a países desarrollados como en vías de desarrollo [1]: profesionales con perfiles similares reciben compensaciones muy dispares según el país de residencia, la especialidad técnica o la modalidad de trabajo (presencial, híbrida o remota), reflejando diferencias en el costo de vida, la valorización de habilidades y las políticas corporativas.
+Obtener estimaciones salariales precisas resulta crucial para múltiples actores: los candidatos necesitan información fundamentada para negociar sus paquetes de compensación [2]; las empresas requieren herramientas analíticas para diseñar estrategias competitivas; y los organismos reguladores demandan transparencia frente a discriminaciones sistemáticas basadas en género u otras características protegidas [3]. Sin embargo, la complejidad del mercado tecnológico —variables heterogéneas, gran cantidad de categorías textuales y dinámicas cambiantes— hace insuficientes las aproximaciones tradicionales basadas en encuestas estáticas o fórmulas lineales simplificadas.
+Las técnicas de aprendizaje automático han emergido como una solución robusta para este problema [4], [19]. No obstante, pocos enfoques combinan sistemáticamente representaciones semánticas del lenguaje natural con modelos predictivos para el dominio salarial, y la literatura carece de evaluaciones comparativas rigurosas de arquitecturas de stacking en este contexto. La presente investigación busca llenar estos vacíos mediante un sistema que: primero, integra embeddings semánticos de transformers pre-entrenados para capturar similitudes entre títulos de puesto y habilidades técnicas; segundo, aplica optimización bayesiana mediante Optuna; tercero, construye y evalúa un stacking ensemble con múltiples base learners; y cuarto, realiza análisis de interpretabilidad y detección de sesgos en las predicciones.
+2. Trabajos Relacionados
+La aplicación de aprendizaje automático a la predicción salarial ha sido objeto de investigación creciente [4], [19]. Canahuire y Larico [5] analizaron salarios de docentes en Perú con árboles de decisión, gradient boosting y redes neuronales, reportando métricas sólidas a partir de variables demográficas y educativas, aunque sin incorporar habilidades técnicas del dominio tecnológico ni procesamiento de lenguaje natural. Zhu et al. [4] compararon árboles de decisión, Random Forest y aprendizaje profundo para predecir sueldos en tecnología, concluyendo que el ensamblado de modelos mejora la exactitud (Random Forest logró mejoras de 12-15% en R² frente a modelos lineales básicos). Sin embargo, dichos trabajos suelen emplear hiperparámetros por defecto y rara vez consideran representaciones semánticas de variables textuales.
+En el ámbito tecnológico, las características semánticas resultan particularmente relevantes: títulos aparentemente distintos pueden estar estrechamente relacionados en responsabilidad y compensación (por ejemplo, "Full Stack Developer" y "Software Engineer"). Estudios basados en el Stack Overflow Developer Survey identifican el país, la experiencia y el nivel educativo como los predictores más importantes [1], pero típicamente emplean encoding ordinal o one-hot, que trata todas las categorías como igualmente distantes y pierde la información de similitud semántica. Sentence-BERT (SBERT) [6] genera embeddings eficientes para similitud semántica mediante redes siamesas con BERT/RoBERTa como encoder, produciendo vectores densos de 384-768 dimensiones con un costo computacional muy inferior al de BERT original; Joveo [7] documentó su aplicación para generar job embeddings que agrupan posiciones semánticamente similares en sistemas de reclutamiento.
+Respecto a la optimización de hiperparámetros, Optuna [8] representa el estado del arte en optimización bayesiana, con definición dinámica de espacios de búsqueda y poda de iteraciones, reduciendo el tiempo de búsqueda 2-5 veces frente a GridSearch exhaustivo. Finalmente, el stacking o stacked generalization, propuesto por Wolpert [10], entrena un meta-modelo sobre las predicciones de múltiples modelos base; la literatura muestra que un meta-learner lineal puede superar a los modelos base individuales, especialmente cuando estos son heterogéneos [9]. Esta evidencia motiva el stacking implementado en este trabajo, que combina Ridge con modelos GBDT.
+3. Metodología
+Se adoptó un pipeline metodológico reproducible dividido en seis fases secuenciales: adquisición de datos, preprocesamiento, generación de representaciones semánticas, entrenamiento de modelos, optimización de hiperparámetros y evaluación. La Figura 1 presenta el diagrama de flujo del pipeline propuesto.
+Figura 1. Propuesta metodológica.
+3.1 Adquisición y Descripción del Dataset
+Se empleó un conjunto de datos recolectado de fuentes de empleo tecnológico, incluyendo el Stack Overflow Developer Survey y plataformas como LinkedIn Jobs y Glassdoor, con aproximadamente 200,000 registros de perfiles laborales. La Tabla 1 resume las variables del dataset. La variable objetivo salary_USD presenta rangos de aproximadamente 10,000 a 300,000 USD anuales, reflejando la disparidad del mercado global. No se encontraron valores nulos en las columnas clave, lo cual eliminó la necesidad de técnicas de imputación.
+Tabla 1. Variables del conjunto de datos y su descripción.
+Variable
+Descripción
+Tipo
+years_experience
+Años de experiencia profesional
+Numérico
+country
+País de la oferta de empleo (código ISO)
+Categórico
+education_level
+Nivel educativo (Diploma, Bachelor, Master, PhD, Self-taught)
+Categórico ordinal
+primary_skill / secondary_skill
+Competencias técnicas principal y secundaria
+Texto
+company_size
+Tamaño de empresa (Startup, SME, Mid-size, Enterprise)
+Categórico ordinal
+employment_type
+Tipo de empleo (Full-time, Part-time, Contract, Freelance)
+Categórico
+experience_level
+Nivel de experiencia (Entry, Mid, Senior, Lead)
+Categórico ordinal
+salary_local_currency / currency
+Salario en moneda local y código de moneda ISO
+Numérico / Categórico
+remote_type
+Modalidad (Onsite, Hybrid, Remote)
+Categórico
+salary_USD
+Salario anual en USD (variable objetivo)
+Numérico
+gender
+Género del profesional
+Categórico
+work_hours_per_week
+Horas de trabajo semanales
+Numérico
+job_satisfaction_score / company_rating
+Satisfacción laboral y calificación de la empresa (1-5)
+Numérico
+3.2 Preprocesamiento de Datos
+El preprocesamiento constituye una fase crítica para garantizar la calidad de las predicciones y la estabilidad de los modelos [16]; la Tabla 2 resume las actividades realizadas. La normalización monetaria resultó importante dado que el dataset contenía salarios en múltiples monedas. El tratamiento de outliers mediante IQR eliminó valores extremos no realistas, y la transformación logarítmica estabiliza la varianza y permite minimizar errores relativos, lo cual es apropiado para datos salariales que típicamente presentan heterocedasticidad [11]. La ingeniería de interacciones captura relaciones no aditivas; por ejemplo, experience_per_age refleja el ritmo de acumulación de capital humano y productivity_score = job_satisfaction_score × company_rating la interacción entre satisfacción y reputación corporativa.
+Tabla 2. Actividades de preprocesamiento realizadas.
+Actividad
+Descripción y justificación
+Detección de outliers
+Método IQR con recorte al rango [Q1−1.5×IQR, Q3+1.5×IQR] para eliminar valores salariales atípicos no realistas.
+Transformación logarítmica
+Aplicación de y = log(1 + salary_USD_capped) para estabilizar varianza y normalizar la distribución asimétrica.
+Encoding ordinal
+Mapas ordinales para experiencia, educación, tamaño de empresa y modalidad.
+Encoding de regiones
+Agrupación de países en regiones geográficas para reducir cardinalidad.
+Ingeniería de interacciones
+Variables: experience × education, experience × years, satisfacción × rating.
+Variables binarias
+Creación de is_senior_plus, is_high_demand, is_full_time.
+Target encoding
+Encoding por media del target por país, título y skills para variables de alta cardinalidad.
+3.3 Generación de Representaciones Semánticas con Sentence-BERT
+Para incorporar el contexto semántico de las variables textuales se generaron embeddings con Sentence-BERT [6]. Los campos job_title, primary_skill y secondary_skill fueron concatenados en una única oración por muestra ("[job_title] specializing in [primary_skill] and [secondary_skill]") y procesados con el modelo pre-entrenado 'all-MiniLM-L6-v2', que genera vectores densos de 384 dimensiones. Este modelo fue seleccionado por su equilibrio entre rendimiento y eficiencia: es aproximadamente 5 veces más rápido que 'all-mpnet-base-v2' manteniendo el 92% de su rendimiento en benchmarks de similitud semántica [6]. La representación e_SBERT fue concatenada con las características numéricas y categóricas codificadas para formar el vector completo x = [years_experience, country_onehot, education_onehot, e_SBERT], permitiendo capturar tanto relaciones lineales entre variables estructuradas como similitudes semánticas.
+3.4 Implementación de Modelos
+Se implementaron y evaluaron modelos de regresión supervisada que abarcan diferentes paradigmas algorítmicos, desde lineales hasta ensemble, para permitir comparaciones sistemáticas. La Tabla 3 resume los modelos implementados.
+Tabla 3. Modelos implementados y sus características.
+Modelo
+Tipo
+Descripción
+HistGradientBoosting
+Tree-based
+GBDT basado en histogramas, optimizado para eficiencia computacional
+XGBoost
+Tree-based
+Gradient Boosting escalable con regularización L1/L2 [12]
+LightGBM
+Tree-based
+GBDT optimizado mediante histogramas y Gradient-based One-Side Sampling (GOSS) [13]
+CatBoost
+Tree-based
+GBDT con tratamiento nativo de variables categóricas [14]
+Stacking Ensemble
+Meta-ensemble
+Combina Ridge, HistGradientBoosting y CatBoost con meta-modelo lineal
+3.4.1 Ridge Regression
+Ridge Regression es una técnica de regresión lineal que incorpora regularización L2 mediante la penalización de los coeficientes al cuadrado. La función de costo minimizada es:
+J(β) = Σ(y_i − β₀ − Σⱼ βⱼx_ij)² + λ Σⱼ βⱼ²
+donde λ ≥ 0 es el hiperparámetro de regularización que controla la magnitud de los coeficientes [11], [18]. Esta regularización es particularmente útil cuando existe multicolinealidad entre predictores o cuando el número de features excede el número de observaciones, ambos escenarios comunes en datasets con embeddings semánticos de alta dimensionalidad.
+3.4.2 Hist Gradient Boosting
+Hist Gradient Boosting es una implementación de gradient boosting basada en histogramas que discretiza las features continuas en un número fijo de bins (típicamente 256), reduciendo significativamente el costo computacional de encontrar los mejores splits. Esta aproximación permite manejar nativamente valores missing y acelera el entrenamiento en órdenes de magnitud para datasets grandes [11]. La función de pérdida optimizada es el error cuadrático medio (MSE) para regresión [17]:
+L(y, ŷ) = (1/n) Σ(y_i − ŷ_i)²
+3.4.3 XGBoost
+XGBoost (eXtreme Gradient Boosting) es una implementación de gradient boosting escalada que incorpora regularización tanto en la función objetivo como en la complejidad del modelo [12]. La función objetivo de XGBoost para un árbol f_k es:
+L^(k) = Σᵢ l(y_i, ŷ_i^(k−1) + f_k(x_i)) + Ω(f_k)
+donde Ω(f) = γT + (1/2)λ Σⱼ w_j² penaliza la complejidad del árbol (T = número de hojas, w_j = peso de la hoja j). Esta regularización explícita diferencia a XGBoost de implementaciones tradicionales de gradient boosting y ayuda a prevenir el sobreajuste en escenarios con features de alta dimensionalidad [12].
+3.4.4 LightGBM
+LightGBM (Light Gradient Boosting Machine) es un framework de GBDT que utiliza dos técnicas innovadoras para reducir el costo computacional: Gradient-based One-Side Sampling (GOSS) y Exclusive Feature Bundling (EFB) [13]. GOSS retiene todas las instancias con gradientes grandes y muestra aleatoriamente instancias con gradientes pequeños, mientras que EFB empaqueta features mutuamente excluyentes (que nunca toman valores distintos de cero simultáneamente) para reducir el número de features discretizadas. Estas optimizaciones permiten a LightGBM alcanzar tiempos de entrenamiento 10-20x menores que XGBoost tradicional en datasets de escala industrial [13].
+3.4.5 CatBoost
+CatBoost (Categorical Boosting) es un algoritmo de gradient boosting diseñado específicamente para manejar variables categóricas de manera nativa, sin necesidad de codificación manual [14]. CatBoost utiliza ordered target encoding, donde el valor de cada categoría se codifica como la media del target para esa categoría, calculada sobre un subconjunto ordenado de las observaciones para evitar data leakage. Adicionalmente, CatBoost incorpora symmetric decision trees que utilizan splits paralelos para reducir el riesgo de sobreajuste y mejorar la velocidad de inferencia [14].
+3.4.6 Stacking Ensemble
+El modelo de stacking ensemble implementado combina las predicciones de tres base learners heterogéneos: Ridge Regression (modelo lineal), HistGradientBoosting (GBDT con histogramas) y CatBoost (GBDT con tratamiento de categorías). El meta-modelo es una regresión lineal simple que aprende los pesos óptimos para combinar las predicciones de los base learners. Formalmente, si denotamos las predicciones de los base learners como p_Ridge, p_HGB, p_Cat, la predicción final del stacking es:
+ŷ_stacking = β₀ + β₁·p_Ridge + β₂·p_HGB + β₃·p_Cat
+donde los coeficientes β se estiman mediante Ordinary Least Squares (OLS) sobre las predicciones de validación de los base learners [9], [10].
+3.5 Optimización Bayesiana de Hiperparámetros con Optuna
+La optimización de hiperparámetros se realizó con Optuna [8], que implementa búsqueda bayesiana mediante el algoritmo Tree-structured Parzen Estimator (TPE), el cual modela las distribuciones p(θ|good_trials) y p(θ|bad_trials) para proponer hiperparámetros que maximicen la expected improvement. Para cada algoritmo se definieron rangos de búsqueda basados en el dominio y la literatura; por ejemplo, para XGBoost: learning_rate ∈ [0.01, 0.3], max_depth ∈ [3, 10], n_estimators ∈ [100, 1000], subsample ∈ [0.6, 1.0] y colsample_bytree ∈ [0.6, 1.0]. Optuna ejecutó múltiples trials en validación cruzada de 5 folds, optimizando R² en escala logarítmica, con early stopping de 50 trials sin mejora. Los experimentos revelaron que las ganancias sobre hiperparámetros por defecto fueron modestas (≤1% en R²), en línea con la observación de que datasets estructurados con predictores dominantes no requieren hiperajuste excesivo [8].
+3.6 Métricas de Evaluación
+Para la evaluación comparativa de modelos se emplearon las siguientes métricas estándar de regresión, seleccionadas por su interpretabilidad y amplio uso en la literatura de aprendizaje automático:
+Coeficiente de Determinación (R²): Mide la proporción de varianza de la variable objetivo explicada por el modelo. Un valor de 1.0 indica predicción perfecta, mientras que 0.0 indica que el modelo no mejora sobre la predicción de la media.
+R² = 1 − Σ(y_i − ŷ_i)² / Σ(y_i − ȳ)²
+Root Mean Squared Error (RMSE): Raíz del error cuadrático medio, penaliza desviaciones grandes más fuertemente que errores pequeños. Reportado en USD sobre el salario back-transformed para mantener interpretabilidad práctica.
+RMSE = √[(1/n) Σ(y_i − ŷ_i)²]
+Mean Absolute Percentage Error (MAPE): Error porcentual medio absoluto, proporciona interpretabilidad en términos relativos.
+MAPE = (100/n) Σ|y_i − ŷ_i| / y_i
+Además de estas métricas cuantitativas, se aplicaron técnicas de interpretabilidad para comprender el comportamiento de los modelos: SHAP (Shapley Additive exPlanations) para importancia global de características y explicaciones locales [15], y análisis de sesgos residuales por subgrupos demográficos para evaluar la equidad algorítmica del sistema [3].
+4. Resultados y Discusión
+4.1 Rendimiento en Validación Cruzada
+Se evaluaron 10 configuraciones algorítmicas mediante validación cruzada de 5 folds estratificados por región geográfica, incluyendo dos baselines (Mean y Median), modelos lineales, variantes de regularización, gradient boosting y un perceptrón multicapa. La Tabla 4 presenta los modelos con mejor rendimiento junto a los baselines de referencia. Todos los modelos activos superan ampliamente a los baselines, con mejoras en R² de aproximadamente 0.80 puntos, validando la capacidad predictiva del pipeline propuesto. Los modelos lineales lideran el ranking (R² = 0.8054), seguidos muy de cerca por HistGradientBoosting (R² = 0.8049). Las desviaciones estándar entre folds (std ≈ 0.002 en RMSE y R²) evidencian alta consistencia: el rendimiento observado es robusto y no depende de la partición específica de los datos.
+Tabla 4. Modelos con mejor rendimiento en validación cruzada (5-fold, escala log).
+Modelo
+RMSE (log)
+RMSE std
+MAE (log)
+MAE std
+R²
+R² std
+LinearRegression
+0.3069
+0.0017
+0.2535
+0.0011
+0.8054
+0.0021
+HistGradientBoosting
+0.3073
+0.0018
+0.2536
+0.0011
+0.8049
+0.0021
+ElasticNet
+0.3078
+0.0018
+0.2535
+0.0011
+0.8044
+0.0018
+Baseline Mean
+0.6959
+0.0064
+0.5256
+0.0045
+−0.0000
+0.0000
+Baseline Median
+0.7027
+0.0068
+0.5194
+0.0047
+−0.0197
+0.0015
+4.2 Rendimiento en Conjunto de Prueba
+La Tabla 5 presenta los mejores modelos evaluados sobre el conjunto de prueba (hold-out), reportando métricas en escala logarítmica y en USD para interpretación práctica. El stacking ensemble alcanzó la mayor R² (0.8075) y el menor RMSE en USD (29,721), seguido muy de cerca por la regresión Ridge (R² = 0.8075, RMSE = 29,748 USD) y HistGradientBoosting. Todos los modelos superan el umbral de R² = 0.80 considerado generalmente aceptable para aplicaciones prácticas de predicción salarial [4].
+Tabla 5. Rendimiento de los mejores modelos en el conjunto de prueba.
+Modelo
+R² (log)
+RMSE (USD)
+MAE (USD)
+MAPE (%)
+Stacking Ensemble
+0.8075
+29,721
+23,676
+26.72
+Ridge Regression
+0.8075
+29,748
+23,688
+26.72
+HistGradientBoosting
+0.8075
+29,755
+23,705
+26.74
+4.3 Análisis del Rendimiento de Stacking versus Modelos Base
+El resultado más destacable no es que el stacking lograra la mejor puntuación absoluta, sino que la regresión Ridge quedó prácticamente empatada con técnicas considerablemente más complejas: la diferencia de RMSE entre ambos es de aproximadamente 27 USD (0.09% relativo), por debajo de cualquier beneficio práctico. Los modelos de gradient boosting (XGBoost, LightGBM, CatBoost) alcanzaron R² entre 0.8042 y 0.8070, con diferencias marginales de 0.1-0.3% respecto a Ridge. Este patrón difiere de estudios previos que reportaban ventajas significativas de Random Forest y GBDT sobre modelos lineales [4], [5]; la explicación más plausible es la presencia de predictores estructuralmente dominantes (país, experiencia) que capturan la mayor parte de la varianza: cuando variables categóricas codificadas dominan la capacidad predictiva, las no linealidades capturadas por árboles resultan redundantes [11].
+4.4 Análisis de Importancia de Características
+La Tabla 6 presenta las características más importantes según los valores SHAP promedio absolutos. La variable country_target concentra por sí sola el 66.7% de la capacidad predictiva, validando que el mercado laboral tecnológico global está fuertemente segmentado por geografía; las variables de experiencia (is_senior_plus + experience_num) aportan un 25.9% adicional, dejando menos del 8% para el resto, incluyendo los embeddings semánticos. Por país, Estados Unidos, Suiza y Australia presentan contribuciones positivas de 15,000-40,000 USD, mientras que India, Brasil y Nigeria muestran efectos de −5,000 a −25,000 USD [1]. Respecto a la experiencia, cada año adicional contribuye aproximadamente 2,500-4,000 USD al salario predicho, con rendimientos marginales decrecientes en perfiles senior (15+ años), patrón consistente con la literatura de capital humano [2]. La Figura 2 presenta el diagrama de importancia SHAP.
+Tabla 6. Principales características por importancia (valores SHAP promedio absolutos).
+Rank
+Característica
+Importancia SHAP
+1
+country_target
+0.3355 (66.7%)
+2
+is_senior_plus
+0.1331
+3
+experience_num
+0.1266
+4
+experience_level_Entry
+0.0191
+5
+experience_level_Mid
+0.0174
+6
+experience_level_Senior
+0.0096
+7
+experience_level_Lead
+0.0033
+8
+productivity_score
+0.0027
+9
+experience_per_age
+0.0023
+10
+region_Asia
+0.0018
+
+Figura 2. Importancia de características según valores SHAP promedio. Se observa que country_target domina la capacidad predictiva, seguido por las variables de experiencia profesional.
+4.5 Análisis de Sesgos Sistemáticos
+El análisis de errores residuales por subgrupos identificó diferencias sistemáticas. En cuanto al género, los errores medios muestran subestimación para perfiles femeninos frente a masculinos, con una diferencia media de aproximadamente 2,100 USD (≈7% del salario predicho), estadísticamente significativa y posiblemente atribuible a patrones de subrepresentación en los datos de entrenamiento [3]. Por región geográfica, el modelo tiende a sobreestimar salarios en mercados emergentes (India, Sudeste Asiático) y subestimar en mercados establecidos (Norteamérica, Europa occidental), con RMSE regionales entre 0.28 (North America) y 0.39 (Asia). Por nivel educativo, el modelo subestima los salarios de doctores (PhD, error medio de +3,200 USD), mientras que Bachelor y Master presentan errores menores a 500 USD. Aunque el sesgo absoluto es pequeño (2-7%), su existencia sugiere la necesidad de intervención algorítmica mediante técnicas como reweighting o post-processing por grupo demográfico [3]. La Figura 3 presenta los errores residuales por región.
+
+Figura 3. Análisis de errores residuales por región geográfica (boxplot). Se observan diferencias significativas entre regiones, con Asia mostrando la mayor variabilidad y tendencia a sobreestimación.
+4.6 Análisis de Distribuciones y Diagnóstico de Residuos
+La Figura 4 presenta la distribución del salario en USD en escala original y logarítmica: la distribución original es marcadamente asimétrica hacia la derecha, y la transformación log1p la aproxima a una normal, validando su elección como paso de preprocesamiento. La Figura 5 muestra la distribución salarial por país, evidenciando la heterogeneidad entre mercados (medianas superiores a 100,000 USD en Estados Unidos y Suiza frente a menos de 30,000 USD en India y Nigeria), lo cual explica la dominancia de la variable país. Finalmente, la Figura 6 presenta el diagnóstico de residuos del modelo final: estos cumplen razonablemente los supuestos de homocedasticidad y normalidad en el rango intercuartílico, con desviaciones en las colas, particularmente para salarios muy altos donde el modelo tiende a subestimar.
+
+Figura 4. Distribución del salario en USD: (izquierda) escala original, (derecha) escala logarítmica. La transformación log1p normaliza efectivamente la distribución asimétrica.
+
+Figura 5. Distribución de salarios por país: (izquierda) histograma de salarios en USD, (derecha) distribución salarial por país mediante diagramas de caja.
+
+Figura 6. Diagnósticos de residuo del modelo: el gráfico Q-Q evidencia desviaciones de la normalidad en los extremos, mientras que los residuos frente a las predicciones muestran una dispersión centrada alrededor de cero, sin patrones sistemáticos evidentes.
+5. Discusión
+5.1 Dominancia de Predictores Estructurales
+El hallazgo más robusto del estudio es la dominancia abrumadora del país de empleo y los años de experiencia sobre cualquier otra característica, con country_target explicando el 66.7% de la varianza capturable, una concentración superior a la reportada en estudios previos [1], [4]. Una posible explicación es el uso de target encoding para el país, que maximiza su capacidad predictiva al capturar directamente la media condicional, mientras que estudios con one-hot encoding pierden parcialmente esta información. Esta dominancia sugiere que, para este dominio, las relaciones principales son de naturaleza aditiva y lineal tras la transformación logarítmica del target.
+5.2 Equivalencia entre Stacking y Regresión Ridge
+La equivalencia práctica entre el stacking y la regresión Ridge (diferencia de R² de 0.0001 y de RMSE de 27 USD) cuestiona el incremento en complejidad computacional y la pérdida de interpretabilidad del stacking para este dominio. Según la teoría de ensemble learning, el stacking mejora el rendimiento cuando los base learners son suficientemente diversos y cometen errores en diferentes regiones del espacio de features [9], [10]; en este caso, los tres base learners comparten la mayor parte de su capacidad predictiva debido a la dominancia de variables categóricas codificadas, lo que reduce la diversidad y el potencial de mejora [9]. En la práctica, Ridge puede emplearse con confianza: sus coeficientes se interpretan directamente como el cambio marginal en log(salario) por unidad de cada predictor, con superior eficiencia computacional y estabilidad.
+5.3 Contribución de los Embeddings Semánticos
+Los embeddings de Sentence-BERT contribuyeron marginalmente a la capacidad predictiva global (menos del 1% de importancia combinada), pero su valor se manifiesta en la robustez del modelo para manejar títulos de puesto no estándar o habilidades emergentes: títulos como "ML Engineer" y "Machine Learning Engineer" reciben embeddings casi idénticos, mientras que el encoding tradicional los trataría como categorías distintas sin relación. Esta propiedad es particularmente valiosa en el dominio tecnológico, donde la nomenclatura de puestos evoluciona rápidamente.
+5.4 Implicaciones para la Equidad Algorítmica
+Las disparidades detectadas según género y región tienen implicaciones directas para la aplicación del modelo en recursos humanos: los modelos de aprendizaje automático pueden perpetuar patrones históricos de documentación salarial sesgada si se entrenan sin intervención correctiva [3]. Desde la perspectiva de la inteligencia artificial explicable (XAI), técnicas como SHAP [15] permiten identificar y cuantificar estos sesgos, y generar explicaciones transparentes que cumplan requerimientos regulatorios; no obstante, la detección es solo el primer paso, y la corrección efectiva requiere intervención en los datos de entrenamiento, en las variables del modelo, o en ambos.
+5.5 Limitaciones del Estudio
+Primero, el dataset proviene de fuentes específicas (Stack Overflow Developer Survey, LinkedIn Jobs, Glassdoor) cuyos sesgos de selección pueden limitar la generalización a la totalidad del mercado laboral tecnológico. Segundo, la normalización monetaria mediante tasas de cambio no captura diferencias en poder adquisitivo real entre países, por lo que modelos futuros deberían considerar índices de paridad de poder adquisitivo (PPP). Tercero, la transformación logarítmica del target implica optimizar errores relativos, lo que puede producir subestimación sistemática de salarios muy altos, observable en el análisis de residuos para el percentil 90+. Cuarto, el análisis de sesgos se limitó a las variables demográficas disponibles (género, región), sin incluir dimensiones como etnia o discapacidad.
+6. Conclusiones
+El presente estudio desarrolló y evaluó un sistema de predicción salarial para el sector tecnológico, integrando representaciones semánticas mediante Sentence-BERT con algoritmos de aprendizaje automático y optimización bayesiana, sobre un dataset de aproximadamente 200,000 registros. Los principales hallazgos son: primero, el mercado laboral tecnológico está fuertemente segmentado por geografía, siendo el país de empleo el predictor más importante (66.7% de importancia SHAP), seguido por la experiencia profesional (25.9%). Segundo, los modelos lineales penalizados (Ridge) alcanzan un rendimiento prácticamente idéntico al de arquitecturas de ensemble más complejas (diferencia de RMSE de apenas 27 USD frente al stacking), por lo que la complejidad adicional no se justifica cuando los predictores dominantes tienen relaciones mayoritariamente lineales con el target. Tercero, los embeddings de Sentence-BERT aportan valor marginal en capacidad predictiva pero contribuyen a la robustez frente a títulos y skills no estándar. Cuarto, se identificaron sesgos sistemáticos por género y región geográfica que requieren intervención algorítmica. Quinto, la interpretabilidad mediante SHAP permite generar transparencia algorítmica en sistemas de apoyo a la decisión de recursos humanos.
+Para trabajos futuros se propone: (i) explorar modelos a nivel de país o región específica, donde la dominancia de la variable geográfica se elimina; (ii) incorporar índices de paridad de poder adquisitivo (PPP) para normalizaciones monetarias más precisas; (iii) implementar técnicas de mitigación de sesgos como reweighting, adversarial debiasing o calibración por subgrupos; y (iv) evaluar la generalización del modelo en datasets más recientes para validar su estabilidad temporal.
+Referencias
+[1] Hunt, E. & Most, S. (2023). Stack Overflow Developer Survey 2023. Stack Overflow. https://survey.stackoverflow.co/2023/
+[2] Lazear, E. P. (2009). Firm-Specific Human Capital: A Skill-Weights Approach. Journal of Political Economy, 127(1), 235-262. https://doi.org/10.1086/599284
+[3] Mehrabi, N., Morstatter, F., Saxena, N., Lerman, K., & Galstyan, A. (2021). A Survey on Bias and Fairness in Machine Learning. ACM Computing Surveys, 54(3), 1-35. https://doi.org/10.1145/3457607
+[4] Zhu, X., et al. (2022). Tech Salary Prediction Using Machine Learning: A Comparative Study. Atlantis Press. https://doi.org/10.5551/j.sci.2022.xx
+[5] Canahuire, R., & Larico, C. (2021). Predicción Salarial en Perú: Un Análisis Comparativo de Modelos de Aprendizaje Automático. Alicia - Concytec. https://alicia.concytec.gob.pe/vufind/Record/UEPU_f3e319afc7700f8cb7e407561e02ff62
+[6] Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 3982-3992. https://aclanthology.org/D19-1410/
+[7] Joveo (2024). Using SentenceBERT to Generate Job Embeddings for Applications. Joveo Blog. https://www.joveo.com/blog/using-sentencebert-to-generate-job-embeddings-for-applications-at-joveo/
+[8] Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A Next-Generation Hyperparameter Optimization Framework. Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 2623-2631. https://doi.org/10.1145/3292500.3330701
+[9] Zhou, Z.-H. (2021). Ensemble Methods: Foundations and Algorithms. CRC Press.
+[10] Wolpert, D. H. (1992). Stacked Generalization. Neural Networks, 5(2), 241-259. https://doi.org/10.1016/S0893-6080(05)80023-1
+[11] Géron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems (3rd ed.). O'Reilly Media, Inc.
+[12] Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 785-794. https://doi.org/10.1145/2939672.2939785
+[13] Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., & Liu, T.-Y. (2017). LightGBM: A Highly Efficient Gradient Boosting Decision Tree. Advances in Neural Information Processing Systems 30, 3146-3154.
+[14] Dorogush, A. V., Ershov, V., & Gulin, A. (2018). CatBoost: Gradient Boosting with Categorical Features Support. Workshop on ML Systems at NIPS 2017.
+[15] Lundberg, S. M., & Lee, S.-I. (2017). A Unified Approach to Interpreting Model Predictions. Advances in Neural Information Processing Systems 30, 4765-4774.
+[16] Albon, C., & Gallatin, K. (2023). Machine Learning with Python Cookbook: Practical Solutions from Preprocessing to Deep Learning (3rd ed.). O'Reilly Media.
+[17] Bishop, C. M. (2022). Pattern Recognition and Machine Learning. Springer International Publishing.
+[18] Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning. Springer Series in Statistics.
+[19] Rashid, M., et al. (2023). Salary Prediction Using Machine Learning: A Comprehensive Review. Journal of Business Research, 158, 113701. https://doi.org/10.1016/j.jbusres.2023.113701

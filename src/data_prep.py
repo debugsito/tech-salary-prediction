@@ -1,9 +1,27 @@
 import os
+import argparse
+from pathlib import Path
 
 
 def load_raw(path='tech_jobs_salaries.xlsx'):
     import pandas as pd
     return pd.read_excel(path)
+
+
+def load_data_source(source='synthetic', sample_size=None):
+    """
+    Carga datos desde la fuente especificada.
+    
+    Args:
+        source: 'synthetic' (default) o 'stackoverflow'
+        sample_size: Si se especifica, carga solo N filas (para validación rápida)
+    """
+    if source == 'stackoverflow':
+        from data_loader_stackoverflow import load_stackoverflow_survey
+        return load_stackoverflow_survey(year="2024", sample_size=sample_size, data_dir="data/external")
+    else:
+        # Fuente sintética default
+        return load_raw()
 
 
 def add_salary_usd(df):
@@ -49,7 +67,34 @@ def build_features(work_df):
 
 
 if __name__ == '__main__':
-    df = load_raw()
+    parser = argparse.ArgumentParser(description='Data preparation pipeline')
+    parser.add_argument('--source', choices=['synthetic', 'stackoverflow'], 
+                        default='synthetic', help='Data source to use')
+    parser.add_argument('--sample-size', type=int, default=None,
+                        help='Load only N rows (for SO survey validation)')
+    parser.add_argument('--validate-only', action='store_true',
+                        help='Only validate structure, skip full processing')
+    args = parser.parse_args()
+    
+    print(f"Loading data from source: {args.source}")
+    if args.sample_size:
+        print(f"Sample size: {args.sample_size} rows")
+    
+    # Cargar datos
+    df = load_data_source(source=args.source, sample_size=args.sample_size)
+    
+    # Si solo validamos, terminamos aquí
+    if args.validate_only:
+        print("\n=== Validation mode ===")
+        print(f"Source: {args.source}")
+        print(f"Shape: {df.shape}")
+        print(f"Columns: {list(df.columns)}")
+        print("\nHead:")
+        print(df.head(3))
+        print("\n✓ Validation complete")
+        exit(0)
+    
+    # Procesar normalmente
     df = add_salary_usd(df)
     df = build_features(df)
 
@@ -58,11 +103,15 @@ if __name__ == '__main__':
 
     out_dir = os.path.join('data', 'processed')
     os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, 'tech_jobs_salaries_processed.parquet')
+    
+    # Nombre de archivo según fuente
+    source_suffix = args.source if args.source != 'synthetic' else 'processed'
+    out_path = os.path.join(out_dir, f'tech_jobs_salaries_{source_suffix}.parquet')
+    
     try:
         df.to_parquet(out_path)
         print(f'Guardado en {out_path}')
     except Exception as e:
-        csv_path = os.path.join(out_dir, 'tech_jobs_salaries_processed.csv')
+        csv_path = os.path.join(out_dir, f'tech_jobs_salaries_{source_suffix}.csv')
         df.to_csv(csv_path, index=False)
         print(f'No se pudo guardar como parquet ({e}); guardado como CSV en {csv_path}')
