@@ -1,0 +1,17 @@
+# El servidor de despliegue expone una CPU virtual sin SSE3 ni AVX, y los wheels
+# de NumPy a partir de la versión 2.2 exigen la línea base x86-64-v2. Se fija por
+# tanto NumPy 2.0, la última que funciona en esa máquina, y con ella Python 3.12.
+#
+# scikit-learn sí es la misma versión con que se entrenó: es la que determina si
+# la tubería serializada puede deserializarse. La divergencia restante se vigila
+# con `test_paridad.py`, que contrasta las estimaciones del servicio con las
+# obtenidas en el entorno de entrenamiento.
+numpy==2.0.2
+pandas==2.2.3
+scikit-learn==1.9.0
+xgboost==3.4.1
+shap==0.52.0
+joblib==1.6.0
+fastapi==0.121.1
+uvicorn[standard]==0.40.0
+pydantic==2.12.3
