@@ -24,3 +24,6 @@ catboost_info/
 *.joblib
 *.npz
 results/quick_*.csv
+
+# Salida del cuaderno de trabajo, que no debe pisar results/ ni figures/
+salida_cuaderno/

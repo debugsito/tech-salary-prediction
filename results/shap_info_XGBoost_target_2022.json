@@ -1,83 +1,83 @@
 {
   "estimador": "TreeExplainer",
-  "n_explicadas": 2000,
+  "n_explicadas": 5791,
   "n_variables": 121,
   "top_10": [
     {
       "variable": "Country",
-      "shap_medio_abs": 0.4842279851436615,
-      "ic_inferior": 0.4687614142894745,
-      "ic_superior": 0.49823880195617676,
+      "shap_medio_abs": 0.49504488706588745,
+      "ic_inferior": 0.485996276140213,
+      "ic_superior": 0.5040077567100525,
       "importancia_impureza": 0.2108003795146942
     },
     {
       "variable": "YearsCodePro_num",
-      "shap_medio_abs": 0.15766504406929016,
-      "ic_inferior": 0.1534557342529297,
-      "ic_superior": 0.16187602281570435,
+      "shap_medio_abs": 0.1597040742635727,
+      "ic_inferior": 0.15720868110656738,
+      "ic_superior": 0.16231100261211395,
       "importancia_impureza": 0.03732149302959442
     },
     {
       "variable": "DevType",
-      "shap_medio_abs": 0.06968965381383896,
-      "ic_inferior": 0.06735973805189133,
-      "ic_superior": 0.0723007321357727,
+      "shap_medio_abs": 0.0695381686091423,
+      "ic_inferior": 0.06819950044155121,
+      "ic_superior": 0.07098805904388428,
       "importancia_impureza": 0.011338666081428528
     },
     {
       "variable": "income_group_High income",
-      "shap_medio_abs": 0.04540639743208885,
-      "ic_inferior": 0.04379047453403473,
-      "ic_superior": 0.04694236442446709,
+      "shap_medio_abs": 0.04601903259754181,
+      "ic_inferior": 0.0450638085603714,
+      "ic_superior": 0.04694852605462074,
       "importancia_impureza": 0.1657627522945404
     },
     {
       "variable": "RemoteWork_Fully remote",
-      "shap_medio_abs": 0.03189965337514877,
-      "ic_inferior": 0.031268101185560226,
-      "ic_superior": 0.03253540024161339,
+      "shap_medio_abs": 0.03213890269398689,
+      "ic_inferior": 0.03180787339806557,
+      "ic_superior": 0.03253079205751419,
       "importancia_impureza": 0.013780780136585236
     },
     {
-      "variable": "platform__aws",
-      "shap_medio_abs": 0.028965136036276817,
-      "ic_inferior": 0.02854943461716175,
-      "ic_superior": 0.029369600117206573,
-      "importancia_impureza": 0.01850997656583786
-    },
-    {
       "variable": "language__php",
-      "shap_medio_abs": 0.028744004666805267,
-      "ic_inferior": 0.02764301747083664,
-      "ic_superior": 0.029705451801419258,
+      "shap_medio_abs": 0.028922108933329582,
+      "ic_inferior": 0.028348999097943306,
+      "ic_superior": 0.029620299115777016,
       "importancia_impureza": 0.020104259252548218
     },
     {
+      "variable": "platform__aws",
+      "shap_medio_abs": 0.02889273501932621,
+      "ic_inferior": 0.028647365048527718,
+      "ic_superior": 0.029126625508069992,
+      "importancia_impureza": 0.01850997656583786
+    },
+    {
       "variable": "language__typescript",
-      "shap_medio_abs": 0.026062430813908577,
-      "ic_inferior": 0.025604892522096634,
-      "ic_superior": 0.026500869542360306,
+      "shap_medio_abs": 0.026121266186237335,
+      "ic_inferior": 0.02584315463900566,
+      "ic_superior": 0.0263977088034153,
       "importancia_impureza": 0.006530463695526123
     },
     {
       "variable": "YearsCode_num",
-      "shap_medio_abs": 0.02552732639014721,
-      "ic_inferior": 0.024761419743299484,
-      "ic_superior": 0.026280980557203293,
+      "shap_medio_abs": 0.02580271288752556,
+      "ic_inferior": 0.025287838652729988,
+      "ic_superior": 0.026301536709070206,
       "importancia_impureza": 0.009059618227183819
     },
     {
       "variable": "OrgSize_10,000 or more employees",
-      "shap_medio_abs": 0.02485641837120056,
-      "ic_inferior": 0.023697877302765846,
-      "ic_superior": 0.025996141135692596,
+      "shap_medio_abs": 0.024545492604374886,
+      "ic_inferior": 0.023879684507846832,
+      "ic_superior": 0.025202052667737007,
       "importancia_impureza": 0.01170083787292242
     }
   ],
   "ruta_valores": "results/shap_values_XGBoost_target_2022.npz",
   "ruta_resumen": "results/shap_summary_XGBoost_target_2022.csv",
   "spearman_shap_vs_impureza": {
-    "rho": 0.7382,
+    "rho": 0.7428,
     "p_valor": 0.0,
     "n_variables": 121
   }
