@@ -518,7 +518,57 @@ def fig_mitigacion(salida, resultados: Path):
     return guardar(fig, "mitigacion_compromiso", salida)
 
 
+def fig_ppp(salida, resultados: Path):
+    """Nominal frente a paridad de poder adquisitivo: pesos y medianas."""
+    ruta = resultados / "ppp_comparativa.json"
+    if not ruta.exists():
+        return None
+    import json
+    d = json.loads(ruta.read_text(encoding="utf-8"))
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(ANCHO, 3.4))
+    fig.subplots_adjust(wspace=0.34)
+
+    # Panel izquierdo: contribución SHAP por bloque en ambas escalas.
+    nom = d["modelo"]["nominal"]["pesos_shap"]
+    ppa = d["modelo"]["ppa"]["pesos_shap"]
+    bloques = list(nom.keys())
+    y = np.arange(len(bloques))
+    ax1.barh(y + 0.2, [nom[b] for b in bloques], height=0.38,
+             color=AZUL, label="Dólares nominales")
+    ax1.barh(y - 0.2, [ppa.get(b, 0) for b in bloques], height=0.38,
+             color=NARANJA, label="Dólares PPA")
+    ax1.set_yticks(y, bloques, fontsize=8)
+    ax1.invert_yaxis()
+    ax1.set_xlabel("% de la contribución SHAP total", fontsize=8.5)
+    ax1.set_title("Contribución por bloque", loc="left")
+    ax1.legend(loc="lower right", fontsize=7.5)
+    ax1.grid(axis="x", alpha=0.6)
+    ax1.set_axisbelow(True)
+
+    # Panel derecho: mediana de compensación por nivel de renta.
+    orden = ["High income", "Upper middle income", "Lower middle income"]
+    etiquetas = ["Renta\nalta", "Renta\nmedia-alta", "Renta\nmedia-baja"]
+    x = np.arange(len(orden))
+    mn = [d["descriptivo"]["nominal"]["por_renta"][g] / 1000 for g in orden]
+    mp = [d["descriptivo"]["ppa"]["por_renta"][g] / 1000 for g in orden]
+    ax2.bar(x - 0.2, mn, width=0.38, color=AZUL, label="Nominal")
+    ax2.bar(x + 0.2, mp, width=0.38, color=NARANJA, label="PPA")
+    for i, (a, b) in enumerate(zip(mn, mp)):
+        ax2.text(i - 0.2, a + 2, f"{a:.0f}", ha="center", fontsize=7, color=TINTA_2)
+        ax2.text(i + 0.2, b + 2, f"{b:.0f}", ha="center", fontsize=7, color=TINTA_2)
+    ax2.set_xticks(x, etiquetas, fontsize=8)
+    ax2.set_ylabel("Mediana (miles de USD)", fontsize=8.5)
+    ax2.set_title("Mediana por nivel de renta", loc="left")
+    ax2.legend(fontsize=7.5)
+    ax2.grid(axis="y", alpha=0.6)
+    ax2.set_axisbelow(True)
+
+    return guardar(fig, "ppp_comparativa", salida)
+
+
 FIGURAS = {
+
     "dist_compensacion": lambda d, r, s: fig_distribucion(d, s),
     "composicion_renta": lambda d, r, s: fig_composicion(d, s),
     "comparacion_modelos": lambda d, r, s: fig_modelos(s, r),
@@ -528,6 +578,7 @@ FIGURAS = {
     "ia_compensacion": lambda d, r, s: fig_ia(s, r),
     "interaccion_experiencia_renta": lambda d, r, s: fig_interaccion_experiencia(s, r, d),
     "mitigacion_compromiso": lambda d, r, s: fig_mitigacion(s, r),
+    "ppp_comparativa": lambda d, r, s: fig_ppp(s, r),
 }
 
 
