@@ -67,6 +67,10 @@ h2:first-child{margin-top:0}
 footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--linea);
   color:var(--tinta3);font-size:12px}
 .vacio{color:var(--tinta3);font-size:14px;padding:30px 4px}
+.aviso{color:var(--tinta3);font-size:11.5px;margin:5px 0 0;line-height:1.4}
+.ejemplos{margin-top:14px;font-size:12px;color:var(--tinta3)}
+.ejemplos button{background:none;border:0;color:var(--azul);cursor:pointer;
+  font:inherit;text-decoration:underline;padding:0 2px}
 </style>
 </head>
 <body>
@@ -89,6 +93,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--linea);
   <form class="panel" id="formulario">
     <label>País<select id="pais" required></select></label>
     <label>Rol<select id="rol"></select></label>
+    <p class="aviso" id="aviso-roles"></p>
     <div class="dos">
       <label>Años profesionales<input type="number" id="anios_profesionales" min="0" max="60" step="1" value="5"></label>
       <label>Años programando<input type="number" id="anios_programando" min="0" max="60" step="1"></label>
@@ -102,6 +107,10 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--linea);
     <label id="fila-comparar" hidden>Comparar con <span class="pildora">hasta 5</span>
       <select id="comparar_paises" multiple></select></label>
     <button class="principal" type="submit" id="enviar">Estimar</button>
+    <p class="ejemplos">Ejemplos:
+      <button type="button" data-ej="verde">con respaldo</button> ·
+      <button type="button" data-ej="ambar">con reservas</button> ·
+      <button type="button" data-ej="rojo">sin respaldo</button></p>
   </form>
 
   <main class="panel" id="resultado">
@@ -143,8 +152,32 @@ async function arrancar() {
     `${m.algoritmo} sobre la edición ${m.edicion} de la encuesta · ${m.n_muestra.toLocaleString("es")} `
     + `observaciones en ${m.n_paises} países · R² de ${m.r2_prueba} sobre el conjunto de prueba · `
     + `semilla ${m.semilla} · artefacto del ${m.generado}. El servicio no guarda ninguna consulta.`;
-  const pref = [...$("#pais").options].find(o => o.value === "Peru");
-  if (pref) $("#pais").value = "Peru";
+  $("#pais").value = "Germany";
+  await cargarRoles();
+  $("#pais").addEventListener("change", cargarRoles);
+}
+
+// El respaldo depende de la combinación de país y rol, así que el desplegable
+// se rehace con cada país: ordenado por respaldo y marcando lo que no llega al
+// mínimo. Sin esto el usuario tiene que adivinar qué puede consultar.
+async function cargarRoles() {
+  const pais = $("#pais").value;
+  const sel = $("#rol");
+  const previo = sel.value;
+  const d = await (await fetch("/api/roles?pais=" + encodeURIComponent(pais))).json();
+  sel.innerHTML = "";
+  sel.append(new Option(`Sin especificar (${d.n_pais.toLocaleString("en-US")} respuestas en el país)`, ""));
+  for (const r of d.roles) {
+    const o = new Option(
+      r.respaldado ? `${r.etiqueta} — ${r.n} respuestas`
+                   : `${r.etiqueta} — solo ${r.n}, sin respaldo`, r.valor);
+    if (!r.respaldado) o.style.color = "var(--tinta3)";
+    sel.append(o);
+  }
+  if ([...sel.options].some(o => o.value === previo)) sel.value = previo;
+  $("#aviso-roles").textContent = d.con_respaldo
+    ? `${d.con_respaldo} de los ${d.roles.length} roles tienen al menos ${d.minimo} respuestas en este país.`
+    : `Ningún rol alcanza las ${d.minimo} respuestas en este país: el sistema se abstendrá de dar una cifra.`;
 }
 
 function perfil() {
@@ -269,6 +302,23 @@ $(".pestanas").addEventListener("click", e => {
   $("#enviar").textContent = VISTA === "comparar" ? "Comparar" : "Estimar";
   $("#resultado").innerHTML = `<div class="vacio">Completa el formulario y pulsa
     «${VISTA === "comparar" ? "Comparar" : "Estimar"}».</div>`;
+});
+
+const EJEMPLOS = {
+  verde: {pais: "Germany", rol: "Developer, back-end", anios: 8},
+  ambar: {pais: "Brazil", rol: "Developer, full-stack", anios: 6},
+  rojo:  {pais: "Peru", rol: "Developer, back-end", anios: 8},
+};
+
+$(".ejemplos").addEventListener("click", async e => {
+  const b = e.target.closest("button[data-ej]");
+  if (!b) return;
+  const ej = EJEMPLOS[b.dataset.ej];
+  $("#pais").value = ej.pais;
+  await cargarRoles();
+  $("#rol").value = ej.rol;
+  $("#anios_profesionales").value = ej.anios;
+  $("#enviar").click();
 });
 
 $("#formulario").addEventListener("submit", async e => {

@@ -63,14 +63,22 @@ def evaluar(pais: str, rol: str | None, contexto: dict) -> dict:
             "resumen": "Sin datos para este país.",
         }
 
-    respalda_rol = n_celda >= minimo
-    if not respalda_rol:
+    if rol is None:
+        # Sin rol declarado no hay criterio de rol que incumplir: la estimación
+        # se apoya en el país, que es exactamente lo que se ha pedido.
+        respalda_rol = n_pais >= minimo
         motivos.append(
-            f"Solo {n_celda} de las {n_pais} respuestas de {pais} corresponden a "
-            f"este rol, por debajo del mínimo de {minimo}. La estimación se apoya "
-            f"en el país, no en el rol."
-            if n_celda else
-            f"Ninguna de las {n_pais} respuestas de {pais} corresponde a este rol.")
+            f"No se ha indicado el rol, de modo que la estimación se apoya en las "
+            f"{n_pais} respuestas de {pais} sin distinguir la función desempeñada.")
+    else:
+        respalda_rol = n_celda >= minimo
+        if not respalda_rol:
+            motivos.append(
+                f"Solo {n_celda} de las {n_pais} respuestas de {pais} corresponden a "
+                f"este rol, por debajo del mínimo de {minimo}. La estimación se apoya "
+                f"en el país, no en el rol."
+                if n_celda else
+                f"Ninguna de las {n_pais} respuestas de {pais} corresponde a este rol.")
 
     cumple_perdida = error is not None and error <= zeta
     if not cumple_perdida and error is not None:

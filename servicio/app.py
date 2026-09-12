@@ -177,6 +177,29 @@ def contexto():
     }
 
 
+@app.get("/api/roles")
+def api_roles(pais: str):
+    """Roles del país, con las observaciones que respaldan cada uno.
+
+    Existe para que el usuario no tenga que adivinar qué combinaciones puede
+    consultar: la interfaz ordena el desplegable por respaldo y marca las que
+    quedan por debajo del mínimo.
+    """
+    fia = CONTEXTO["fiabilidad"]
+    minimo = fia["n_minimo_celda"]
+    prefijo = f"{pais}||"
+    cuenta = {k[len(prefijo):]: v for k, v in fia["n_pais_rol"].items()
+              if k.startswith(prefijo)}
+    salida = [{"valor": c["valor"], "etiqueta": c["etiqueta"],
+               "n": cuenta.get(c["valor"], 0),
+               "respaldado": cuenta.get(c["valor"], 0) >= minimo}
+              for c in CONTEXTO["catalogos"]["DevType"]]
+    salida.sort(key=lambda r: -r["n"])
+    return {"pais": pais, "n_pais": fia["n_pais"].get(pais, 0),
+            "minimo": minimo, "roles": salida,
+            "con_respaldo": sum(1 for r in salida if r["respaldado"])}
+
+
 @app.post("/api/estimar")
 def api_estimar(p: Perfil):
     evaluacion = fiabilidad.evaluar(p.pais, p.rol, CONTEXTO)

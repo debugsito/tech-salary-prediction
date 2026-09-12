@@ -86,3 +86,24 @@ def test_el_mismo_perfil_cambia_de_cifra_al_cambiar_de_pais():
 def test_la_portada_se_sirve():
     r = cliente.get("/")
     assert r.status_code == 200 and "Estimación salarial" in r.text
+
+
+def test_roles_indica_el_respaldo_de_cada_uno():
+    d = cliente.get("/api/roles", params={"pais": "Germany"}).json()
+    assert d["n_pais"] == 3192 and d["con_respaldo"] > 5
+    assert d["roles"][0]["n"] >= d["roles"][-1]["n"]        # ordenados por respaldo
+    assert all("respaldado" in r for r in d["roles"])
+
+
+def test_peru_no_tiene_ningun_rol_respaldado():
+    d = cliente.get("/api/roles", params={"pais": "Peru"}).json()
+    assert d["n_pais"] == 48 and d["con_respaldo"] == 0
+
+
+def test_sin_rol_la_estimacion_se_apoya_en_el_pais():
+    # Sin rol declarado no hay criterio de rol que incumplir.
+    d = cliente.post("/api/estimar", json={"pais": "Germany",
+                                           "anios_profesionales": 8}).json()
+    assert d["fiabilidad"]["nivel"] == "verde"
+    assert d["banda"] is not None
+    assert any("No se ha indicado el rol" in m for m in d["fiabilidad"]["motivos"])
