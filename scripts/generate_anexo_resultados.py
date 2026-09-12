@@ -34,13 +34,22 @@ SALIDA = RAIZ.parent / "tesis_borrador" / "12_anexo_resultados.md"
 N_SHAP = 40
 
 
-def tabla_md(df: pd.DataFrame, alineacion: dict | None = None) -> list[str]:
-    """Convierte un marco de datos en una tabla de Markdown."""
+def tabla_md(df: pd.DataFrame, alineacion: dict | None = None,
+             titulo: str = "") -> list[str]:
+    """Convierte un marco de datos en una tabla de Markdown, con su rótulo.
+
+    El número del rótulo se deja en 0.0: lo asigna después
+    `tools/numerar_tablas.py` en el repositorio del documento, que es quien
+    conoce la posición de la tabla dentro del conjunto.
+    """
     alineacion = alineacion or {}
     cols = list(df.columns)
     sep = [":---" if alineacion.get(c) == "izq" else "---:" for c in cols]
-    filas = ["| " + " | ".join(str(c) for c in cols) + " |",
-             "| " + " | ".join(sep) + " |"]
+    filas = []
+    if titulo:
+        filas += [f"**Tabla 0.0.** {titulo}", ""]
+    filas += ["| " + " | ".join(str(c) for c in cols) + " |",
+              "| " + " | ".join(sep) + " |"]
     for _, r in df.iterrows():
         filas.append("| " + " | ".join(str(v) for v in r) + " |")
     return filas
@@ -72,7 +81,8 @@ def seccion_cv(l: list[str]):
           f"estratificadas repetidas cuatro veces. Se indica la media y la "
           f"desviación típica entre particiones para el coeficiente de "
           f"determinación.", ""]
-    l += tabla_md(df, {"Modelo": "izq", "Codificación": "izq"})
+    l += tabla_md(df, {"Modelo": "izq", "Codificación": "izq"},
+                  "Validación cruzada: desempeño de todas las configuraciones")
     l += ["", "*Fuente:* `results/cv_by_encoding.csv`", ""]
 
 
@@ -101,7 +111,8 @@ def seccion_test(l: list[str]):
           "Evaluación única sobre las 7,525 observaciones reservadas, que no "
           "intervinieron en ninguna decisión de modelado.", ""]
     l += tabla_md(t.sort_values("R²", ascending=False),
-                  {"Modelo": "izq", "Codificación": "izq"})
+                  {"Modelo": "izq", "Codificación": "izq"},
+                  "Conjunto de prueba: desempeño de todas las configuraciones")
     l += ["", "*Fuente:* `results/test_by_encoding.csv`", ""]
 
 
@@ -137,7 +148,8 @@ def seccion_wilcoxon(l: list[str]):
         })
         l += [f"### {titulo}", ""]
         l += tabla_md(d, {"Configuración A": "izq", "Configuración B": "izq",
-                          "Significativo": "izq"})
+                          "Significativo": "izq"},
+                      f"Contrastes de {titulo.lower()}")
         l += [""]
     l += ["*Fuente:* `results/wilcoxon_tests.csv`", ""]
 
@@ -167,7 +179,8 @@ def seccion_shap(l: list[str]):
           "para que ambas magnitudes puedan compararse: son distintas y "
           "responden a preguntas distintas, extremo que la hipótesis HE3 "
           "somete a contraste.", ""]
-    l += tabla_md(d, {"Variable": "izq", "IC 95 %": "izq"})
+    l += tabla_md(d, {"Variable": "izq", "IC 95 %": "izq"},
+                  "Contribución de las cuarenta variables de mayor peso")
     l += ["", "*Fuente:* `results/shap_summary_XGBoost_target_2023.csv`", ""]
 
 
@@ -190,7 +203,8 @@ def seccion_interacciones(l: list[str]):
           f"Se descartaron {n_red} pares entre variables redundantes, cuya "
           "aparente interacción refleja un reparto inestable de la atribución "
           "entre variables correlacionadas y no una dependencia sustantiva.", ""]
-    l += tabla_md(d, {"La contribución de": "izq", "varía según": "izq"})
+    l += tabla_md(d, {"La contribución de": "izq", "varía según": "izq"},
+                  "Interacciones entre predictores, ordenadas por fuerza")
     l += ["", "*Fuente:* `results/interacciones.csv`", ""]
 
 
@@ -219,7 +233,8 @@ def seccion_equidad(l: list[str]):
                 "Sesgo (USD)": f"{v['sesgo_sistematico']:+,.0f}",
             })
         l += [f"### {titulo}", ""]
-        l += tabla_md(pd.DataFrame(filas), {"Grupo": "izq"})
+        l += tabla_md(pd.DataFrame(filas), {"Grupo": "izq"},
+                          f"Auditoría de equidad por {titulo.lower()}")
         a = aud.get("agregados", {})
         c = aud.get("contrastes", {})
         if a:
@@ -252,7 +267,8 @@ def seccion_ia(l: list[str]):
             "Diferencia": g.diferencia_pct.map(lambda v: f"{v:+.1f} %"),
         })
         l += [f"### `{var}`", ""]
-        l += tabla_md(d, {"Categoría": "izq"})
+        l += tabla_md(d, {"Categoría": "izq"},
+                      f"Compensación por categoría de `{var}`")
         l += [""]
     l += ["*Fuente:* `results/ia_asociacion.csv`", ""]
 
@@ -271,7 +287,8 @@ def seccion_mitigacion(l: list[str]):
           "El error de los grupos minoritarios no mejora con ninguna: la "
           "disparidad no procede del desequilibrio de la muestra sino de la "
           "mayor heterogeneidad salarial de esos mercados (§5.4.6).", ""]
-    l += tabla_md(piv, {"Grupo": "izq"})
+    l += tabla_md(piv, {"Grupo": "izq"},
+                  "Error relativo por grupo bajo cada estrategia de mitigación")
     l += ["", "*Fuente:* `results/mitigacion_por_grupo.csv`", ""]
 
 
