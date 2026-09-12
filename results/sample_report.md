@@ -62,13 +62,13 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **5.11 : 1**.
 | Variable | Categorías | Cobertura |
 | :--- | ---: | ---: |
 | `Country` | 76 | 100.0 % |
-| `DevType` | 4821 | 100.0 % |
-| `EdLevel` | 10 | 100.0 % |
-| `OrgSize` | 11 | 100.0 % |
-| `RemoteWork` | 4 | 100.0 % |
-| `ICorPM` | 3 | 100.0 % |
-| `Age` | 8 | 100.0 % |
-| `Gender` | 15 | 100.0 % |
+| `DevType` | 4820 | 100.0 % |
+| `EdLevel` | 9 | 100.0 % |
+| `OrgSize` | 10 | 99.9 % |
+| `RemoteWork` | 3 | 100.0 % |
+| `ICorPM` | 2 | 73.7 % |
+| `Age` | 7 | 99.7 % |
+| `Gender` | 14 | 98.8 % |
 | `income_group` | 3 | 100.0 % |
 
 Lenguajes distintos declarados: **42**. Mediana por respondente: **5**.
@@ -128,13 +128,13 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **4.54 : 1**.
 | Variable | Categorías | Cobertura |
 | :--- | ---: | ---: |
 | `Country` | 78 | 100.0 % |
-| `DevType` | 34 | 100.0 % |
+| `DevType` | 33 | 99.9 % |
 | `EdLevel` | 8 | 100.0 % |
-| `OrgSize` | 11 | 100.0 % |
+| `OrgSize` | 10 | 99.9 % |
 | `RemoteWork` | 3 | 100.0 % |
-| `Industry` | 13 | 100.0 % |
-| `ICorPM` | 3 | 100.0 % |
-| `Age` | 8 | 100.0 % |
+| `Industry` | 12 | 61.6 % |
+| `ICorPM` | 2 | 72.0 % |
+| `Age` | 7 | 100.0 % |
 | `income_group` | 3 | 100.0 % |
 
 Lenguajes distintos declarados: **51**. Mediana por respondente: **5**.
@@ -195,12 +195,12 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **4.26 : 1**.
 | :--- | ---: | ---: |
 | `Country` | 60 | 100.0 % |
 | `DevType` | 31 | 100.0 % |
-| `EdLevel` | 9 | 100.0 % |
-| `OrgSize` | 10 | 100.0 % |
-| `RemoteWork` | 6 | 100.0 % |
-| `Industry` | 16 | 100.0 % |
-| `ICorPM` | 3 | 100.0 % |
-| `Age` | 7 | 100.0 % |
+| `EdLevel` | 8 | 99.9 % |
+| `OrgSize` | 9 | 99.9 % |
+| `RemoteWork` | 5 | 99.6 % |
+| `Industry` | 15 | 99.9 % |
+| `ICorPM` | 2 | 98.6 % |
+| `Age` | 6 | 99.9 % |
 | `income_group` | 3 | 100.0 % |
 
 Lenguajes distintos declarados: **42**. Mediana por respondente: **6**.

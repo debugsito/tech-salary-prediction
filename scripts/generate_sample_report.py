@@ -25,7 +25,7 @@ import pandas as pd
 # Permite ejecutar el script directamente desde la raíz del proyecto.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.data_loader_stackoverflow import TARGET, cargar_encuesta  # noqa: E402
+from src.data_loader_stackoverflow import CATEGORIA_AUSENTE, TARGET, cargar_encuesta  # noqa: E402
 
 LATAM = {
     "Brazil", "Mexico", "Argentina", "Colombia", "Chile", "Peru", "Uruguay",
@@ -80,16 +80,38 @@ def caracterizar(df: pd.DataFrame, registro: pd.DataFrame) -> dict:
     for col in ("Country", "DevType", "EdLevel", "OrgSize", "RemoteWork",
                 "Industry", "ICorPM", "Age", "Gender", "income_group"):
         if col in df.columns:
-            datos["cardinalidad"][col] = int(df[col].nunique())
-            no_declarado = (df[col] == "No declarado").sum() if df[col].dtype == object else 0
-            datos["cobertura"][col] = round(
-                float(1 - (df[col].isna().sum() + no_declarado) / len(df)) * 100, 1)
+            # La comparación con «No declarado» se hacía solo si la columna era
+            # de tipo object. Desde pandas 3 las columnas de texto son de tipo
+            # string, de modo que la condición nunca se cumplía: la etiqueta de
+            # ausencia se contaba como una categoría más y toda variable
+            # aparecía con cobertura del 100 %.
+            declarado = df[col].astype("string") != CATEGORIA_AUSENTE
+            datos["cardinalidad"][col] = int(df.loc[declarado, col].nunique())
+            datos["cobertura"][col] = round(float(declarado.mean()) * 100, 1)
 
     if "LanguageHaveWorkedWith" in df.columns:
         langs = set()
         for v in df["LanguageHaveWorkedWith"].dropna():
             langs.update(x.strip() for x in str(v).split(";") if x.strip())
         datos["lenguajes_distintos"] = len(langs)
+        # Distintos de los indicadores que el pipeline genera: solo se conservan
+        # las tecnologías con frecuencia suficiente. El documento citaba el
+        # primer número en una tabla de predictores, donde corresponde el segundo.
+        # El informe carga sin expandir las tecnologías, así que los
+        # indicadores se cuentan aplicando la misma expansión sobre una copia.
+        from src.data_loader_stackoverflow import expandir_multivalor
+        copia = df[[c for c in ("LanguageHaveWorkedWith", "DatabaseHaveWorkedWith",
+                                "PlatformHaveWorkedWith") if c in df.columns]].copy()
+        indicadores = {}
+        for col, clave in (("LanguageHaveWorkedWith", "language"),
+                           ("DatabaseHaveWorkedWith", "database"),
+                           ("PlatformHaveWorkedWith", "platform")):
+            if col in copia.columns:
+                copia, nuevas = expandir_multivalor(copia, col)
+                indicadores[clave] = len(nuevas)
+                datos.setdefault("cobertura_tecnologia", {})[clave] = round(
+                    float(df[col].notna().mean()) * 100, 1)
+        datos["indicadores_tecnologia"] = indicadores
         datos["lenguajes_mediana_por_persona"] = float(
             df["LanguageHaveWorkedWith"].dropna().str.count(";").add(1).median())
 

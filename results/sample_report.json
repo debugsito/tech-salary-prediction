@@ -91,28 +91,38 @@
     },
     "cardinalidad": {
       "Country": 76,
-      "DevType": 4821,
-      "EdLevel": 10,
-      "OrgSize": 11,
-      "RemoteWork": 4,
-      "ICorPM": 3,
-      "Age": 8,
-      "Gender": 15,
+      "DevType": 4820,
+      "EdLevel": 9,
+      "OrgSize": 10,
+      "RemoteWork": 3,
+      "ICorPM": 2,
+      "Age": 7,
+      "Gender": 14,
       "income_group": 3
     },
     "cobertura": {
       "Country": 100.0,
       "DevType": 100.0,
       "EdLevel": 100.0,
-      "OrgSize": 100.0,
+      "OrgSize": 99.9,
       "RemoteWork": 100.0,
-      "ICorPM": 100.0,
-      "Age": 100.0,
-      "Gender": 100.0,
+      "ICorPM": 73.7,
+      "Age": 99.7,
+      "Gender": 98.8,
       "income_group": 100.0
     },
     "razon_usa_latam": 5.11,
     "lenguajes_distintos": 42,
+    "cobertura_tecnologia": {
+      "language": 99.8,
+      "database": 88.0,
+      "platform": 76.2
+    },
+    "indicadores_tecnologia": {
+      "language": 42,
+      "database": 19,
+      "platform": 16
+    },
     "lenguajes_mediana_por_persona": 5.0,
     "genero": {
       "n_hombres": 26705,
@@ -219,28 +229,38 @@
     },
     "cardinalidad": {
       "Country": 78,
-      "DevType": 34,
+      "DevType": 33,
       "EdLevel": 8,
-      "OrgSize": 11,
+      "OrgSize": 10,
       "RemoteWork": 3,
-      "Industry": 13,
-      "ICorPM": 3,
-      "Age": 8,
+      "Industry": 12,
+      "ICorPM": 2,
+      "Age": 7,
       "income_group": 3
     },
     "cobertura": {
       "Country": 100.0,
-      "DevType": 100.0,
+      "DevType": 99.9,
       "EdLevel": 100.0,
-      "OrgSize": 100.0,
+      "OrgSize": 99.9,
       "RemoteWork": 100.0,
-      "Industry": 100.0,
-      "ICorPM": 100.0,
+      "Industry": 61.6,
+      "ICorPM": 72.0,
       "Age": 100.0,
       "income_group": 100.0
     },
     "razon_usa_latam": 4.54,
     "lenguajes_distintos": 51,
+    "cobertura_tecnologia": {
+      "language": 99.8,
+      "database": 87.2,
+      "platform": 78.4
+    },
+    "indicadores_tecnologia": {
+      "language": 49,
+      "database": 32,
+      "platform": 25
+    },
     "lenguajes_mediana_por_persona": 5.0
   },
   "2025": {
@@ -336,27 +356,37 @@
     "cardinalidad": {
       "Country": 60,
       "DevType": 31,
-      "EdLevel": 9,
-      "OrgSize": 10,
-      "RemoteWork": 6,
-      "Industry": 16,
-      "ICorPM": 3,
-      "Age": 7,
+      "EdLevel": 8,
+      "OrgSize": 9,
+      "RemoteWork": 5,
+      "Industry": 15,
+      "ICorPM": 2,
+      "Age": 6,
       "income_group": 3
     },
     "cobertura": {
       "Country": 100.0,
       "DevType": 100.0,
-      "EdLevel": 100.0,
-      "OrgSize": 100.0,
-      "RemoteWork": 100.0,
-      "Industry": 100.0,
-      "ICorPM": 100.0,
-      "Age": 100.0,
+      "EdLevel": 99.9,
+      "OrgSize": 99.9,
+      "RemoteWork": 99.6,
+      "Industry": 99.9,
+      "ICorPM": 98.6,
+      "Age": 99.9,
       "income_group": 100.0
     },
     "razon_usa_latam": 4.26,
     "lenguajes_distintos": 42,
+    "cobertura_tecnologia": {
+      "language": 94.0,
+      "database": 79.5,
+      "platform": 78.6
+    },
+    "indicadores_tecnologia": {
+      "language": 40,
+      "database": 29,
+      "platform": 42
+    },
     "lenguajes_mediana_por_persona": 6.0
   }
 }
