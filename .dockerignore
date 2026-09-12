@@ -1,0 +1,14 @@
+.venv/
+data/
+results/
+figures/
+notebooks/
+logs/
+catboost_info/
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+*.xlsx
+*.log
+salida_cuaderno/
