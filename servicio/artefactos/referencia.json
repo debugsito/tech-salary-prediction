@@ -1,0 +1,147 @@
+{
+ "alemania": {
+  "perfil": {
+   "pais": "Germany",
+   "rol": "Developer, back-end",
+   "anios_profesionales": 8,
+   "lenguajes": [
+    "python",
+    "javascript"
+   ]
+  },
+  "estimacion": 64350.2773,
+  "factores": [
+   {
+    "factor": "Tecnologías",
+    "efecto": -0.1215,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Edad",
+    "efecto": -0.0333,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Rol desempeñado",
+    "efecto": 0.016,
+    "sentido": "sube"
+   },
+   {
+    "factor": "Experiencia",
+    "efecto": 0.0156,
+    "sentido": "sube"
+   },
+   {
+    "factor": "País de residencia",
+    "efecto": 0.0141,
+    "sentido": "sube"
+   },
+   {
+    "factor": "Nivel educativo",
+    "efecto": -0.012,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Modalidad de trabajo",
+    "efecto": -0.0111,
+    "sentido": "baja"
+   }
+  ]
+ },
+ "brasil": {
+  "perfil": {
+   "pais": "Brazil",
+   "rol": "Developer, full-stack",
+   "anios_profesionales": 5,
+   "lenguajes": [
+    "javascript"
+   ]
+  },
+  "estimacion": 27150.9648,
+  "factores": [
+   {
+    "factor": "País de residencia",
+    "efecto": -0.8383,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Tecnologías",
+    "efecto": -0.0754,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Tamaño de empresa",
+    "efecto": 0.0423,
+    "sentido": "sube"
+   },
+   {
+    "factor": "Experiencia",
+    "efecto": -0.0403,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Rol desempeñado",
+    "efecto": -0.036,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Edad",
+    "efecto": -0.0334,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Nivel educativo",
+    "efecto": -0.0101,
+    "sentido": "baja"
+   }
+  ]
+ },
+ "india": {
+  "perfil": {
+   "pais": "India",
+   "rol": "Developer, back-end",
+   "anios_profesionales": 3,
+   "lenguajes": [
+    "java"
+   ]
+  },
+  "estimacion": 12138.4736,
+  "factores": [
+   {
+    "factor": "País de residencia",
+    "efecto": -1.3829,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Experiencia",
+    "efecto": -0.3666,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Tecnologías",
+    "efecto": -0.1047,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Tamaño de empresa",
+    "efecto": 0.0471,
+    "sentido": "sube"
+   },
+   {
+    "factor": "Edad",
+    "efecto": -0.04,
+    "sentido": "baja"
+   },
+   {
+    "factor": "Rol desempeñado",
+    "efecto": 0.039,
+    "sentido": "sube"
+   },
+   {
+    "factor": "Sector de actividad",
+    "efecto": 0.0137,
+    "sentido": "sube"
+   }
+  ]
+ }
+}
