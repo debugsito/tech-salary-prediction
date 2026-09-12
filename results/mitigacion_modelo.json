@@ -1,0 +1,204 @@
+{
+ "correccion_aditiva_log": {
+  "High income": -0.0006,
+  "Lower middle income": 0.0041,
+  "Upper middle income": 0.0014
+ },
+ "coeficientes_afines": {
+  "High income": [
+   -0.4711,
+   1.0413
+  ],
+  "Lower middle income": [
+   -1.0848,
+   1.1128
+  ],
+  "Upper middle income": [
+   -1.3845,
+   1.1339
+  ]
+ },
+ "iteraciones": 8,
+ "eta": 0.5,
+ "estrategias": [
+  {
+   "estrategia": "sin_mitigacion",
+   "R2": 0.7862,
+   "MAE_USD": 24588,
+   "razon_disparidad_renta": 1.947,
+   "error_relativo": {
+    "High income": 0.2981,
+    "Lower middle income": 0.5804,
+    "Upper middle income": 0.5149
+   }
+  },
+  {
+   "estrategia": "calibracion_aditiva",
+   "R2": 0.7863,
+   "MAE_USD": 24585,
+   "razon_disparidad_renta": 1.944,
+   "error_relativo": {
+    "High income": 0.2981,
+    "Lower middle income": 0.5796,
+    "Upper middle income": 0.5148
+   }
+  },
+  {
+   "estrategia": "calibracion_afin",
+   "R2": 0.7851,
+   "MAE_USD": 24689,
+   "razon_disparidad_renta": 1.92,
+   "error_relativo": {
+    "High income": 0.2994,
+    "Lower middle income": 0.5746,
+    "Upper middle income": 0.5192
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_mejor",
+   "R2": 0.7866,
+   "MAE_USD": 24620,
+   "razon_disparidad_renta": 1.944,
+   "error_relativo": {
+    "High income": 0.2985,
+    "Lower middle income": 0.5802,
+    "Upper middle income": 0.5168
+   },
+   "pesos": {
+    "High income": 0.473,
+    "Lower middle income": 1.529,
+    "Upper middle income": 1.382
+   }
+  }
+ ],
+ "trayectoria": [
+  {
+   "estrategia": "perdida_igualada_iter_1",
+   "R2": 0.7862,
+   "MAE_USD": 24588,
+   "razon_disparidad_renta": 1.947,
+   "error_relativo": {
+    "High income": 0.2981,
+    "Lower middle income": 0.5804,
+    "Upper middle income": 0.5149
+   },
+   "pesos": {
+    "High income": 0.889,
+    "Lower middle income": 1.068,
+    "Upper middle income": 1.054
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_2",
+   "R2": 0.787,
+   "MAE_USD": 24542,
+   "razon_disparidad_renta": 1.952,
+   "error_relativo": {
+    "High income": 0.2975,
+    "Lower middle income": 0.5808,
+    "Upper middle income": 0.5155
+   },
+   "pesos": {
+    "High income": 0.794,
+    "Lower middle income": 1.139,
+    "Upper middle income": 1.106
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_3",
+   "R2": 0.787,
+   "MAE_USD": 24619,
+   "razon_disparidad_renta": 1.953,
+   "error_relativo": {
+    "High income": 0.2984,
+    "Lower middle income": 0.5829,
+    "Upper middle income": 0.5169
+   },
+   "pesos": {
+    "High income": 0.716,
+    "Lower middle income": 1.209,
+    "Upper middle income": 1.155
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_4",
+   "R2": 0.786,
+   "MAE_USD": 24557,
+   "razon_disparidad_renta": 1.96,
+   "error_relativo": {
+    "High income": 0.2976,
+    "Lower middle income": 0.5834,
+    "Upper middle income": 0.5157
+   },
+   "pesos": {
+    "High income": 0.651,
+    "Lower middle income": 1.278,
+    "Upper middle income": 1.202
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_5",
+   "R2": 0.786,
+   "MAE_USD": 24616,
+   "razon_disparidad_renta": 1.957,
+   "error_relativo": {
+    "High income": 0.2984,
+    "Lower middle income": 0.5839,
+    "Upper middle income": 0.5159
+   },
+   "pesos": {
+    "High income": 0.596,
+    "Lower middle income": 1.343,
+    "Upper middle income": 1.249
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_6",
+   "R2": 0.7856,
+   "MAE_USD": 24604,
+   "razon_disparidad_renta": 1.96,
+   "error_relativo": {
+    "High income": 0.2981,
+    "Lower middle income": 0.5842,
+    "Upper middle income": 0.5194
+   },
+   "pesos": {
+    "High income": 0.549,
+    "Lower middle income": 1.408,
+    "Upper middle income": 1.295
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_7",
+   "R2": 0.7859,
+   "MAE_USD": 24619,
+   "razon_disparidad_renta": 1.978,
+   "error_relativo": {
+    "High income": 0.2984,
+    "Lower middle income": 0.5902,
+    "Upper middle income": 0.5148
+   },
+   "pesos": {
+    "High income": 0.508,
+    "Lower middle income": 1.466,
+    "Upper middle income": 1.342
+   }
+  },
+  {
+   "estrategia": "perdida_igualada_iter_8",
+   "R2": 0.7866,
+   "MAE_USD": 24620,
+   "razon_disparidad_renta": 1.944,
+   "error_relativo": {
+    "High income": 0.2985,
+    "Lower middle income": 0.5802,
+    "Upper middle income": 0.5168
+   },
+   "pesos": {
+    "High income": 0.473,
+    "Lower middle income": 1.529,
+    "Upper middle income": 1.382
+   }
+  }
+ ]
+}
