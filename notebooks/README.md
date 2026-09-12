@@ -7,7 +7,7 @@ repetir. Para cambiar algo, se edita el generador y se vuelve a construir.
 
 | Cuaderno | Generador | Para qué |
 | :--- | :--- | :--- |
-| `tesis_trabajo.ipynb` | `build_notebook_manual.py` | Rehacer el análisis entero desde el CSV en bruto, decisión por decisión. Produce las nueve figuras y todas las tablas |
+| `tesis_trabajo.ipynb` | `build_notebook_manual.py` | Rehacer el análisis entero desde el CSV en bruto, decisión por decisión, incluido el programa de robustez (PPA, patrón oro oficial, transferencia, consistencia entre ediciones y mitigación por modelo). Produce las nueve figuras y todas las tablas |
 | `tesis_colab.ipynb` | `build_notebook_colab.py` | Reejecutar el experimento y contrastar el resultado con lo que afirma el documento |
 | `tesis_reproducible.ipynb` | `build_notebook.py` | Recorrer los artefactos ya calculados, sin volver a entrenar. Rápido |
 

@@ -64,8 +64,8 @@ celda se encarga del resto.
 
 https://colab.research.google.com/github/debugsito/tech-salary-prediction/blob/main/notebooks/tesis_trabajo.ipynb
 
-Descarga unos 400 MB de datos y tarda entre quince y cuarenta minutos según la
-máquina. La semilla está fija en 42 en todas partes, así que dos ejecuciones dan
+Descarga unos 420 MB de datos y tarda entre veinte y cincuenta minutos según la
+máquina (la mayor parte, en la validación cruzada de la sección 8). La semilla está fija en 42 en todas partes, así que dos ejecuciones dan
 lo mismo.
 """),
 
@@ -1346,7 +1346,394 @@ experiencia y el rol.
 
 # ---------------------------------------------------------------------------
 (MD, """
-## 17. Recapitulando
+## 17. ¿Y si todo esto es solo coste de vida?
+
+Antes de dar nada por cerrado, la objeción que me haría un economista: el país
+domina el modelo, pero un dólar en Lima no compra lo mismo que en San
+Francisco. ¿Cuánto de lo que llamo "segmentación" es solo nivel de precios?
+Tengo los factores de paridad del Banco Mundial en una tabla del repositorio,
+así que en vez de discutirlo, lo mido.
+"""),
+(CODE, r"""
+ppp = pd.read_csv(RAIZ / "data/reference/ppp_factors.csv")
+dfp = df.merge(ppp[["pais", "nivel_precios"]], left_on="Country",
+               right_on="pais", how="inner")
+print(f"Con factor PPA: {len(dfp):,} de {len(df):,} "
+      f"(quedan fuera {sorted(set(df.Country) - set(ppp.pais))})")
+
+# Dividir por el nivel de precios relativo a EE. UU. convierte el salario
+# nominal en poder de compra. Para un estadounidense no cambia nada.
+dfp["comp_ppa"] = dfp[TARGET] / dfp["nivel_precios"]
+dfp["ppa_log"] = np.log1p(dfp["comp_ppa"])
+
+usa_m = dfp.loc[dfp.Country == "United States of America", [TARGET, "comp_ppa"]].median()
+lat_m = dfp.loc[dfp.wb_region == "Latin America & Caribbean", [TARGET, "comp_ppa"]].median()
+print()
+print("Razón EE. UU. / América Latina:")
+print(f"  nominal: {usa_m[TARGET] / lat_m[TARGET]:.2f}")
+print(f"  en poder de compra: {usa_m['comp_ppa'] / lat_m['comp_ppa']:.2f}")
+"""),
+(MD, """
+La mitad de la brecha era una ilusión monetaria. En dólares corrientes, un
+estadounidense "gana" 4.4 veces lo que un latinoamericano con perfil parecido;
+en poder de compra, 2.0. Sigue siendo el doble, que no es poco, pero la mitad
+del cañón que llevaba dieciséis secciones mirando era el tipo de cambio y el
+nivel de precios, no el mercado laboral.
+
+Taiwán y Venezuela se caen (el Banco Mundial no publica su factor), 116
+observaciones de 37,622. Lo anoto y sigo.
+"""),
+(CODE, r"""
+# Reentreno la misma configuración dos veces sobre el mismo subconjunto: una
+# con el salario nominal y otra con el ajustado. Misma partición, misma
+# semilla; lo único que cambia es qué significa un dólar.
+import shap as shap_lib
+
+Xp_, _, Ap_ = preparar_xy(dfp)
+estr_p = dfp["income_group"].astype(str)
+
+def entrenar_y_medir(objetivo_log, etiqueta):
+    yv = objetivo_log.to_numpy()
+    Xe_, Xr_, ye_, yr_, Ae_, Ar_ = train_test_split(
+        Xp_, yv, Ap_, test_size=0.2, random_state=SEMILLA, stratify=estr_p)
+    t = Pipeline([("preprocesador", construir_preprocesador(dfp, "target")),
+                  ("modelo", clone(modelos["XGBoost"]))]).fit(Xe_, ye_)
+    r2 = compute_metrics(yr_, t.predict(Xr_))["R2"]
+    # Peso de cada bloque, igual que en la sección 11.
+    pre_ = t.named_steps["preprocesador"]
+    vals = np.abs(shap_lib.TreeExplainer(t.named_steps["modelo"]).shap_values(
+        np.asarray(pre_.transform(Xr_), dtype=float))).mean(axis=0)
+    pesos = {}
+    for nom, v in zip(nombres_de_variables(pre_), vals):
+        pesos[bloque(nom)] = pesos.get(bloque(nom), 0) + float(v)
+    total = sum(pesos.values())
+    pesos = {k: round(v / total * 100, 1) for k, v in
+             sorted(pesos.items(), key=lambda kv: -kv[1])}
+    aud_ = auditar(yr_, t.predict(Xr_), Ar_["income_group"])
+    razon = aud_["agregados"]["razon_disparidad_relativa"]
+    print(f"{etiqueta:10} R²={r2:.3f}  razón de disparidad={razon:.2f}")
+    print(f"{'':10} pesos: {pesos}")
+    return pesos, razon
+
+pesos_nom, razon_nom = entrenar_y_medir(dfp["salary_log"], "nominal")
+pesos_ppa, razon_ppa = entrenar_y_medir(dfp["ppa_log"], "PPA")
+"""),
+(MD, """
+Este es el resultado que me obliga a matizar medio cuaderno.
+
+**La jerarquía cambia de orden.** En nominal, la geografía era el bloque
+dominante (35.1 %). En poder de compra cae a 21.8 % y pasan delante las
+tecnologías (30.9 %) y el capital humano (27.4 %). O sea: dónde vives manda
+sobre lo que cobras, pero lo que sabes manda sobre lo que ese cobro compra.
+Las dos teorías que llevo contraponiendo desde la sección 11 no compiten:
+hablan de escalas distintas de la misma variable.
+
+**El R² baja de 0.79 a 0.65**, y tiene sentido: parte de lo que el modelo
+nominal "explicaba" era saberse el nivel de precios de cada país, que es
+información de la economía, no del perfil.
+
+**Y la disparidad del error no mejora nada: 1.86 a 1.96.** Esto es lo que más
+me importaba comprobar. El problema de equidad de la sección 13 no era un
+espejismo del dólar nominal; ajustar por precios no le hace ni cosquillas.
+"""),
+
+(MD, """
+## 18. El contraste que me faltaba: la estadística oficial
+
+Todo lo anterior sale de una sola encuesta que responde quien quiere. La
+pregunta incómoda es si esa gente cobra como el mercado o como una burbuja.
+Para Estados Unidos existe patrón oro: la OEWS del Bureau of Labor Statistics,
+una encuesta a empresas con diseño probabilístico. Las medianas de mayo de
+2025 están fijadas en el repositorio, así que comparo contra la edición 2025,
+que ya tengo cargada de la sección anterior.
+"""),
+(CODE, r"""
+import json as json_lib
+oews = json_lib.loads((RAIZ / "data/reference/oews_medianas_2025.json").read_text())
+print(oews["fuente"]); print(oews["medianas"])
+
+MAPEO_SOC = {
+    "Developer, full-stack": "15-1252", "Developer, back-end": "15-1252",
+    "Developer, desktop or enterprise applications": "15-1252",
+    "Developer, embedded applications or devices": "15-1252",
+    "Developer, mobile": "15-1252", "Developer, front-end": "15-1254",
+    "Developer, QA or test": "15-1253", "Data scientist": "15-2051",
+    "Engineering manager": "11-3021",
+}
+usa25 = df25[df25.Country == "United States of America"]
+pred25 = np.expm1(t25.predict(Xp25))
+usa_pru = (df25.loc[Xp25.index, "Country"] == "United States of America").to_numpy()
+rol_pru = df25.loc[Xp25.index, "DevType"].to_numpy()
+
+filas = []
+for rol, n in usa25.DevType.value_counts().items():
+    if n < 30 or rol not in MAPEO_SOC:
+        continue
+    oficial = oews["medianas"][MAPEO_SOC[rol]]
+    muestra = usa25.loc[usa25.DevType == rol, TARGET].median()
+    sel = usa_pru & (rol_pru == rol)
+    predicha = np.median(pred25[sel]) if sel.sum() >= 30 else None
+    filas.append({"rol": rol, "n": int(n), "oficial": oficial,
+                  "muestra": round(muestra), "m/of": round(muestra / oficial, 2),
+                  "predicha": round(predicha) if predicha else None,
+                  "p/of": round(predicha / oficial, 2) if predicha else None})
+val_oews = pd.DataFrame(filas)
+print(val_oews.to_string(index=False))
+print()
+print(f"Mediana muestra/oficial:  {val_oews['m/of'].median():.2f}")
+print(f"Mediana predicha/oficial: {val_oews['p/of'].median():.3f}")
+"""),
+(MD, """
+Esta era la prueba que más respeto me daba: comparar contra el gobierno
+americano, que encuesta empresas con muestreo de verdad.
+
+Sale mejor de lo que esperaba. La mediana de mi muestra queda a razón 1.08 de
+la oficial, con desviaciones para los dos lados (0.88 por abajo, 1.19 por
+arriba): no es la burbuja de entusiastas sobrepagados que uno teme de una
+encuesta voluntaria. Y las medianas que predice el modelo quedan a razón
+1.025, un 2.5 % de la cifra oficial, en los roles donde tengo prueba
+suficiente.
+
+El único desastre aparente, front-end a 1.52, es del mapeo y no de los datos:
+la ocupación oficial "Web Developers" (98,770) describe otro oficio con el
+mismo nombre; contra "Software Developers" la razón sería 1.01. Tuve la
+tentación de cambiar el mapeo al ver el número, y es exactamente lo que no se
+puede hacer: elegir el mapeo mirando el resultado invalida el contraste. Se
+queda como está, con su explicación al lado.
+"""),
+
+(MD, """
+## 19. Sacar el modelo de su pecera
+
+Última prueba de estrés: salarios recogidos por otro mecanismo. El conjunto de
+aijobs.net es dominio público (CC0): declaraciones voluntarias en un portal de
+empleo de datos e IA. Mi modelo nunca vio nada parecido. Lo evalúo congelado,
+y como ese esquema solo trae país, rol, modalidad y experiencia por tramos,
+primero mido cuánto pierde mi propio conjunto de prueba reducido a ese mismo
+esqueleto: si no separo las dos cosas, no sabré si lo que duele es perder
+variables o cambiar de fuente.
+"""),
+(CODE, r"""
+import urllib.request
+ruta_aj = RAIZ / "data/external/aijobs_salaries.csv"
+if not ruta_aj.exists():
+    ruta_aj.parent.mkdir(parents=True, exist_ok=True)
+    urllib.request.urlretrieve(
+        "https://raw.githubusercontent.com/foorilla/ai-jobs-net-salaries/main/salaries.csv",
+        ruta_aj)
+aj = pd.read_csv(ruta_aj, dtype=str)
+
+MAPEO_ROL = {
+    "Data Scientist": "Data scientist or machine learning specialist",
+    "Applied Scientist": "Data scientist or machine learning specialist",
+    "Research Scientist": "Data scientist or machine learning specialist",
+    "Machine Learning Engineer": "Data scientist or machine learning specialist",
+    "Research Engineer": "Data scientist or machine learning specialist",
+    "Data Engineer": "Engineer, data", "Analytics Engineer": "Engineer, data",
+    "Data Analyst": "Data or business analyst",
+    "Business Intelligence Analyst": "Data or business analyst",
+}
+ISO = {"US": "United States of America", "GB": "United Kingdom of Great Britain and Northern Ireland",
+       "CA": "Canada", "ES": "Spain", "DE": "Germany", "IN": "India", "FR": "France",
+       "AU": "Australia", "CO": "Colombia", "PT": "Portugal", "NL": "Netherlands",
+       "BR": "Brazil", "MX": "Mexico", "IT": "Italy", "PL": "Poland", "IE": "Ireland"}
+MODAL = {"0": "In-person", "50": "Hybrid (some remote, some in-person)", "100": "Remote"}
+ANIOS = {"EN": 2, "MI": 5, "SE": 9, "EX": 15}   # anclas por tramo, decisión declarada
+
+d = aj[(aj.work_year == "2023") & (aj.employment_type == "FT")
+       & aj.job_title.isin(MAPEO_ROL) & aj.employee_residence.isin(ISO)].copy()
+d["pais_so"] = d.employee_residence.map(ISO)
+d = d[d.pais_so.isin(df.Country.unique())]
+d["salario"] = pd.to_numeric(d.salary_in_usd)
+med_p = d.groupby("pais_so").salario.transform("median")
+d = d[(d.salario >= med_p * 0.2) & (d.salario <= med_p * 6)]   # mismo filtro de plausibilidad
+print(f"Retenidas {len(d):,} observaciones de 2023 "
+      f"({(d.pais_so == 'United States of America').mean() * 100:.0f} % de EE. UU.)")
+"""),
+(CODE, r"""
+renta_de = df.drop_duplicates("Country").set_index("Country")["income_group"]
+
+def fila_esqueleto(pais, rol, modalidad, anios):
+    fila = {}
+    for c in X.columns:
+        if c.startswith(("language__", "database__", "platform__")):
+            fila[c] = 0
+        elif c.endswith("_num"):
+            fila[c] = np.nan
+        else:
+            fila[c] = "No declarado"
+    fila.update({"Country": pais, "DevType": rol, "RemoteWork": modalidad,
+                 "YearsCodePro_num": anios, "YearsCode_num": anios,
+                 "income_group": renta_de.get(pais, "No declarado")})
+    return fila
+
+X_ext = pd.DataFrame([fila_esqueleto(f.pais_so, MAPEO_ROL[f.job_title],
+                                     MODAL.get(f.remote_ratio, "No declarado"),
+                                     ANIOS[f.experience_level])
+                      for f in d.itertuples()], columns=X.columns)
+m_ext = compute_metrics(np.log1p(d.salario.to_numpy()), tuberia.predict(X_ext))
+
+# El control: mi propia prueba, reducida al mismo esqueleto.
+X_masc = X_pru.copy()
+minimas = {"Country", "DevType", "RemoteWork", "YearsCodePro_num", "income_group"}
+for c in X_masc.columns:
+    if c in minimas:
+        continue
+    if c.startswith(("language__", "database__", "platform__")):
+        X_masc[c] = 0
+    elif c in ("YearsCode_num", "WorkExp_num"):
+        X_masc[c] = X_pru["YearsCodePro_num"]
+    else:
+        X_masc[c] = "No declarado"
+m_masc = compute_metrics(y_pru, tuberia.predict(X_masc))
+m_full = compute_metrics(y_pru, tuberia.predict(X_pru))
+
+print(f"{'evaluación':34} {'R²':>8} {'MAPE':>7}")
+for nom, m in [("prueba propia, esquema completo", m_full),
+               ("prueba propia, esqueleto", m_masc),
+               ("fuente externa", m_ext)]:
+    print(f"{nom:34} {m['R2']:>8.3f} {m['MAPE']:>6.1f} %")
+print()
+print(f"Varianza del log-salario: externa {np.var(np.log1p(d.salario)):.2f} "
+      f"frente a {np.var(y_pru):.2f} de mi prueba")
+
+ds_portal = d.loc[d.job_title.map(MAPEO_ROL) == "Data scientist or machine learning specialist",
+                  "salario"].median()
+print(f"Ciencia de datos: el portal declara una mediana de {ds_portal:,.0f}, "
+      f"la oficial de la sección 18 es {oews['medianas']['15-2051']:,}")
+"""),
+(MD, """
+Fuera de su pecera, el modelo cuenta dos historias a la vez.
+
+La mala a primera vista: R² de −0.05. Peor que predecir la media. La buena
+mirando la fila de al lado: el error relativo casi no se mueve (30.0 % fuera
+frente a 28.9 % en casa). ¿Cómo se compaginan? Por la varianza: mi prueba tiene
+0.65 de varianza logarítmica porque mezcla 78 países; el portal tiene 0.19,
+porque es 91 % Estados Unidos y solo oficios de datos. El R² se mide contra la
+varianza de cada población, así que el mismo error que en una población
+heterogénea parece brillante, en una homogénea baja de cero. Aprendido: el R²
+no viaja entre poblaciones; el error relativo sí.
+
+El esqueleto tampoco es la excusa: mi propia prueba reducida a país, rol,
+modalidad y experiencia conserva 0.67 de R². Perder variables cuesta poco;
+cambiar de población lo es todo.
+
+Y el cabo suelto que me faltaba atar: el portal declara una mediana de 170,000
+para ciencia de datos cuando la oficial de la sección 18 es 126,800. Un 34 %
+arriba. Mi encuesta estaba un 8 % arriba. Si alguien está desalineado con el
+patrón oro aquí, no soy yo.
+"""),
+
+(MD, """
+## 20. ¿Se repite la película en otras ediciones?
+
+Tengo 2022 y 2025 cargadas de las secciones anteriores. Entreno la misma
+configuración en cada una y miro si lo esencial se sostiene. La versión
+exhaustiva, con la validación cruzada completa por edición, está en
+`scripts/run_consistencia.py`; aquí me basta el corte rápido.
+"""),
+(CODE, r"""
+consist = []
+for anio, dfe in [("2022", df22), ("2023", df), ("2025", df25)]:
+    Xe_, _, Ae_ = preparar_xy(dfe)
+    ye_ = dfe["salary_log"].to_numpy()
+    Xen, Xpr, yen, ypr, Aen, Apr = train_test_split(
+        Xe_, ye_, Ae_, test_size=0.2, random_state=SEMILLA,
+        stratify=dfe["income_group"].astype(str))
+    t_ = Pipeline([("preprocesador", construir_preprocesador(dfe, "target")),
+                   ("modelo", clone(modelos["XGBoost"]))]).fit(Xen, yen)
+    pr_ = t_.predict(Xpr)
+    aud_ = auditar(ypr, pr_, Apr["wb_region"])
+    consist.append({"edición": anio, "n": len(dfe),
+                    "R²": round(compute_metrics(ypr, pr_)["R2"], 3),
+                    "razón región": round(aud_["agregados"]["razon_disparidad_relativa"], 2),
+                    "peor servida": aud_["agregados"]["grupo_peor_servido_relativo"]})
+print(pd.DataFrame(consist).to_string(index=False))
+"""),
+(MD, """
+Misma configuración, tres cosechas distintas: R² de 0.780, 0.786 y 0.798, y la
+disparidad regional entre 2.33 y 2.46 en las tres. Lo estructural se repite.
+
+Lo que rota es quién ocupa el último lugar: Asia del Sur en 2022, América
+Latina en 2023, Oriente Medio en 2025. Siempre una región de renta media-baja,
+siempre las de muestras más chicas. El patrón es estable; el nombre propio
+baila dentro del grupo con los intervalos más anchos, que es justo donde el
+azar muestral tiene más voz.
+"""),
+
+(MD, """
+## 21. Un último intento con la disparidad: tocar el modelo
+
+En la sección 15 remuestrear no sirvió de nada. Quedaban dos trucos del otro
+lado: corregir la predicción por grupo después de entrenar, y reentrenar
+subiendo el peso de los grupos peor servidos hasta que la pérdida se iguale.
+"""),
+(CODE, r"""
+g_ent2 = df.loc[X_ent.index, "income_group"].to_numpy()
+g_pru2 = A_pru["income_group"]
+pred_ent = tuberia.predict(X_ent)
+pred_base = tuberia.predict(X_pru)
+
+def razon_de(pred):
+    return auditar(y_pru, pred, g_pru2)["agregados"]["razon_disparidad_relativa"]
+
+# Calibración aditiva: el sesgo logarítmico de cada grupo, medido en
+# entrenamiento, restado en prueba.
+corr = {g: float(np.mean(y_ent[g_ent2 == g] - pred_ent[g_ent2 == g]))
+        for g in np.unique(g_ent2)}
+razon_adit = razon_de(pred_base + g_pru2.map(corr).to_numpy())
+
+# Calibración afín: una recta por grupo.
+pred_afin = np.empty_like(pred_base)
+for g in np.unique(g_ent2):
+    b_, a_ = np.polyfit(pred_ent[g_ent2 == g], y_ent[g_ent2 == g], 1)
+    sel = (g_pru2 == g).to_numpy()
+    pred_afin[sel] = a_ + b_ * pred_base[sel]
+razon_afin = razon_de(pred_afin)
+
+# Pérdida igualada: subir el peso de quien sale peor y reentrenar, varias veces.
+w = {g: 1.0 for g in np.unique(g_ent2)}
+razones_mit = []
+for i in range(5):
+    pesos = pd.Series(g_ent2).map(w).to_numpy(dtype=float, copy=True)
+    pesos /= pesos.mean()
+    t_ = Pipeline([("preprocesador", construir_preprocesador(df, "target")),
+                   ("modelo", clone(modelos["XGBoost"]))])
+    t_.fit(X_ent, y_ent, modelo__sample_weight=pesos)
+    pe = t_.predict(X_ent)
+    err = {g: float(np.abs(np.expm1(pe[g_ent2 == g]) - np.expm1(y_ent[g_ent2 == g])).mean()
+                    / np.median(np.expm1(y_ent[g_ent2 == g])))
+           for g in w}
+    media = np.mean(list(err.values()))
+    for g in w:
+        w[g] *= np.exp(0.5 * (err[g] - media) / media)
+    razones_mit.append(round(razon_de(t_.predict(X_pru)), 3))
+
+print(f"base {razon_de(pred_base):.3f} | aditiva {razon_adit:.3f} | "
+      f"afín {razon_afin:.3f}")
+print(f"pérdida igualada por iteración: {razones_mit}")
+print(f"pesos finales: { {g: round(v, 2) for g, v in w.items()} }")
+"""),
+(MD, """
+Nada. Otra vez nada, y ya van dos familias completas.
+
+La calibración aditiva deja la razón en 1.944 (era 1.947). La afín, 1.920. La
+pérdida igualada es la que más me sorprendió: después de cinco vueltas
+subiendo el peso de los grupos peor servidos (los minoritarios acaban pesando
+más del doble que el mayoritario), la razón se queda entre 1.947 y 1.960.
+Plana. El modelo no puede comprar equidad con peso muestral, porque el peso no
+fabrica la señal que falta.
+
+Sumado a la sección 15: siete estrategias, dos familias (tocar los datos,
+tocar el modelo), cero movimiento. A estas alturas ya no lo llamo fracaso de
+la mitigación sino confirmación del diagnóstico: la dispersión intra-país de
+la sección 15 es un 64 % mayor en renta media-baja, es invariante al ajuste de
+precios, y ninguna reponderación inventa las variables que explicarían esa
+varianza. Lo que falta no es técnica, es información.
+"""),
+
+(MD, """
+## 22. Recapitulando
 """),
 (CODE, r"""
 print(f"Muestra 2023          {len(df):>10,} observaciones, {df['Country'].nunique()} países")
@@ -1358,6 +1745,12 @@ print(f"Peso del país         {por_bloque.loc['Geográfico', '% del total']:>10
 print(f"Peso del capital humano {por_bloque.loc['Capital humano', '% del total']:>8.1f} %")
 print(f"Error relativo, renta alta       {tabla.loc['High income', 'MAE / mediana']:>6.1%}")
 print(f"Error relativo, renta media-baja {tabla.loc['Lower middle income', 'MAE / mediana']:>6.1%}")
+print()
+print(f"Peso geográfico nominal → PPA    {pesos_nom['Geográfico']} % → {pesos_ppa['Geográfico']} %")
+print(f"Disparidad nominal → PPA         {razon_nom:.2f} → {razon_ppa:.2f}")
+print(f"Predicho frente a lo oficial     {val_oews['p/of'].median():.3f}")
+print(f"MAPE propio → fuente externa     {m_full['MAPE']:.1f} % → {m_ext['MAPE']:.1f} %")
+print(f"Mitigación por modelo (mejor)    {min(razon_adit, razon_afin, *razones_mit):.3f} frente a base {razon_de(pred_base):.3f}")
 """),
 (MD, """
 Resumiendo lo que ha salido.
@@ -1378,9 +1771,16 @@ relativos, a los países de menor renta: 58 % frente a 30 %. Y eso **no se arreg
 reequilibrando la muestra, porque no viene de la representación sino de que el
 salario es allí intrínsecamente más disperso.
 
-Lo que este cuaderno no contesta: si las decisiones que he ido tomando por el
-camino (los seis filtros, el umbral de plausibilidad, medir el error en relativo)
-son las correctas. Son decisiones discutibles y las he dejado a la vista
+Las secciones 17 a 21 fueron el control de calidad de todo lo anterior: la
+mitad de la brecha geográfica era nivel de precios (pero la equidad no mejora
+al ajustarlo), la muestra y el modelo quedan a 8 % y 2.5 % del patrón oro
+oficial, el error relativo sobrevive al cambio de instrumento aunque el R² no,
+lo esencial se repite en tres ediciones, y la disparidad resistió siete
+intentos de mitigación de dos familias distintas.
+
+Lo que este cuaderno sigue sin contestar: si las decisiones que fui tomando
+por el camino (los seis filtros, el umbral de plausibilidad, medir el error en
+relativo) son las correctas. Son decisiones discutibles y quedan a la vista
 precisamente para que se puedan discutir.
 """),
 ]
