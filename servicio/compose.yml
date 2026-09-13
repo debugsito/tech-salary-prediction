@@ -1,0 +1,17 @@
+# Proyecto aparte del inventario; solo comparte su red para que Caddy lo alcance por nombre.
+services:
+  salarios:
+    build:
+      context: ..
+      dockerfile: servicio/Dockerfile
+    image: tesis-salarios:latest
+    container_name: tesis-salarios
+    restart: unless-stopped
+    expose:
+      - "8000"
+    networks:
+      - homebox_default
+
+networks:
+  homebox_default:
+    external: true
