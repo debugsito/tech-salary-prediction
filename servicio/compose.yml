@@ -1,0 +1,19 @@
+# Proyecto aparte del que sirve el inventario, para que el ciclo de vida de este
+# servicio sea independiente. Se une a la red de aquel únicamente para que su
+# Caddy pueda alcanzarlo por nombre.
+services:
+  salarios:
+    build:
+      context: ..
+      dockerfile: servicio/Dockerfile
+    image: tesis-salarios:latest
+    container_name: tesis-salarios
+    restart: unless-stopped
+    expose:
+      - "8000"
+    networks:
+      - homebox_default
+
+networks:
+  homebox_default:
+    external: true
