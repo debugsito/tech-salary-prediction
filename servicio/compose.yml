@@ -13,6 +13,13 @@ services:
       - "8000"
     networks:
       - homebox_default
+    # El servidor tiene 3.7 GB compartidos. Se acota para que este servicio no
+    # pueda dejar sin memoria a lo que ya estaba corriendo.
+    mem_limit: 900m
+    cpus: 1.0
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
 
 networks:
   homebox_default:
