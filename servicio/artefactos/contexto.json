@@ -9,7 +9,7 @@
   "n_muestra": 37622,
   "n_paises": 78,
   "n_entrenamiento": 30097,
-  "generado": "2026-09-11",
+  "generado": "2026-09-13",
   "python": "3.14.7"
  },
  "columnas": [
@@ -409,22 +409,22 @@
   "Country": [
    {
     "valor": "United States of America",
-    "etiqueta": "United States of America",
+    "etiqueta": "Estados Unidos",
     "n": 10253
    },
    {
     "valor": "Germany",
-    "etiqueta": "Germany",
+    "etiqueta": "Alemania",
     "n": 3192
    },
    {
     "valor": "United Kingdom of Great Britain and Northern Ireland",
-    "etiqueta": "United Kingdom of Great Britain and Northern Ireland",
+    "etiqueta": "Reino Unido",
     "n": 2971
    },
    {
     "valor": "Canada",
-    "etiqueta": "Canada",
+    "etiqueta": "Canadá",
     "n": 1763
    },
    {
@@ -434,12 +434,12 @@
    },
    {
     "valor": "France",
-    "etiqueta": "France",
+    "etiqueta": "Francia",
     "n": 1445
    },
    {
     "valor": "Netherlands",
-    "etiqueta": "Netherlands",
+    "etiqueta": "Países Bajos",
     "n": 1039
    },
    {
@@ -449,42 +449,42 @@
    },
    {
     "valor": "Brazil",
-    "etiqueta": "Brazil",
+    "etiqueta": "Brasil",
     "n": 957
    },
    {
     "valor": "Spain",
-    "etiqueta": "Spain",
+    "etiqueta": "España",
     "n": 934
    },
    {
     "valor": "Poland",
-    "etiqueta": "Poland",
+    "etiqueta": "Polonia",
     "n": 864
    },
    {
     "valor": "Sweden",
-    "etiqueta": "Sweden",
+    "etiqueta": "Suecia",
     "n": 858
    },
    {
     "valor": "Italy",
-    "etiqueta": "Italy",
+    "etiqueta": "Italia",
     "n": 790
    },
    {
     "valor": "Switzerland",
-    "etiqueta": "Switzerland",
+    "etiqueta": "Suiza",
     "n": 523
    },
    {
     "valor": "Denmark",
-    "etiqueta": "Denmark",
+    "etiqueta": "Dinamarca",
     "n": 428
    },
    {
     "valor": "Norway",
-    "etiqueta": "Norway",
+    "etiqueta": "Noruega",
     "n": 424
    },
    {
@@ -504,67 +504,67 @@
    },
    {
     "valor": "Finland",
-    "etiqueta": "Finland",
+    "etiqueta": "Finlandia",
     "n": 363
    },
    {
     "valor": "Belgium",
-    "etiqueta": "Belgium",
+    "etiqueta": "Bélgica",
     "n": 337
    },
    {
     "valor": "Czech Republic",
-    "etiqueta": "Czech Republic",
+    "etiqueta": "Chequia",
     "n": 315
    },
    {
     "valor": "New Zealand",
-    "etiqueta": "New Zealand",
+    "etiqueta": "Nueva Zelanda",
     "n": 314
    },
    {
     "valor": "Russian Federation",
-    "etiqueta": "Russian Federation",
+    "etiqueta": "Rusia",
     "n": 297
    },
    {
     "valor": "Greece",
-    "etiqueta": "Greece",
+    "etiqueta": "Grecia",
     "n": 277
    },
    {
     "valor": "Turkey",
-    "etiqueta": "Turkey",
+    "etiqueta": "Turquía",
     "n": 277
    },
    {
     "valor": "Romania",
-    "etiqueta": "Romania",
+    "etiqueta": "Rumanía",
     "n": 261
    },
    {
     "valor": "Ukraine",
-    "etiqueta": "Ukraine",
+    "etiqueta": "Ucrania",
     "n": 258
    },
    {
     "valor": "South Africa",
-    "etiqueta": "South Africa",
+    "etiqueta": "Sudáfrica",
     "n": 252
    },
    {
     "valor": "Mexico",
-    "etiqueta": "Mexico",
+    "etiqueta": "México",
     "n": 243
    },
    {
     "valor": "Ireland",
-    "etiqueta": "Ireland",
+    "etiqueta": "Irlanda",
     "n": 233
    },
    {
     "valor": "Hungary",
-    "etiqueta": "Hungary",
+    "etiqueta": "Hungría",
     "n": 232
    },
    {
@@ -584,17 +584,17 @@
    },
    {
     "valor": "Pakistan",
-    "etiqueta": "Pakistan",
+    "etiqueta": "Pakistán",
     "n": 164
    },
    {
     "valor": "Japan",
-    "etiqueta": "Japan",
+    "etiqueta": "Japón",
     "n": 157
    },
    {
     "valor": "Lithuania",
-    "etiqueta": "Lithuania",
+    "etiqueta": "Lituania",
     "n": 149
    },
    {
@@ -604,7 +604,7 @@
    },
    {
     "valor": "Iran, Islamic Republic of...",
-    "etiqueta": "Iran, Islamic Republic of...",
+    "etiqueta": "Irán",
     "n": 139
    },
    {
@@ -614,17 +614,17 @@
    },
    {
     "valor": "Croatia",
-    "etiqueta": "Croatia",
+    "etiqueta": "Croacia",
     "n": 124
    },
    {
     "valor": "Bangladesh",
-    "etiqueta": "Bangladesh",
+    "etiqueta": "Bangladés",
     "n": 117
    },
    {
     "valor": "Singapore",
-    "etiqueta": "Singapore",
+    "etiqueta": "Singapur",
     "n": 115
    },
    {
@@ -634,12 +634,12 @@
    },
    {
     "valor": "Slovenia",
-    "etiqueta": "Slovenia",
+    "etiqueta": "Eslovenia",
     "n": 113
    },
    {
     "valor": "Slovakia",
-    "etiqueta": "Slovakia",
+    "etiqueta": "Eslovaquia",
     "n": 108
    },
    {
@@ -654,37 +654,37 @@
    },
    {
     "valor": "Philippines",
-    "etiqueta": "Philippines",
+    "etiqueta": "Filipinas",
     "n": 91
    },
    {
     "valor": "Malaysia",
-    "etiqueta": "Malaysia",
+    "etiqueta": "Malasia",
     "n": 91
    },
    {
     "valor": "Viet Nam",
-    "etiqueta": "Viet Nam",
+    "etiqueta": "Vietnam",
     "n": 81
    },
    {
     "valor": "Latvia",
-    "etiqueta": "Latvia",
+    "etiqueta": "Letonia",
     "n": 78
    },
    {
     "valor": "Taiwan",
-    "etiqueta": "Taiwan",
+    "etiqueta": "Taiwán",
     "n": 78
    },
    {
     "valor": "Hong Kong (S.A.R.)",
-    "etiqueta": "Hong Kong (S.A.R.)",
+    "etiqueta": "Hong Kong",
     "n": 71
    },
    {
     "valor": "Thailand",
-    "etiqueta": "Thailand",
+    "etiqueta": "Tailandia",
     "n": 70
    },
    {
@@ -694,12 +694,12 @@
    },
    {
     "valor": "United Arab Emirates",
-    "etiqueta": "United Arab Emirates",
+    "etiqueta": "Emiratos Árabes Unidos",
     "n": 69
    },
    {
     "valor": "South Korea",
-    "etiqueta": "South Korea",
+    "etiqueta": "Corea del Sur",
     "n": 66
    },
    {
@@ -714,7 +714,7 @@
    },
    {
     "valor": "Egypt",
-    "etiqueta": "Egypt",
+    "etiqueta": "Egipto",
     "n": 50
    },
    {
@@ -724,7 +724,7 @@
    },
    {
     "valor": "Peru",
-    "etiqueta": "Peru",
+    "etiqueta": "Perú",
     "n": 48
    },
    {
@@ -739,12 +739,12 @@
    },
    {
     "valor": "Luxembourg",
-    "etiqueta": "Luxembourg",
+    "etiqueta": "Luxemburgo",
     "n": 38
    },
    {
     "valor": "Venezuela, Bolivarian Republic of...",
-    "etiqueta": "Venezuela, Bolivarian Republic of...",
+    "etiqueta": "Venezuela",
     "n": 38
    },
    {
@@ -754,12 +754,12 @@
    },
    {
     "valor": "Bosnia and Herzegovina",
-    "etiqueta": "Bosnia and Herzegovina",
+    "etiqueta": "Bosnia y Herzegovina",
     "n": 36
    },
    {
     "valor": "Cyprus",
-    "etiqueta": "Cyprus",
+    "etiqueta": "Chipre",
     "n": 34
    },
    {
@@ -769,69 +769,69 @@
    },
    {
     "valor": "Kenya",
-    "etiqueta": "Kenya",
+    "etiqueta": "Kenia",
     "n": 32
    },
    {
     "valor": "Morocco",
-    "etiqueta": "Morocco",
+    "etiqueta": "Marruecos",
     "n": 31
    },
    {
     "valor": "Republic of Korea",
-    "etiqueta": "Republic of Korea",
+    "etiqueta": "Corea (Rep.)",
     "n": 29
    },
    {
     "valor": "Belarus",
-    "etiqueta": "Belarus",
+    "etiqueta": "Bielorrusia",
     "n": 29
    },
    {
     "valor": "Kazakhstan",
-    "etiqueta": "Kazakhstan",
+    "etiqueta": "Kazajistán",
     "n": 26
    },
    {
     "valor": "Dominican Republic",
-    "etiqueta": "Dominican Republic",
+    "etiqueta": "República Dominicana",
     "n": 24
    }
   ],
   "DevType": [
    {
     "valor": "Developer, full-stack",
-    "etiqueta": "Developer, full-stack",
+    "etiqueta": "Desarrollo full-stack",
     "n": 14106
    },
    {
     "valor": "Developer, back-end",
-    "etiqueta": "Developer, back-end",
+    "etiqueta": "Desarrollo back-end",
     "n": 8257
    },
    {
     "valor": "Developer, front-end",
-    "etiqueta": "Developer, front-end",
+    "etiqueta": "Desarrollo front-end",
     "n": 2728
    },
    {
     "valor": "Developer, desktop or enterprise applications",
-    "etiqueta": "Developer, desktop or enterprise applications",
+    "etiqueta": "Aplicaciones de escritorio o corporativas",
     "n": 2004
    },
    {
     "valor": "Developer, mobile",
-    "etiqueta": "Developer, mobile",
+    "etiqueta": "Desarrollo móvil",
     "n": 1330
    },
    {
     "valor": "Developer, embedded applications or devices",
-    "etiqueta": "Developer, embedded applications or devices",
+    "etiqueta": "Sistemas embebidos",
     "n": 1142
    },
    {
     "valor": "Engineering manager",
-    "etiqueta": "Engineering manager",
+    "etiqueta": "Dirección de ingeniería",
     "n": 1040
    },
    {
@@ -841,67 +841,67 @@
    },
    {
     "valor": "Data scientist or machine learning specialist",
-    "etiqueta": "Data scientist or machine learning specialist",
+    "etiqueta": "Ciencia de datos / aprendizaje automático",
     "n": 746
    },
    {
     "valor": "Engineer, data",
-    "etiqueta": "Engineer, data",
+    "etiqueta": "Ingeniería de datos",
     "n": 726
    },
    {
     "valor": "DevOps specialist",
-    "etiqueta": "DevOps specialist",
+    "etiqueta": "Especialista DevOps",
     "n": 708
    },
    {
     "valor": "Research & Development role",
-    "etiqueta": "Research & Development role",
+    "etiqueta": "Investigación y desarrollo",
     "n": 608
    },
    {
     "valor": "Cloud infrastructure engineer",
-    "etiqueta": "Cloud infrastructure engineer",
+    "etiqueta": "Infraestructura en la nube",
     "n": 568
    },
    {
     "valor": "Senior Executive (C-Suite, VP, etc.)",
-    "etiqueta": "Senior Executive (C-Suite, VP, etc.)",
+    "etiqueta": "Alta dirección",
     "n": 504
    },
    {
     "valor": "Developer, game or graphics",
-    "etiqueta": "Developer, game or graphics",
+    "etiqueta": "Videojuegos o gráficos",
     "n": 393
    },
    {
     "valor": "Engineer, site reliability",
-    "etiqueta": "Engineer, site reliability",
+    "etiqueta": "Ingeniería de confiabilidad (SRE)",
     "n": 242
    },
    {
     "valor": "Developer, QA or test",
-    "etiqueta": "Developer, QA or test",
+    "etiqueta": "Aseguramiento de calidad",
     "n": 216
    },
    {
     "valor": "Academic researcher",
-    "etiqueta": "Academic researcher",
+    "etiqueta": "Investigación académica",
     "n": 195
    },
    {
     "valor": "Developer Experience",
-    "etiqueta": "Developer Experience",
+    "etiqueta": "Experiencia de desarrollo",
     "n": 173
    },
    {
     "valor": "Data or business analyst",
-    "etiqueta": "Data or business analyst",
+    "etiqueta": "Análisis de datos o de negocio",
     "n": 172
    },
    {
     "valor": "Project manager",
-    "etiqueta": "Project manager",
+    "etiqueta": "Gestión de proyectos",
     "n": 127
    },
    {
@@ -911,89 +911,89 @@
    },
    {
     "valor": "Security professional",
-    "etiqueta": "Security professional",
+    "etiqueta": "Seguridad",
     "n": 102
    },
    {
     "valor": "Product manager",
-    "etiqueta": "Product manager",
+    "etiqueta": "Gestión de producto",
     "n": 86
    },
    {
     "valor": "Hardware Engineer",
-    "etiqueta": "Hardware Engineer",
+    "etiqueta": "Ingeniería de hardware",
     "n": 86
    },
    {
     "valor": "Scientist",
-    "etiqueta": "Scientist",
+    "etiqueta": "Científico/a",
     "n": 78
    },
    {
     "valor": "Developer Advocate",
-    "etiqueta": "Developer Advocate",
+    "etiqueta": "Relaciones con desarrolladores",
     "n": 75
    },
    {
     "valor": "Database administrator",
-    "etiqueta": "Database administrator",
+    "etiqueta": "Administración de bases de datos",
     "n": 62
    },
    {
     "valor": "System administrator",
-    "etiqueta": "System administrator",
+    "etiqueta": "Administración de sistemas",
     "n": 60
    },
    {
     "valor": "Educator",
-    "etiqueta": "Educator",
+    "etiqueta": "Docencia",
     "n": 40
    },
    {
     "valor": "Designer",
-    "etiqueta": "Designer",
+    "etiqueta": "Diseño",
     "n": 38
    }
   ],
   "EdLevel": [
    {
     "valor": "Bachelor’s degree (B.A., B.S., B.Eng., etc.)",
-    "etiqueta": "Bachelor’s degree (B.A., B.S., B.Eng., etc.)",
+    "etiqueta": "Grado universitario",
     "n": 18439
    },
    {
     "valor": "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)",
-    "etiqueta": "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)",
+    "etiqueta": "Maestría",
     "n": 10117
    },
    {
     "valor": "Some college/university study without earning a degree",
-    "etiqueta": "Some college/university study without earning a degree",
+    "etiqueta": "Estudios universitarios sin título",
     "n": 4235
    },
    {
     "valor": "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)",
-    "etiqueta": "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)",
+    "etiqueta": "Secundaria",
     "n": 1597
    },
    {
     "valor": "Professional degree (JD, MD, Ph.D, Ed.D, etc.)",
-    "etiqueta": "Professional degree (JD, MD, Ph.D, Ed.D, etc.)",
+    "etiqueta": "Doctorado o grado profesional",
     "n": 1458
    },
    {
     "valor": "Associate degree (A.A., A.S., etc.)",
-    "etiqueta": "Associate degree (A.A., A.S., etc.)",
+    "etiqueta": "Título técnico",
     "n": 1281
    },
    {
     "valor": "Something else",
-    "etiqueta": "Something else",
+    "etiqueta": "Otra formación",
     "n": 369
    },
    {
     "valor": "Primary/elementary school",
-    "etiqueta": "Primary/elementary school",
+    "etiqueta": "Primaria",
     "n": 126
    }
   ],
@@ -1069,62 +1069,62 @@
   "Industry": [
    {
     "valor": "Information Services, IT, Software Development, or other Technology",
-    "etiqueta": "Information Services, IT, Software Development, or other Technology",
+    "etiqueta": "Tecnología y software",
     "n": 11209
    },
    {
     "valor": "Financial Services",
-    "etiqueta": "Financial Services",
+    "etiqueta": "Servicios financieros",
     "n": 2926
    },
    {
     "valor": "Other",
-    "etiqueta": "Other",
+    "etiqueta": "Otro sector",
     "n": 2540
    },
    {
     "valor": "Manufacturing, Transportation, or Supply Chain",
-    "etiqueta": "Manufacturing, Transportation, or Supply Chain",
+    "etiqueta": "Manufactura y logística",
     "n": 1702
    },
    {
     "valor": "Healthcare",
-    "etiqueta": "Healthcare",
+    "etiqueta": "Salud",
     "n": 1463
    },
    {
     "valor": "Retail and Consumer Services",
-    "etiqueta": "Retail and Consumer Services",
+    "etiqueta": "Comercio y consumo",
     "n": 1327
    },
    {
     "valor": "Higher Education",
-    "etiqueta": "Higher Education",
+    "etiqueta": "Educación superior",
     "n": 557
    },
    {
     "valor": "Advertising Services",
-    "etiqueta": "Advertising Services",
+    "etiqueta": "Publicidad",
     "n": 525
    },
    {
     "valor": "Insurance",
-    "etiqueta": "Insurance",
+    "etiqueta": "Seguros",
     "n": 489
    },
    {
     "valor": "Oil & Gas",
-    "etiqueta": "Oil & Gas",
+    "etiqueta": "Petróleo y gas",
     "n": 164
    },
    {
     "valor": "Legal Services",
-    "etiqueta": "Legal Services",
+    "etiqueta": "Servicios legales",
     "n": 147
    },
    {
     "valor": "Wholesale",
-    "etiqueta": "Wholesale",
+    "etiqueta": "Mayorista",
     "n": 111
    }
   ],
@@ -2859,6 +2859,84 @@
    "South Korea": "High income",
    "Taiwan": "High income",
    "Dominican Republic": "Upper middle income"
+  },
+  "nivel_precios": {
+   "Argentina": 0.1451,
+   "Armenia": 0.4123,
+   "Australia": 0.9273,
+   "Austria": 0.7766,
+   "Bangladesh": 0.2892,
+   "Belarus": 0.2646,
+   "Belgium": 0.8144,
+   "Bosnia and Herzegovina": 0.4071,
+   "Brazil": 0.4986,
+   "Bulgaria": 0.2107,
+   "Canada": 0.9091,
+   "Chile": 0.5623,
+   "China": 0.5149,
+   "Colombia": 0.3514,
+   "Costa Rica": 0.6248,
+   "Croatia": 0.5218,
+   "Cyprus": 0.6415,
+   "Czech Republic": 0.6391,
+   "Denmark": 0.9865,
+   "Dominican Republic": 0.4177,
+   "Ecuador": 0.4564,
+   "Egypt": 0.1822,
+   "Estonia": 0.6951,
+   "Finland": 0.8622,
+   "France": 0.7779,
+   "Georgia": 0.4166,
+   "Germany": 0.7595,
+   "Greece": 0.5978,
+   "Hong Kong (S.A.R.)": 0.7547,
+   "Hungary": 0.517,
+   "India": 0.2363,
+   "Indonesia": 0.3376,
+   "Iran, Islamic Republic of...": 2.1094,
+   "Ireland": 0.9583,
+   "Israel": 0.9711,
+   "Italy": 0.6829,
+   "Japan": 0.706,
+   "Kazakhstan": 0.3656,
+   "Kenya": 0.3128,
+   "Latvia": 0.5758,
+   "Lithuania": 0.5776,
+   "Luxembourg": 0.9185,
+   "Malaysia": 0.3213,
+   "Mexico": 0.5913,
+   "Morocco": 0.4063,
+   "Nepal": 0.2627,
+   "Netherlands": 0.8054,
+   "New Zealand": 0.9107,
+   "Nigeria": 0.318,
+   "Norway": 0.888,
+   "Pakistan": 0.2115,
+   "Peru": 0.5254,
+   "Philippines": 0.3719,
+   "Poland": 0.4744,
+   "Portugal": 0.6001,
+   "Republic of Korea": 0.6764,
+   "Romania": 0.4304,
+   "Russian Federation": 0.3239,
+   "Serbia": 0.4541,
+   "Singapore": 0.7803,
+   "Slovakia": 0.5851,
+   "Slovenia": 0.6238,
+   "South Africa": 0.4118,
+   "South Korea": 0.6764,
+   "Spain": 0.6288,
+   "Sri Lanka": 0.2762,
+   "Sweden": 0.8026,
+   "Switzerland": 1.2919,
+   "Thailand": 0.3214,
+   "Turkey": 0.3242,
+   "Ukraine": 0.2857,
+   "United Arab Emirates": 0.7067,
+   "United Kingdom of Great Britain and Northern Ireland": 0.8373,
+   "United States of America": 1.0,
+   "Uruguay": 0.741,
+   "Viet Nam": 0.2991
   },
   "mediana_pais": {
    "Argentina": 34824,

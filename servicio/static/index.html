@@ -119,12 +119,28 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--linea);
 </div>
 
 <footer id="pie"></footer>
+
+<dialog id="acerca" style="max-width:560px;border:1px solid var(--linea);border-radius:10px;
+  background:var(--panel);color:var(--tinta);padding:22px">
+  <h2 style="margin-top:0">Acerca de este sistema</h2>
+  <p class="sub" style="font-size:13px">Prototipo de la tesis <em>Estimación de compensaciones
+  en el sector tecnológico mediante aprendizaje automático explicable</em>, Universidad ESAN,
+  Facultad de Ingeniería, Carrera de Ingeniería de Sistemas.</p>
+  <p class="sub" style="font-size:13px"><strong>Autores:</strong> Carlos Sebastian Ramos Flores
+  y Arian Antonio Garay Concha. <strong>Asesor:</strong> Wilfredo Mamani Ticona.</p>
+  <div id="ficha-modelo" style="font-size:13px"></div>
+  <p class="sub" style="font-size:12px">El sistema no almacena ninguna consulta: no hay base de
+  datos ni registro de perfiles. Las estimaciones describen la muestra de la encuesta empleada,
+  no el conjunto del mercado laboral, y los usos fuera de alcance están listados en la ficha
+  del modelo del documento (Anexo F).</p>
+  <button class="principal" style="margin-top:6px" onclick="document.querySelector('#acerca').close()">Cerrar</button>
+</dialog>
 </div>
 
 <script>
 const $ = s => document.querySelector(s);
 const dinero = n => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
-let VISTA = "candidato", CTX = null;
+let VISTA = "candidato", CTX = null, NOMBRE_ES = {};
 
 function opciones(sel, items, vacio) {
   const e = $(sel); e.innerHTML = "";
@@ -139,6 +155,7 @@ function opciones(sel, items, vacio) {
 async function arrancar() {
   CTX = await (await fetch("/api/contexto")).json();
   const c = CTX.catalogos;
+  for (const p of c.Country) NOMBRE_ES[p.valor] = p.etiqueta;
   opciones("#pais", c.Country);
   opciones("#rol", c.DevType, "Sin especificar");
   opciones("#educacion", c.EdLevel, "Sin especificar");
@@ -148,10 +165,13 @@ async function arrancar() {
   opciones("#lenguajes", c.lenguajes);
   opciones("#comparar_paises", c.Country);
   const m = CTX.modelo;
-  $("#pie").textContent =
-    `${m.algoritmo} sobre la edición ${m.edicion} de la encuesta · ${m.n_muestra.toLocaleString("es")} `
-    + `observaciones en ${m.n_paises} países · R² de ${m.r2_prueba} sobre el conjunto de prueba · `
-    + `semilla ${m.semilla} · artefacto del ${m.generado}. El servicio no guarda ninguna consulta.`;
+  $("#pie").innerHTML =
+    `Tesis de Ingeniería de Sistemas, Universidad ESAN — C. Ramos Flores y A. Garay Concha. `
+    + `${m.algoritmo} sobre la edición ${m.edicion} de la Stack Overflow Developer Survey, `
+    + `${m.n_muestra.toLocaleString("es-PE")} observaciones en ${m.n_paises} países, `
+    + `R² de ${m.r2_prueba}. El servicio no guarda ninguna consulta. `
+    + `<button style="background:none;border:0;color:var(--azul);cursor:pointer;font:inherit;`
+    + `text-decoration:underline;padding:0" onclick="abrirAcerca()">Acerca de este sistema</button>`;
   $("#pais").value = "Germany";
   await cargarRoles();
   $("#pais").addEventListener("change", cargarRoles);
@@ -261,35 +281,58 @@ function sinCifra(r) {
       países donde la encuesta reunió más respuestas.</p>`;
 }
 
+let DATOS_COMPARAR = null, ESCALA_PPA = false;
+
 function vistaComparar(datos) {
+  DATOS_COMPARAR = datos;
+  // En poder de compra, cada cifra se divide por el nivel de precios del país
+  // (Banco Mundial, 2023). Para Estados Unidos no cambia nada.
+  const ajusta = (v, r) => ESCALA_PPA && r.nivel_precios ? v / r.nivel_precios : v;
   const conCifra = datos.resultados.filter(r => r.banda);
-  const max = conCifra.length ? Math.max(...conCifra.map(r => r.banda.superior)) : 1;
+  const max = conCifra.length
+    ? Math.max(...conCifra.map(r => ajusta(r.banda.superior, r))) : 1;
   const filas = datos.resultados.map(r => {
     const b = r.banda;
-    const punto = b
-      ? `<span class="barra" style="width:${b.centro / max * 100}%"></span>`
-      : `<span class="pildora">sin respaldo</span>`;
+    const sinFactor = ESCALA_PPA && b && !r.nivel_precios;
+    const punto = b && !sinFactor
+      ? `<span class="barra" style="width:${ajusta(b.centro, r) / max * 100}%"></span>`
+      : `<span class="pildora">${b ? "sin factor PPA" : "sin respaldo"}</span>`;
     return `<tr>
-      <td>${r.pais}</td>
+      <td>${NOMBRE_ES[r.pais] || r.pais}</td>
       <td style="width:34%">${punto}</td>
-      <td class="num">${b ? dinero(b.centro) : "—"}</td>
-      <td class="num">${b ? dinero(b.inferior) + " – " + dinero(b.superior) : "—"}</td>
+      <td class="num">${b && !sinFactor ? dinero(ajusta(b.centro, r)) : "—"}</td>
+      <td class="num">${b && !sinFactor
+        ? dinero(ajusta(b.inferior, r)) + " – " + dinero(ajusta(b.superior, r)) : "—"}</td>
       <td><span class="semaforo ${r.fiabilidad.nivel}"
            style="padding:1px 8px;border-radius:20px;font-size:11px;display:inline-block">
            ${r.fiabilidad.nivel}</span></td></tr>`;
   }).join("");
-  const validos = conCifra.map(r => r.banda.centro);
+  const validos = conCifra.filter(r => !ESCALA_PPA || r.nivel_precios)
+                          .map(r => ajusta(r.banda.centro, r));
   const razon = validos.length > 1
     ? `<p class="nota">Entre el mercado mejor y el peor pagado de los comparados hay un
         factor de <strong>${(Math.max(...validos) / Math.min(...validos)).toFixed(1)} a 1</strong>
-        para el mismo perfil. Ninguna otra variable del modelo produce diferencias
-        de esa magnitud.</p>` : "";
+        para el mismo perfil${ESCALA_PPA
+          ? ". En dólares corrientes la distancia es mayor: parte de la brecha nominal es nivel de precios, no poder de compra"
+          : ". Ninguna otra variable del modelo produce diferencias de esa magnitud"}.</p>` : "";
+  const conmutador = `<p class="sub" style="margin-top:10px">
+    <label style="display:inline;font-size:12.5px;cursor:pointer">
+      <input type="checkbox" id="escala-ppa" ${ESCALA_PPA ? "checked" : ""}
+             style="width:auto;vertical-align:middle"> ver en poder de compra
+      (dólares de paridad, Banco Mundial 2023)</label></p>`;
   return `<h2>El mismo perfil en distintos mercados</h2>
     <p class="sub">Idéntica experiencia, rol y formación. Lo único que cambia es el país.</p>
+    ${conmutador}
     <table><thead><tr><th>País</th><th></th><th class="num">Estimación</th>
       <th class="num">Banda</th><th>Fiabilidad</th></tr></thead>
       <tbody>${filas}</tbody></table>${razon}`;
 }
+
+document.addEventListener("change", e => {
+  if (e.target.id !== "escala-ppa") return;
+  ESCALA_PPA = e.target.checked;
+  if (DATOS_COMPARAR) $("#resultado").innerHTML = vistaComparar(DATOS_COMPARAR);
+});
 
 $(".pestanas").addEventListener("click", e => {
   const b = e.target.closest("button[data-vista]");
@@ -353,6 +396,19 @@ $("#formulario").addEventListener("submit", async e => {
     boton.disabled = false; boton.textContent = previo;
   }
 });
+
+function abrirAcerca() {
+  const m = CTX.modelo;
+  $("#ficha-modelo").innerHTML = `<table style="margin:8px 0">
+    <tr><td>Algoritmo</td><td class="num">${m.algoritmo}, codificación por objetivo</td></tr>
+    <tr><td>Datos</td><td class="num">Stack Overflow Developer Survey ${m.edicion} (ODbL 1.0)</td></tr>
+    <tr><td>Muestra</td><td class="num">${m.n_muestra.toLocaleString("es-PE")} observaciones, ${m.n_paises} países</td></tr>
+    <tr><td>Desempeño</td><td class="num">R² ${m.r2_prueba} · MAE $${m.mae_usd.toLocaleString("en-US")}</td></tr>
+    <tr><td>Reproducibilidad</td><td class="num">semilla ${m.semilla} · artefacto del ${m.generado}</td></tr>
+    <tr><td>Estado en vivo</td><td class="num"><a href="/api/salud" style="color:var(--azul)">/api/salud</a></td></tr>
+  </table>`;
+  document.querySelector("#acerca").showModal();
+}
 
 arrancar();
 </script>

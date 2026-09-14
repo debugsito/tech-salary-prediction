@@ -228,6 +228,9 @@ def api_comparar(c: Comparacion):
         evaluacion = fiabilidad.evaluar(pais, p.rol, CONTEXTO)
         fila = {"pais": pais, "fiabilidad": evaluacion,
                 "mediana_pais": CONTEXTO["referencia"]["mediana_pais"].get(pais),
+                # Nivel de precios relativo a EE. UU., para que la interfaz
+                # pueda expresar la misma banda en poder de compra (5.7.2).
+                "nivel_precios": CONTEXTO["referencia"]["nivel_precios"].get(pais),
                 "banda": None}
         if evaluacion["entregar"]:
             fila["banda"] = fiabilidad.banda(estimar(construir_fila(p)), evaluacion)

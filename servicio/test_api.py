@@ -107,3 +107,20 @@ def test_sin_rol_la_estimacion_se_apoya_en_el_pais():
     assert d["fiabilidad"]["nivel"] == "verde"
     assert d["banda"] is not None
     assert any("No se ha indicado el rol" in m for m in d["fiabilidad"]["motivos"])
+
+
+def test_comparar_trae_el_nivel_de_precios():
+    d = cliente.post("/api/comparar", json={
+        "perfil": ALEMANIA, "paises": ["Peru", "India"]}).json()
+    niveles = {r["pais"]: r["nivel_precios"] for r in d["resultados"]}
+    assert niveles["Germany"] and 0 < niveles["Germany"] <= 1.2
+    assert niveles["Peru"] and niveles["Peru"] < niveles["Germany"]
+
+
+def test_los_catalogos_llegan_en_espanol():
+    c = cliente.get("/api/contexto").json()["catalogos"]
+    paises = {x["valor"]: x["etiqueta"] for x in c["Country"]}
+    assert paises["Peru"] == "Perú"
+    assert paises["United States of America"] == "Estados Unidos"
+    roles = {x["valor"]: x["etiqueta"] for x in c["DevType"]}
+    assert roles["Developer, back-end"] == "Desarrollo back-end"

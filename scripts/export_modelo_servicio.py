@@ -45,6 +45,107 @@ SEMILLA = 42
 MODELO = "XGBoost"
 CODIFICACION = "target"
 
+# La interfaz se presenta en español: los países, roles y categorías del
+# formulario se traducen en la etiqueta y conservan el valor original de la
+# encuesta, que es el que el modelo entiende.
+PAIS_ES = {
+    "United States of America": "Estados Unidos",
+    "United Kingdom of Great Britain and Northern Ireland": "Reino Unido",
+    "Germany": "Alemania", "Canada": "Canadá", "India": "India",
+    "France": "Francia", "Netherlands": "Países Bajos", "Australia": "Australia",
+    "Brazil": "Brasil", "Spain": "España", "Poland": "Polonia",
+    "Sweden": "Suecia", "Italy": "Italia", "Switzerland": "Suiza",
+    "Denmark": "Dinamarca", "Norway": "Noruega", "Austria": "Austria",
+    "Portugal": "Portugal", "Israel": "Israel", "Finland": "Finlandia",
+    "Belgium": "Bélgica", "Czech Republic": "Chequia",
+    "New Zealand": "Nueva Zelanda", "Russian Federation": "Rusia",
+    "Greece": "Grecia", "Turkey": "Turquía", "Romania": "Rumanía",
+    "Ukraine": "Ucrania", "South Africa": "Sudáfrica", "Mexico": "México",
+    "Ireland": "Irlanda", "Hungary": "Hungría", "Argentina": "Argentina",
+    "Bulgaria": "Bulgaria", "Colombia": "Colombia", "Pakistan": "Pakistán",
+    "Japan": "Japón", "Lithuania": "Lituania", "Serbia": "Serbia",
+    "Iran, Islamic Republic of...": "Irán", "China": "China",
+    "Croatia": "Croacia", "Bangladesh": "Bangladés", "Singapore": "Singapur",
+    "Estonia": "Estonia", "Slovenia": "Eslovenia", "Slovakia": "Eslovaquia",
+    "Chile": "Chile", "Indonesia": "Indonesia", "Philippines": "Filipinas",
+    "Malaysia": "Malasia", "Viet Nam": "Vietnam", "Latvia": "Letonia",
+    "Taiwan": "Taiwán", "Hong Kong (S.A.R.)": "Hong Kong",
+    "Thailand": "Tailandia", "Georgia": "Georgia",
+    "United Arab Emirates": "Emiratos Árabes Unidos",
+    "South Korea": "Corea del Sur", "Sri Lanka": "Sri Lanka",
+    "Nigeria": "Nigeria", "Egypt": "Egipto", "Uruguay": "Uruguay",
+    "Peru": "Perú", "Costa Rica": "Costa Rica", "Armenia": "Armenia",
+    "Luxembourg": "Luxemburgo",
+    "Venezuela, Bolivarian Republic of...": "Venezuela", "Nepal": "Nepal",
+    "Bosnia and Herzegovina": "Bosnia y Herzegovina", "Cyprus": "Chipre",
+    "Ecuador": "Ecuador", "Kenya": "Kenia", "Morocco": "Marruecos",
+    "Republic of Korea": "Corea (Rep.)", "Belarus": "Bielorrusia",
+    "Kazakhstan": "Kazajistán", "Dominican Republic": "República Dominicana",
+}
+
+ROL_ES = {
+    "Developer, full-stack": "Desarrollo full-stack",
+    "Developer, back-end": "Desarrollo back-end",
+    "Developer, front-end": "Desarrollo front-end",
+    "Developer, desktop or enterprise applications": "Aplicaciones de escritorio o corporativas",
+    "Developer, embedded applications or devices": "Sistemas embebidos",
+    "Developer, mobile": "Desarrollo móvil",
+    "Developer, game or graphics": "Videojuegos o gráficos",
+    "Developer, QA or test": "Aseguramiento de calidad",
+    "Data scientist or machine learning specialist": "Ciencia de datos / aprendizaje automático",
+    "Data or business analyst": "Análisis de datos o de negocio",
+    "Engineer, data": "Ingeniería de datos",
+    "Engineer, site reliability": "Ingeniería de confiabilidad (SRE)",
+    "DevOps specialist": "Especialista DevOps",
+    "Cloud infrastructure engineer": "Infraestructura en la nube",
+    "Engineering manager": "Dirección de ingeniería",
+    "Product manager": "Gestión de producto",
+    "Project manager": "Gestión de proyectos",
+    "Academic researcher": "Investigación académica",
+    "Research & Development role": "Investigación y desarrollo",
+    "Scientist": "Científico/a",
+    "System administrator": "Administración de sistemas",
+    "Database administrator": "Administración de bases de datos",
+    "Security professional": "Seguridad",
+    "Blockchain": "Blockchain",
+    "Hardware Engineer": "Ingeniería de hardware",
+    "Educator": "Docencia",
+    "Designer": "Diseño",
+    "Marketing or sales professional": "Marketing o ventas",
+    "Engineer, other": "Ingeniería, otra",
+    "Developer, other": "Desarrollo, otro",
+    "Senior Executive (C-Suite, VP, etc.)": "Alta dirección",
+    "Developer Experience": "Experiencia de desarrollo",
+    "Developer Advocate": "Relaciones con desarrolladores",
+    "Other": "Otro",
+}
+
+EDU_ES = {
+    "Primary/elementary school": "Primaria",
+    "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)": "Secundaria",
+    "Some college/university study without earning a degree": "Estudios universitarios sin título",
+    "Associate degree (A.A., A.S., etc.)": "Título técnico",
+    "Bachelor’s degree (B.A., B.S., B.Eng., etc.)": "Grado universitario",
+    "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)": "Maestría",
+    "Professional degree (JD, MD, Ph.D, Ed.D, etc.)": "Doctorado o grado profesional",
+    "Something else": "Otra formación",
+}
+
+SECTOR_ES = {
+    "Information Services, IT, Software Development, or other Technology": "Tecnología y software",
+    "Financial Services": "Servicios financieros",
+    "Manufacturing, Transportation, or Supply Chain": "Manufactura y logística",
+    "Retail and Consumer Services": "Comercio y consumo",
+    "Healthcare": "Salud",
+    "Higher Education": "Educación superior",
+    "Insurance": "Seguros",
+    "Legal Services": "Servicios legales",
+    "Oil & Gas": "Petróleo y gas",
+    "Advertising Services": "Publicidad",
+    "Wholesale": "Mayorista",
+    "Other": "Otro sector",
+}
+
 # Etiquetas legibles para la interfaz. La encuesta usa cadenas largas que no
 # caben en un desplegable.
 LEGIBLE = {
@@ -64,10 +165,20 @@ LEGIBLE = {
 }
 
 
-def catalogo(serie: pd.Series, minimo: int = 1) -> list[dict]:
+def nivel_precios() -> dict[str, float]:
+    """Nivel de precios por país, de la tabla de paridad ya versionada."""
+    import csv
+    ruta = RAIZ / "data" / "reference" / "ppp_factors.csv"
+    with ruta.open(encoding="utf-8") as fh:
+        return {r["pais"]: float(r["nivel_precios"]) for r in csv.DictReader(fh)}
+
+
+def catalogo(serie: pd.Series, minimo: int = 1,
+             traduccion: dict | None = None) -> list[dict]:
     """Categorías declaradas, con su frecuencia, de mayor a menor."""
     v = serie[serie != "No declarado"].value_counts()
-    return [{"valor": str(k), "etiqueta": LEGIBLE.get(str(k), str(k)), "n": int(n)}
+    dic = {**LEGIBLE, **(traduccion or {})}
+    return [{"valor": str(k), "etiqueta": dic.get(str(k), str(k)), "n": int(n)}
             for k, n in v.items() if n >= minimo]
 
 
@@ -125,12 +236,12 @@ def main() -> int:
         "columnas_transformadas": nombres_de_variables(tuberia.named_steps["preprocesador"]),
         "tecnologia": columnas_tecnologia(df),
         "catalogos": {
-            "Country": catalogo(df["Country"]),
-            "DevType": catalogo(df["DevType"], minimo=30),
-            "EdLevel": catalogo(df["EdLevel"]),
+            "Country": catalogo(df["Country"], traduccion=PAIS_ES),
+            "DevType": catalogo(df["DevType"], minimo=30, traduccion=ROL_ES),
+            "EdLevel": catalogo(df["EdLevel"], traduccion=EDU_ES),
             "OrgSize": catalogo(df["OrgSize"]),
             "RemoteWork": catalogo(df["RemoteWork"]),
-            "Industry": catalogo(df["Industry"]),
+            "Industry": catalogo(df["Industry"], traduccion=SECTOR_ES),
             "ICorPM": catalogo(df["ICorPM"]),
             "Age": catalogo(df["Age"]),
             "lenguajes": sorted(c.replace("language__", "")
@@ -146,6 +257,9 @@ def main() -> int:
         "referencia": {
             "income_group": df.drop_duplicates("Country")
                               .set_index("Country")["income_group"].to_dict(),
+            # Nivel de precios relativo a EE. UU. (Banco Mundial, 2023), para
+            # que la comparación pueda expresarse en poder de compra.
+            "nivel_precios": nivel_precios(),
             "mediana_pais": df.groupby("Country")[TARGET].median().round(0).astype(int).to_dict(),
             "mediana_global": int(df[TARGET].median()),
         },

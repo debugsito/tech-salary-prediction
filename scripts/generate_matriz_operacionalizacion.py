@@ -141,7 +141,7 @@ def construir(df: pd.DataFrame) -> list[str]:
         if col not in df.columns:
             continue
         nombre, concepto = CONCEPTO[col]
-        origen = col if col != "income_group" else "Country → Banco Mundial"
+        origen = col if col != "income_group" else "Country"
         trans = ("Derivada del país mediante la tabla de referencia versionada"
                  if col == "income_group"
                  else "Codificación disyuntiva. La ausencia recibe categoría propia "

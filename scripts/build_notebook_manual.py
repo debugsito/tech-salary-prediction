@@ -587,65 +587,94 @@ ninguna variable. Ese es el listón.
 """),
 
 # ---------------------------------------------------------------------------
+(CODE, r"""
+# Antes de complicarme: ¿y si predigo el salario tal cual, sin logaritmo?
+# Un intento rápido con una sola partición, mismo modelo, dos objetivos.
+from sklearn.base import clone
+from scipy.stats import skew as _skew
+
+y_bruto = df.loc[X_ent.index, TARGET].to_numpy()
+y_bruto_pru = df.loc[X_pru.index, TARGET].to_numpy()
+
+t_bruto = Pipeline([("preprocesador", construir_preprocesador(df, "target")),
+                    ("modelo", clone(modelos["XGBoost"]))]).fit(X_ent, y_bruto)
+pred_bruto = t_bruto.predict(X_pru)
+
+t_log = Pipeline([("preprocesador", construir_preprocesador(df, "target")),
+                  ("modelo", clone(modelos["XGBoost"]))]).fit(X_ent, y_ent)
+pred_log_usd = np.expm1(t_log.predict(X_pru))
+
+print(f"{'objetivo':12} {'MAE':>9} {'MedAE':>9} {'asimetría de residuos':>22}")
+for nom, pred in [("en bruto", pred_bruto), ("logaritmo", pred_log_usd)]:
+    e = pred - y_bruto_pru
+    print(f"{nom:12} {np.abs(e).mean():>9,.0f} {np.median(np.abs(e)):>9,.0f} "
+          f"{_skew(e):>22.2f}")
+"""),
+(MD, """
+El logaritmo gana en todo lo que importa: mil dólares menos de error medio y
+mil setecientos menos de error mediano. Esperaba que la asimetría de los
+residuos delatara más al modelo en bruto, y no fue tan dramático; lo que lo
+condena es el error a secas, y el argumento de fondo sigue en pie: en bruto,
+un error de 10,000 pesa igual para quien gana 15,000 que para quien gana
+300,000, y el modelo gasta su capacidad en la cola alta. Me quedo con el
+logaritmo y no vuelvo a mirar atrás.
+"""),
+
 (MD, """
 ## 8. Validación cruzada
 
 Una sola partición no me dice si la diferencia entre dos modelos es real o es la
-suerte del reparto. Uso validación cruzada repetida, sobre las mismas
-particiones para todos, para poder compararlos de dos en dos.
+suerte del reparto. Validación cruzada de cinco particiones, estratificada por
+nivel de renta, con las mismas particiones para todos los modelos para poder
+compararlos de dos en dos.
 """),
 (CODE, r"""
 import time
-from sklearn.base import clone
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-N_PARTICIONES, N_REPETICIONES = 5, 4
-particionador = RepeatedStratifiedKFold(n_splits=N_PARTICIONES,
-                                        n_repeats=N_REPETICIONES,
-                                        random_state=SEMILLA)
+N_PARTICIONES = 5
 estratos = df.loc[X_ent.index, "income_group"].astype(str)
 
-filas, t0 = [], time.perf_counter()
-for i, (tr, va) in enumerate(particionador.split(X_ent, estratos)):
-    for codificacion in ("target", "onehot"):
-        for nombre, modelo in modelos.items():
-            # El preprocesador se reajusta dentro de cada partición: la
-            # codificación por objetivo usa la y, y ajustarla fuera dejaría
-            # entrar información del conjunto de validación.
-            t = Pipeline([("preprocesador", construir_preprocesador(df, codificacion)),
-                          ("modelo", clone(modelo))])
-            t.fit(X_ent.iloc[tr], y_ent[tr])
-            m = compute_metrics(y_ent[va], t.predict(X_ent.iloc[va]))
-            m.update({"modelo": nombre, "codificacion": codificacion, "particion": i})
-            filas.append(m)
-    if (i + 1) % N_PARTICIONES == 0:
-        print(f"  repetición {(i+1)//N_PARTICIONES}/{N_REPETICIONES}  "
-              f"({time.perf_counter()-t0:.0f} s)")
+def correr_cv(n_repeticiones):
+    particionador = RepeatedStratifiedKFold(n_splits=N_PARTICIONES,
+                                            n_repeats=n_repeticiones,
+                                            random_state=SEMILLA)
+    filas, t0 = [], time.perf_counter()
+    for i, (tr, va) in enumerate(particionador.split(X_ent, estratos)):
+        for codificacion in ("target", "onehot"):
+            for nombre, modelo in modelos.items():
+                # El preprocesador se reajusta dentro de cada partición: la
+                # codificación por objetivo usa la y, y ajustarla fuera dejaría
+                # entrar información del conjunto de validación.
+                t = Pipeline([("preprocesador", construir_preprocesador(df, codificacion)),
+                              ("modelo", clone(modelo))])
+                t.fit(X_ent.iloc[tr], y_ent[tr])
+                m = compute_metrics(y_ent[va], t.predict(X_ent.iloc[va]))
+                m.update({"modelo": nombre, "codificacion": codificacion, "particion": i})
+                filas.append(m)
+        if (i + 1) % N_PARTICIONES == 0:
+            print(f"  repetición {(i+1)//N_PARTICIONES}/{n_repeticiones}  "
+                  f"({time.perf_counter()-t0:.0f} s)")
+    return pd.DataFrame(filas)
 
-cv = pd.DataFrame(filas)
-cv.to_csv(SALIDA / "cv_by_encoding.csv", index=False)
-print(f"\n{len(cv)} ajustes en {time.perf_counter()-t0:.0f} segundos")
+cv = correr_cv(1)
+print(f"{len(cv)} ajustes")
 """),
 (CODE, r"""
 resumen_cv = (cv.groupby(["modelo", "codificacion"])
                 .agg(R2=("R2", "mean"), desv=("R2", "std"), MAE_USD=("MAE_USD", "mean"))
                 .round(4).sort_values("R2", ascending=False))
 print(resumen_cv.to_string())
-
-from scripts.generate_figures import fig_modelos
-figura(fig_modelos(FIGURAS, SALIDA))
 """),
 (MD, """
-XGBoost con codificación por objetivo queda primero, 0.7863.
+XGBoost con codificación por objetivo arriba, 0.786, y Ridge tres puntos por
+debajo. El MAE baja de 49,826 (la línea base) a unos 24,900: la mitad.
 
-Lo que no esperaba es lo pegados que están: entre el primero y el quinto hay tres
-milésimas de R², y la desviación típica entre particiones es de seis milésimas.
-O sea que **la diferencia entre los cuatro ensamblados es más pequeña que lo que
-varían ellos mismos de una partición a otra**. Quedarme con el primero por su
-media y decir que es el mejor sería colarme.
-
-Ridge se queda en 0.7544, tres puntos por debajo. Y el MAE baja de 49,826 a
-24,890: la mitad del error de no hacer nada.
+Pero lo que de verdad me llama la atención es lo apretado del pelotón: entre
+el primero y el quinto hay tres milésimas de R², y la desviación entre
+particiones es de cinco milésimas. Las diferencias entre ensamblados son más
+pequeñas que el ruido de una partición a otra. Con cinco números por
+configuración no me atrevo a proclamar un ganador; necesito la prueba pareada.
 """),
 
 # ---------------------------------------------------------------------------
@@ -710,24 +739,66 @@ from scipy.stats import wilcoxon
 
 pivote = cv.pivot_table(index="particion", columns=["modelo", "codificacion"], values="R2")
 
-# Antes de usarla, una comprobación que casi me cuesta un disgusto: con pocas
-# particiones la prueba no puede dar un valor p pequeño por mucho que la
-# diferencia sea grande, porque no hay combinaciones de signos suficientes.
+# Pruebo el contraste que me interesa: el mejor ensamblado contra el modelo
+# lineal, y contra su propia versión con la otra codificación.
+for a, b in [(("XGBoost", "target"), ("Ridge", "target")),
+             (("XGBoost", "target"), ("XGBoost", "onehot")),
+             (("CatBoost", "target"), ("Baseline_media", "target"))]:
+    stat, pv = wilcoxon(pivote[a], pivote[b])
+    print(f"{a[0]}/{a[1]:7} frente a {b[0]}/{b[1]:7}  "
+          f"diferencia media {float((pivote[a]-pivote[b]).mean()):+.4f}   p = {pv:.4f}")
+"""),
+(MD, """
+Algo está mal. Las tres comparaciones dan **exactamente** p = 0.0625: la de
+codificación (diferencia de 0.004), la del modelo lineal (0.036), y hasta la
+de la línea base, donde la diferencia es de **0.786 puntos de R²** — un abismo
+que a ojo no necesita prueba. ¿Cómo va a dar lo mismo un abismo que una
+milésima?
+
+Cuando tres pruebas distintas devuelven el mismo número sospechoso, el
+problema no son los datos: es la prueba. A ver cuál es el mejor p que Wilcoxon
+puede producir con solo cinco pares.
+"""),
+(CODE, r"""
+# ¿Cuál es el MEJOR valor p que esta prueba puede dar con tan pocos pares?
 for n in (5, 10, 20):
     x = np.arange(1, n + 1)
     print(f"  con {n:>2} pares, el menor valor p posible es {wilcoxon(x, -x).pvalue:.2g}")
 """),
 (MD, """
-Menos mal que lo he mirado antes de usarla.
+Ahí está: **con cinco pares, el mínimo posible es 0.0625**. La prueba se basa
+en los signos y rangos de las diferencias, y con cinco pares solo hay 32
+configuraciones de signos: ni la diferencia más brutal del mundo puede bajar
+de 1/16 a dos colas. Mi diseño de cinco particiones hacía **imposible por
+construcción** aceptar ninguna hipótesis con α = 0.05.
 
-**Con cinco particiones el menor valor p que la prueba puede dar es 0.062**, por
-encima del 0.05. Da igual lo grande que sea la diferencia: con cinco pares no hay
-suficientes combinaciones de signos para bajar de ahí, y ninguna comparación
-saldría significativa nunca.
-
-Con veinte pares baja a 1.9 × 10⁻⁶. Por eso he repetido la validación cruzada
-cuatro veces en vez de hacerla una sola.
+La salida no es cambiar de prueba sino tener más pares: con veinte, el mínimo
+cae a dos millonésimas. Toca repetir la validación cruzada con más
+repeticiones. Me llevo una lección que no olvidaré: antes de usar una prueba,
+preguntarle cuál es el mejor resultado que puede darme.
 """),
+(CODE, r"""
+# Repito la validación cruzada tres veces más: veinte pares en total, con un
+# valor p mínimo alcanzable de dos millonésimas.
+cv = correr_cv(4)
+cv.to_csv(SALIDA / "cv_by_encoding.csv", index=False)
+pivote = cv.pivot_table(index="particion", columns=["modelo", "codificacion"], values="R2")
+
+resumen_cv = (cv.groupby(["modelo", "codificacion"])
+                .agg(R2=("R2", "mean"), desv=("R2", "std"), MAE_USD=("MAE_USD", "mean"))
+                .round(4).sort_values("R2", ascending=False))
+print(resumen_cv.to_string())
+
+from scripts.generate_figures import fig_modelos
+figura(fig_modelos(FIGURAS, SALIDA))
+"""),
+(MD, """
+Con veinte pares por configuración el panorama es el mismo en las medias
+(XGBoost/objetivo arriba con 0.7863) pero ahora el contraste tiene dientes.
+De paso, la figura: el solapamiento visual de los ensamblados es la versión
+gráfica de lo que el pelotón apretado ya sugería.
+"""),
+
 (CODE, r"""
 def comparar(a, b, familia):
     x, y_ = pivote[a], pivote[b]
