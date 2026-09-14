@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estimación salarial explicable</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%230a5dab%27/%3E%3Ctext x=%278%27 y=%2712%27 font-family=%27monospace%27 font-size=%2711%27 fill=%27white%27 text-anchor=%27middle%27%3E%24%3C/text%3E%3C/svg%3E">
+<style>
+/* Herramienta, no página de aterrizaje: densa, cuadrada, con monoespaciada
+   para todo lo que sea dato. Un solo tema. */
+:root{
+  --tinta:#26221c; --tinta2:#5c564c; --tinta3:#8f887a;
+  --borde:#ddd7ca; --fondo:#fbfaf6; --gris:#f3f1ea;
+  --azul:#0c7264; --verde:#187a4b; --ambar:#a06b00; --rojo:#bf3a2b;
+}
+mark{background:#ffe98f;color:inherit;padding:0 3px}
+.beta{font:10px ui-monospace,Consolas,monospace;color:var(--ambar);
+  border:1px solid var(--ambar);padding:1px 5px;margin-left:8px;
+  vertical-align:middle;letter-spacing:.05em}
+h1 .dominio{color:var(--tinta3);font-weight:400}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);
+  font:14px/1.5 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+code,.mono,.cifra,td.num,th,.estado,.aviso-n,#pie,.latencia,pre{
+  font-family:ui-monospace,SFMono-Regular,"Cascadia Mono",Consolas,Menlo,monospace}
+.envoltura{max-width:1100px;margin:0 auto;padding:0 18px 48px}
+.topbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  border-bottom:2px solid var(--tinta);padding:14px 0 10px;margin-bottom:6px;flex-wrap:wrap}
+.topbar h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+.topbar .meta{font:11.5px ui-monospace,Consolas,monospace;color:var(--tinta2)}
+.topbar .meta .punto{color:var(--verde)}
+header p{margin:8px 0 0;color:var(--tinta2);font-size:13.5px;max-width:78ch}
+.pestanas{display:flex;gap:0;margin:18px 0 18px;border-bottom:1px solid var(--borde)}
+.pestanas button{background:none;border:1px solid transparent;border-bottom:0;
+  color:var(--azul);cursor:pointer;font:13.5px inherit;font-family:inherit;
+  padding:7px 14px;margin-bottom:-1px}
+.pestanas button[aria-selected=true]{color:var(--azul);font-weight:600;
+  border-color:var(--borde);background:var(--fondo);
+  border-radius:0;border-bottom:1px solid var(--fondo)}
+.rejilla{display:grid;grid-template-columns:300px 1fr;gap:0;align-items:start;
+  border:1px solid var(--borde)}
+@media(max-width:820px){.rejilla{grid-template-columns:1fr}}
+form.panel{padding:14px 16px;background:var(--gris);border-right:1px solid var(--borde)}
+@media(max-width:820px){form.panel{border-right:0;border-bottom:1px solid var(--borde)}}
+main.panel{padding:16px 20px;min-height:420px}
+label{display:block;font:11px ui-monospace,Consolas,monospace;color:var(--tinta2);
+  margin:11px 0 3px}
+label:first-of-type{margin-top:0}
+select,input{width:100%;padding:5px 7px;border:1px solid var(--borde);border-radius:0;
+  background:#fffefb;color:var(--tinta);font:13px inherit;font-family:inherit}
+select[multiple]{height:96px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+select:focus,input:focus{outline:1px solid var(--azul);outline-offset:-1px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end}
+.dos label{margin:11px 0 3px}
+button.principal{width:100%;margin-top:14px;padding:7px;background:var(--azul);
+  color:#fff;border:1px solid var(--azul);border-radius:0;font:13.5px inherit;
+  font-family:inherit;font-weight:600;cursor:pointer}
+button.principal:hover{background:#095e52}
+button.principal:disabled{opacity:.5;cursor:progress}
+.semaforo{border:1px solid var(--borde);border-left-width:4px;padding:9px 13px;
+  margin-bottom:16px;background:var(--gris)}
+.semaforo.verde{border-left-color:var(--verde)}
+.semaforo.ambar{border-left-color:var(--ambar)}
+.semaforo.rojo{border-left-color:var(--rojo)}
+.semaforo h3{margin:0 0 3px;font:600 11.5px ui-monospace,Consolas,monospace;
+  letter-spacing:.04em}
+.semaforo.verde h3{color:var(--verde)} .semaforo.ambar h3{color:var(--ambar)}
+.semaforo.rojo h3{color:var(--rojo)}
+.semaforo ul{margin:7px 0 1px;padding-left:16px;font-size:12.5px;color:var(--tinta2)}
+.semaforo li{margin:4px 0}
+.cifra{font-size:31px;font-weight:600;margin:2px 0;letter-spacing:-.5px}
+.rango{color:var(--tinta2);font-size:13px}
+.nota{color:var(--tinta2);font-size:12.5px;margin-top:12px;border-top:1px dashed var(--borde);
+  padding-top:8px}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+th{font-size:10.5px;color:var(--tinta3);font-weight:600;text-align:left;
+  padding:0 8px 5px;border-bottom:2px solid var(--borde);text-transform:lowercase}
+td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--borde)}
+tr:hover td{background:var(--gris)}
+td.num{text-align:right;font-size:12.5px}
+.barra{height:9px;background:var(--azul);display:block;min-width:2px}
+.barra.baja{background:var(--rojo)}
+.estado{font-size:10.5px;font-weight:600}
+.estado.verde{color:var(--verde)} .estado.ambar{color:var(--ambar)} .estado.rojo{color:var(--rojo)}
+h2{font-size:15px;margin:20px 0 3px;font-weight:650}
+h2:first-child{margin-top:0}
+.sub{color:var(--tinta2);font-size:12.5px;margin:0 0 8px}
+.pildora{font-size:11px;color:var(--tinta3);font-weight:normal}
+footer{margin-top:26px;color:var(--tinta2);font-size:11.5px;line-height:1.8}
+#pie a{color:var(--azul);text-decoration:none}
+#pie a:hover{text-decoration:underline}
+.vacio{color:var(--tinta3);font-size:13px;padding:20px 0}
+.aviso{color:var(--tinta2);font-size:11.5px;margin:5px 0 0;line-height:1.45}
+.ejemplos{margin-top:12px;font-size:12px;color:var(--tinta2)}
+.ejemplos button{background:none;border:0;color:var(--azul);cursor:pointer;
+  font:inherit;font-family:inherit;text-decoration:none;padding:0 1px}
+.ejemplos button:hover{text-decoration:underline}
+a{color:var(--azul)}
+.latencia{font-size:11px;color:var(--tinta3);margin-top:14px}
+details.json{margin-top:6px;font-size:11.5px}
+details.json summary{cursor:pointer;color:var(--azul);
+  font-family:ui-monospace,Consolas,monospace;font-size:11px}
+details.json pre{background:var(--gris);border:1px solid var(--borde);padding:10px;
+  overflow-x:auto;font-size:11px;line-height:1.45;margin:6px 0 0;max-height:340px}
+dialog{max-width:560px;border:1px solid var(--tinta);border-radius:0;
+  background:#fff;color:var(--tinta);padding:20px 22px;font:13.5px/1.55 inherit;
+  font-family:inherit}
+dialog::backdrop{background:rgba(15,20,25,.5)}
+dialog h2{font-size:15px}
+dialog table{font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+<header>
+  <div class="topbar">
+    <h1>salarios<span class="dominio">.debugsito.click</span><sup class="beta">beta</sup></h1>
+    <span class="meta" id="estado-modelo"><span class="punto">●</span> cargando…</span>
+  </div>
+  <p>Entrené un modelo con 37,622 salarios reales del sector tecnológico (encuesta de
+     Stack Overflow, 78 países) para mi tesis. Estima, te explica de qué depende cada
+     estimación, y —la parte que más me costó— <mark>sabe decirte cuándo no tiene datos
+     suficientes para responderte</mark>.</p>
+</header>
+
+<div class="pestanas" role="tablist">
+  <button role="tab" aria-selected="true"  data-vista="candidato">Soy candidato</button>
+  <button role="tab" aria-selected="false" data-vista="reclutador">Soy reclutador</button>
+  <button role="tab" aria-selected="false" data-vista="comparar">Comparar mercados</button>
+</div>
+
+<div class="rejilla">
+  <form class="panel" id="formulario">
+    <label>País<select id="pais" required></select></label>
+    <label>Rol<select id="rol"></select></label>
+    <p class="aviso" id="aviso-roles"></p>
+    <div class="dos">
+      <label>Años profesionales<input type="number" id="anios_profesionales" min="0" max="60" step="1" value="5"></label>
+      <label>Años programando<input type="number" id="anios_programando" min="0" max="60" step="1"></label>
+    </div>
+    <label>Nivel educativo<select id="educacion"></select></label>
+    <label>Tamaño de empresa<select id="tamano_empresa"></select></label>
+    <label>Modalidad<select id="modalidad"></select></label>
+    <label>Sector<select id="sector"></select></label>
+    <label id="fila-lenguajes">Lenguajes <span class="pildora">(elige varios)</span>
+      <select id="lenguajes" multiple></select></label>
+    <label id="fila-comparar" hidden>Comparar con <span class="pildora">(hasta 5)</span>
+      <select id="comparar_paises" multiple></select></label>
+    <button class="principal" type="submit" id="enviar">Estimar</button>
+    <p class="ejemplos">prueba rápida:
+      <button type="button" data-ej="verde">un caso con datos de sobra</button> ·
+      <button type="button" data-ej="ambar">uno justito</button> ·
+      <button type="button" data-ej="rojo">Perú</button>
+      <span class="pildora">(spoiler: con Perú se niega, y esa es la gracia)</span></p>
+  </form>
+
+  <main class="panel" id="resultado">
+    <div class="vacio">Elige país y rol (o prueba un ejemplo, abajo a la izquierda) y dale a Estimar.</div>
+  </main>
+</div>
+
+<footer id="pie"></footer>
+
+<dialog id="acerca">
+  <h2 style="margin-top:0">acerca de</h2>
+  <p class="sub" style="font-size:13px">Las calculadoras de salario que existen te dan un número
+  y jamás te dicen qué tan confiable es. En la tesis medimos el error del modelo grupo por
+  grupo, y este prototipo hace lo que ninguna: usa esa medición para decidir si te responde.
+  Cuando se niega, no está fallando — está funcionando.</p>
+  <p class="sub" style="font-size:13px">Es el prototipo de la tesis <em>Estimación de compensaciones
+  en el sector tecnológico mediante aprendizaje automático explicable</em> (Universidad ESAN,
+  Ingeniería de Sistemas).</p>
+  <p class="sub" style="font-size:13px"><strong>Autores:</strong> Carlos Sebastian Ramos Flores
+  y Arian Antonio Garay Concha. <strong>Asesor:</strong> Wilfredo Mamani Ticona.</p>
+  <div id="ficha-modelo" style="font-size:13px"></div>
+  <p class="sub" style="font-size:12px">El sistema no almacena ninguna consulta: no hay base de
+  datos ni registro de perfiles. Las estimaciones describen la muestra de la encuesta empleada,
+  no el conjunto del mercado laboral, y los usos fuera de alcance están listados en la ficha
+  del modelo del documento (Anexo F).</p>
+  <button class="principal" style="margin-top:6px" onclick="document.querySelector('#acerca').close()">Cerrar</button>
+</dialog>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const dinero = n => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+let VISTA = "candidato", CTX = null, NOMBRE_ES = {};
+
+function opciones(sel, items, vacio) {
+  const e = $(sel); e.innerHTML = "";
+  if (vacio) e.append(new Option(vacio, ""));
+  for (const it of items) {
+    const v = typeof it === "string" ? it : it.valor;
+    const t = typeof it === "string" ? it : it.etiqueta;
+    e.append(new Option(t, v));
+  }
+}
+
+async function arrancar() {
+  CTX = await (await fetch("/api/contexto")).json();
+  const c = CTX.catalogos;
+  for (const p of c.Country) NOMBRE_ES[p.valor] = p.etiqueta;
+  opciones("#pais", c.Country);
+  opciones("#rol", c.DevType, "Sin especificar");
+  opciones("#educacion", c.EdLevel, "Sin especificar");
+  opciones("#tamano_empresa", c.OrgSize, "Sin especificar");
+  opciones("#modalidad", c.RemoteWork, "Sin especificar");
+  opciones("#sector", c.Industry, "Sin especificar");
+  opciones("#lenguajes", c.lenguajes);
+  opciones("#comparar_paises", c.Country);
+  const m = CTX.modelo;
+  $("#estado-modelo").innerHTML =
+    `<span class="punto">●</span> en línea · ${m.algoritmo.toLowerCase()} · `
+    + `datos ${m.edicion} · build ${m.generado}`;
+  $("#pie").innerHTML =
+    `C. Ramos Flores · A. Garay Concha — Universidad ESAN, 2026. `
+    + `n=${m.n_muestra.toLocaleString("en-US")} (${m.n_paises} países) · `
+    + `R²=${m.r2_prueba} · MAE=$${m.mae_usd.toLocaleString("en-US")} · sin persistencia de consultas<br>`
+    + `<a href="/api/salud">/api/salud</a> · <a href="/api/docs">/api/docs</a> · `
+    + `<a href="https://github.com/debugsito/tech-salary-prediction">código fuente</a> · `
+    + `<button style="background:none;border:0;color:var(--azul);cursor:pointer;font:inherit;`
+    + `padding:0" onclick="abrirAcerca()">acerca de</button>`;
+  $("#pais").value = "Germany";
+  await cargarRoles();
+  $("#pais").addEventListener("change", cargarRoles);
+}
+
+// El respaldo depende de la combinación de país y rol, así que el desplegable
+// se rehace con cada país: ordenado por respaldo y marcando lo que no llega al
+// mínimo. Sin esto el usuario tiene que adivinar qué puede consultar.
+async function cargarRoles() {
+  const pais = $("#pais").value;
+  const sel = $("#rol");
+  const previo = sel.value;
+  const d = await (await fetch("/api/roles?pais=" + encodeURIComponent(pais))).json();
+  sel.innerHTML = "";
+  sel.append(new Option(`Sin especificar (${d.n_pais.toLocaleString("en-US")} respuestas en el país)`, ""));
+  for (const r of d.roles) {
+    const o = new Option(
+      r.respaldado ? `${r.etiqueta} — ${r.n} respuestas`
+                   : `${r.etiqueta} — solo ${r.n}, sin respaldo`, r.valor);
+    if (!r.respaldado) o.style.color = "var(--tinta3)";
+    sel.append(o);
+  }
+  if ([...sel.options].some(o => o.value === previo)) sel.value = previo;
+  $("#aviso-roles").textContent = d.con_respaldo
+    ? `${d.con_respaldo} de los ${d.roles.length} roles tienen al menos ${d.minimo} respuestas en este país.`
+    : `Ningún rol alcanza las ${d.minimo} respuestas en este país: el sistema se abstendrá de dar una cifra.`;
+}
+
+function perfil() {
+  const num = id => $(id).value === "" ? null : Number($(id).value);
+  return {
+    pais: $("#pais").value, rol: $("#rol").value || null,
+    anios_profesionales: num("#anios_profesionales"),
+    anios_programando: num("#anios_programando"),
+    educacion: $("#educacion").value || null,
+    tamano_empresa: $("#tamano_empresa").value || null,
+    modalidad: $("#modalidad").value || null,
+    sector: $("#sector").value || null,
+    lenguajes: [...$("#lenguajes").selectedOptions].map(o => o.value),
+  };
+}
+
+function traza(ruta, t0, datos) {
+  const ms = Math.round(performance.now() - t0);
+  return `<p class="latencia">${ruta} · ${ms} ms</p>
+    <details class="json"><summary>ver respuesta JSON</summary>
+    <pre>${JSON.stringify(datos, null, 1).replace(/</g, "&lt;")}</pre></details>`;
+}
+
+const TITULO = { verde: "OK · estimación respaldada", ambar: "AVISO · estimación con reservas",
+                 rojo: "SIN RESPALDO · no se entrega cifra" };
+
+function semaforo(f) {
+  const lista = f.motivos.length
+    ? `<ul>${f.motivos.map(m => `<li>${m}</li>`).join("")}</ul>` : "";
+  return `<div class="semaforo ${f.nivel}">
+    <h3>${TITULO[f.nivel]}</h3>
+    <div style="font-size:13.5px">${f.resumen}</div>${lista}</div>`;
+}
+
+function factores(lista) {
+  if (!lista.length) return "";
+  const max = Math.max(...lista.map(f => Math.abs(f.efecto)));
+  const filas = lista.map(f => `<tr>
+      <td>${f.factor}</td>
+      <td style="width:46%"><span class="barra ${f.efecto < 0 ? "baja" : ""}"
+          style="width:${Math.max(2, Math.abs(f.efecto) / max * 100)}%"></span></td>
+      <td class="num">${f.efecto > 0 ? "+" : ""}${f.efecto.toFixed(3)}</td></tr>`).join("");
+  return `<h2>de qué depende esta estimación</h2>
+    <p class="sub">Cuánto separa cada bloque esta estimación de la media de la muestra.
+       En positivo la empuja hacia arriba; en negativo, hacia abajo.
+       <strong>Un valor cercano a cero no significa que el factor no importe</strong>,
+       sino que en este perfil se parece a la media: un país de salarios medios
+       aparecerá aquí con poco peso aunque la geografía sea, en el conjunto de la
+       muestra, el factor que más pesa.</p>
+    <table><thead><tr><th>Factor</th><th></th><th class="num">Efecto</th></tr></thead>
+    <tbody>${filas}</tbody></table>`;
+}
+
+function vistaCandidato(r) {
+  if (!r.banda) return semaforo(r.fiabilidad) + sinCifra(r);
+  const b = r.banda;
+  return semaforo(r.fiabilidad) + `
+    <h2>tu estimación</h2>
+    <div class="cifra">${dinero(b.centro)}</div>
+    <div class="rango">Entre ${dinero(b.inferior)} y ${dinero(b.superior)} al año,
+      antes de impuestos.</div>
+    <p class="nota">La amplitud no es genérica: es el error del ${(b.amplitud_relativa*100).toFixed(0)} %
+      que la auditoría midió en los países del mismo nivel de renta que el tuyo.
+      La mediana declarada en ${NOMBRE_ES[$("#pais").value] || $("#pais").value} es ${dinero(r.mediana_pais)}.</p>`
+    + factores(r.factores);
+}
+
+function vistaReclutador(r) {
+  if (!r.banda) return semaforo(r.fiabilidad) + sinCifra(r);
+  const b = r.banda;
+  return semaforo(r.fiabilidad) + `
+    <h2>banda sugerida para la oferta</h2>
+    <div class="cifra">${dinero(b.inferior)} – ${dinero(b.superior)}</div>
+    <div class="rango">Punto medio ${dinero(b.centro)}. Mediana del mercado local
+      ${dinero(r.mediana_pais)}.</div>
+    <p class="nota">Publicar una banda más estrecha que esta sugeriría una precisión
+      que el modelo no tiene. La justificación de abajo es la que puede darse a un
+      candidato que pregunte de dónde sale la cifra.</p>`
+    + factores(r.factores);
+}
+
+function sinCifra(r) {
+  return `<h2>no se entrega una cifra</h2>
+    <p class="sub">Devolver un número aquí daría una apariencia de precisión que los
+      datos no sostienen. La mediana declarada en el país, que sí procede de
+      observaciones directas, es ${dinero(r.mediana_pais)}.</p>
+    <p class="nota">Prueba con un rol más frecuente en ese mercado, o compara con
+      países donde la encuesta reunió más respuestas.</p>`;
+}
+
+let DATOS_COMPARAR = null, ESCALA_PPA = false;
+
+function vistaComparar(datos) {
+  DATOS_COMPARAR = datos;
+  // En poder de compra, cada cifra se divide por el nivel de precios del país
+  // (Banco Mundial, 2023). Para Estados Unidos no cambia nada.
+  const ajusta = (v, r) => ESCALA_PPA && r.nivel_precios ? v / r.nivel_precios : v;
+  const conCifra = datos.resultados.filter(r => r.banda);
+  const max = conCifra.length
+    ? Math.max(...conCifra.map(r => ajusta(r.banda.superior, r))) : 1;
+  const filas = datos.resultados.map(r => {
+    const b = r.banda;
+    const sinFactor = ESCALA_PPA && b && !r.nivel_precios;
+    const punto = b && !sinFactor
+      ? `<span class="barra" style="width:${ajusta(b.centro, r) / max * 100}%"></span>`
+      : `<span class="pildora">${b ? "sin factor PPA" : "sin respaldo"}</span>`;
+    return `<tr>
+      <td>${NOMBRE_ES[r.pais] || r.pais}</td>
+      <td style="width:34%">${punto}</td>
+      <td class="num">${b && !sinFactor ? dinero(ajusta(b.centro, r)) : "—"}</td>
+      <td class="num">${b && !sinFactor
+        ? dinero(ajusta(b.inferior, r)) + " – " + dinero(ajusta(b.superior, r)) : "—"}</td>
+      <td><span class="estado ${r.fiabilidad.nivel}">${
+             {verde: "respaldada", ambar: "con reservas", rojo: "sin respaldo"}[r.fiabilidad.nivel]
+           }</span></td></tr>`;
+  }).join("");
+  const validos = conCifra.filter(r => !ESCALA_PPA || r.nivel_precios)
+                          .map(r => ajusta(r.banda.centro, r));
+  const razon = validos.length > 1
+    ? `<p class="nota">Entre el mercado mejor y el peor pagado de los comparados hay un
+        factor de <strong>${(Math.max(...validos) / Math.min(...validos)).toFixed(1)} a 1</strong>
+        para el mismo perfil${ESCALA_PPA
+          ? ". En dólares corrientes la distancia es mayor: parte de la brecha nominal es nivel de precios, no poder de compra"
+          : ". Ninguna otra variable del modelo produce diferencias de esa magnitud"}.</p>` : "";
+  const conmutador = `<p class="sub" style="margin-top:10px">
+    <label style="display:inline;font:13px Georgia,serif;text-transform:none;letter-spacing:0;color:var(--tinta2);cursor:pointer">
+      <input type="checkbox" id="escala-ppa" ${ESCALA_PPA ? "checked" : ""}
+             style="width:auto;vertical-align:middle"> ver en poder de compra
+      (dólares de paridad, Banco Mundial 2023)</label></p>`;
+  return `<h2>el mismo perfil en distintos mercados</h2>
+    <p class="sub">Idéntica experiencia, rol y formación. Lo único que cambia es el país.</p>
+    ${conmutador}
+    <table><thead><tr><th>País</th><th></th><th class="num">Estimación</th>
+      <th class="num">Banda</th><th>Fiabilidad</th></tr></thead>
+      <tbody>${filas}</tbody></table>${razon}`;
+}
+
+document.addEventListener("change", e => {
+  if (e.target.id !== "escala-ppa") return;
+  ESCALA_PPA = e.target.checked;
+  if (DATOS_COMPARAR) {
+    const previa = document.querySelector("#resultado .latencia")?.outerHTML || "";
+    const json = document.querySelector("#resultado details.json")?.outerHTML || "";
+    $("#resultado").innerHTML = vistaComparar(DATOS_COMPARAR) + previa + json;
+  }
+});
+
+$(".pestanas").addEventListener("click", e => {
+  const b = e.target.closest("button[data-vista]");
+  if (!b) return;
+  VISTA = b.dataset.vista;
+  document.querySelectorAll(".pestanas button").forEach(x =>
+    x.setAttribute("aria-selected", String(x === b)));
+  $("#fila-comparar").hidden = VISTA !== "comparar";
+  $("#fila-lenguajes").hidden = VISTA === "comparar";
+  $("#enviar").textContent = VISTA === "comparar" ? "Comparar" : "Estimar";
+  $("#resultado").innerHTML = `<div class="vacio">${VISTA === "comparar"
+    ? "Elige con qué países comparar y dale a Comparar."
+    : "Elige país y rol y dale a Estimar."}</div>`;
+});
+
+const EJEMPLOS = {
+  verde: {pais: "Germany", rol: "Developer, back-end", anios: 8},
+  ambar: {pais: "Brazil", rol: "Developer, full-stack", anios: 6},
+  rojo:  {pais: "Peru", rol: "Developer, back-end", anios: 8},
+};
+
+$(".ejemplos").addEventListener("click", async e => {
+  const b = e.target.closest("button[data-ej]");
+  if (!b) return;
+  const ej = EJEMPLOS[b.dataset.ej];
+  $("#pais").value = ej.pais;
+  await cargarRoles();
+  $("#rol").value = ej.rol;
+  $("#anios_profesionales").value = ej.anios;
+  $("#enviar").click();
+});
+
+$("#formulario").addEventListener("submit", async e => {
+  e.preventDefault();
+  const boton = $("#enviar");
+  boton.disabled = true;
+  const previo = boton.textContent;
+  boton.textContent = "Calculando…";
+  try {
+    const t0 = performance.now();
+    if (VISTA === "comparar") {
+      const paises = [...$("#comparar_paises").selectedOptions].map(o => o.value).slice(0, 5);
+      if (!paises.length) {
+        $("#resultado").innerHTML = `<div class="vacio">Elige al menos un país con el
+          que comparar.</div>`;
+        return;
+      }
+      const r = await fetch("/api/comparar", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({perfil: perfil(), paises})});
+      const datos = await r.json();
+      $("#resultado").innerHTML = vistaComparar(datos)
+        + traza("POST /api/comparar", t0, datos);
+    } else {
+      const r = await fetch("/api/estimar", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(perfil())});
+      const datos = await r.json();
+      $("#resultado").innerHTML = (VISTA === "candidato"
+        ? vistaCandidato(datos) : vistaReclutador(datos))
+        + traza("POST /api/estimar", t0, datos);
+    }
+  } catch (err) {
+    $("#resultado").innerHTML = `<div class="vacio">No se pudo completar la consulta.</div>`;
+  } finally {
+    boton.disabled = false; boton.textContent = previo;
+  }
+});
+
+function abrirAcerca() {
+  const m = CTX.modelo;
+  $("#ficha-modelo").innerHTML = `<table style="margin:8px 0">
+    <tr><td>Algoritmo</td><td class="num">${m.algoritmo}, codificación por objetivo</td></tr>
+    <tr><td>Datos</td><td class="num">Stack Overflow Developer Survey ${m.edicion} (ODbL 1.0)</td></tr>
+    <tr><td>Muestra</td><td class="num">${m.n_muestra.toLocaleString("es-PE")} observaciones, ${m.n_paises} países</td></tr>
+    <tr><td>Desempeño</td><td class="num">R² ${m.r2_prueba} · MAE $${m.mae_usd.toLocaleString("en-US")}</td></tr>
+    <tr><td>Reproducibilidad</td><td class="num">semilla ${m.semilla} · artefacto del ${m.generado}</td></tr>
+    <tr><td>Estado en vivo</td><td class="num"><a href="/api/salud" style="color:var(--azul)">/api/salud</a></td></tr>
+  </table>`;
+  document.querySelector("#acerca").showModal();
+}
+
+arrancar();
+</script>
+</body>
+</html>
