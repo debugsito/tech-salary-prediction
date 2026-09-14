@@ -4,104 +4,118 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Estimación salarial explicable</title>
-<link rel="icon" href="data:,">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%230a5dab%27/%3E%3Ctext x=%278%27 y=%2712%27 font-family=%27monospace%27 font-size=%2711%27 fill=%27white%27 text-anchor=%27middle%27%3E%24%3C/text%3E%3C/svg%3E">
 <style>
-/* La página comparte la voz tipográfica del documento: serifa para títulos y
-   cifras, composición sobria, filetes finos. Un solo tema, como un impreso. */
+/* Herramienta, no página de aterrizaje: densa, cuadrada, con monoespaciada
+   para todo lo que sea dato. Un solo tema. */
 :root{
-  --tinta:#22211d; --tinta2:#54524a; --tinta3:#8a877c;
-  --filete:#d9d5c9; --fondo:#f7f5ef; --papel:#fffdf8;
-  --azul:#1d4b7c; --verde:#2d6a45; --ambar:#8a6512; --rojo:#993c30;
-  --verde-f:#f0f5ef; --ambar-f:#f9f4e6; --rojo-f:#f8eeec;
+  --tinta:#1f2328; --tinta2:#57606a; --tinta3:#818b98;
+  --borde:#d0d7de; --fondo:#ffffff; --gris:#f6f8fa;
+  --azul:#0a5dab; --verde:#1a7f37; --ambar:#9a6700; --rojo:#cf222e;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--fondo);color:var(--tinta);
-  font:15px/1.6 Georgia,"Times New Roman",serif}
-.envoltura{max-width:1040px;margin:0 auto;padding:0 22px 60px}
-.institucion{font:11px/1.4 Verdana,Arial,sans-serif;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--tinta3);border-bottom:1px solid var(--filete);
-  padding:14px 0 10px;margin-bottom:26px}
-header h1{font-size:27px;font-weight:normal;margin:0 0 8px;letter-spacing:.2px}
-header p{margin:0 0 4px;color:var(--tinta2);font-size:14.5px;max-width:62ch}
-.pestanas{display:flex;gap:26px;margin:30px 0 24px;border-bottom:1px solid var(--filete)}
-.pestanas button{background:none;border:0;color:var(--tinta2);cursor:pointer;
-  font:14px Georgia,serif;padding:6px 2px 10px;border-bottom:2px solid transparent;
-  margin-bottom:-1px}
-.pestanas button[aria-selected=true]{color:var(--tinta);border-bottom-color:var(--azul)}
-.rejilla{display:grid;grid-template-columns:minmax(270px,320px) 1fr;gap:34px;align-items:start}
+  font:14px/1.5 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+code,.mono,.cifra,td.num,th,.estado,.aviso-n,#pie,.latencia,pre{
+  font-family:ui-monospace,SFMono-Regular,"Cascadia Mono",Consolas,Menlo,monospace}
+.envoltura{max-width:1100px;margin:0 auto;padding:0 18px 48px}
+.topbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  border-bottom:2px solid var(--tinta);padding:14px 0 10px;margin-bottom:6px;flex-wrap:wrap}
+.topbar h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+.topbar .meta{font:11.5px ui-monospace,Consolas,monospace;color:var(--tinta2)}
+.topbar .meta .punto{color:var(--verde)}
+header p{margin:8px 0 0;color:var(--tinta2);font-size:13.5px;max-width:78ch}
+.pestanas{display:flex;gap:0;margin:18px 0 18px;border-bottom:1px solid var(--borde)}
+.pestanas button{background:none;border:1px solid transparent;border-bottom:0;
+  color:var(--azul);cursor:pointer;font:13.5px inherit;font-family:inherit;
+  padding:7px 14px;margin-bottom:-1px}
+.pestanas button[aria-selected=true]{color:var(--tinta);font-weight:600;
+  border-color:var(--borde);background:var(--fondo);
+  border-radius:0;border-bottom:1px solid var(--fondo)}
+.rejilla{display:grid;grid-template-columns:300px 1fr;gap:0;align-items:start;
+  border:1px solid var(--borde)}
 @media(max-width:820px){.rejilla{grid-template-columns:1fr}}
-.panel{background:none;border:0;padding:0}
-form.panel{border-right:1px solid var(--filete);padding-right:30px}
-@media(max-width:820px){form.panel{border-right:0;padding-right:0;
-  border-bottom:1px solid var(--filete);padding-bottom:22px}}
-label{display:block;font:10.5px Verdana,Arial,sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--tinta3);margin:14px 0 5px}
+form.panel{padding:14px 16px;background:var(--gris);border-right:1px solid var(--borde)}
+@media(max-width:820px){form.panel{border-right:0;border-bottom:1px solid var(--borde)}}
+main.panel{padding:16px 20px;min-height:420px}
+label{display:block;font:11px ui-monospace,Consolas,monospace;color:var(--tinta2);
+  margin:11px 0 3px}
 label:first-of-type{margin-top:0}
-select,input{width:100%;padding:7px 8px;border:1px solid #c9c5b8;border-radius:2px;
-  background:var(--papel);color:var(--tinta);font:14px Georgia,serif}
-select[multiple]{height:100px}
-select:focus,input:focus{outline:none;border-color:var(--azul)}
-.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
-.dos label{display:flex;flex-direction:column;justify-content:flex-end;gap:5px;margin:14px 0 0}
-button.principal{width:100%;margin-top:20px;padding:9px;background:var(--azul);
-  color:#fdfcf8;border:1px solid var(--azul);border-radius:2px;
-  font:14.5px Georgia,serif;cursor:pointer}
-button.principal:hover{background:#163c63}
+select,input{width:100%;padding:5px 7px;border:1px solid var(--borde);border-radius:0;
+  background:#fff;color:var(--tinta);font:13px inherit;font-family:inherit}
+select[multiple]{height:96px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+select:focus,input:focus{outline:1px solid var(--azul);outline-offset:-1px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end}
+.dos label{margin:11px 0 3px}
+button.principal{width:100%;margin-top:14px;padding:7px;background:var(--tinta);
+  color:#fff;border:1px solid var(--tinta);border-radius:0;font:13.5px inherit;
+  font-family:inherit;font-weight:600;cursor:pointer}
+button.principal:hover{background:#000}
 button.principal:disabled{opacity:.5;cursor:progress}
-.semaforo{border-left:3px solid;border-radius:0;padding:10px 16px;margin-bottom:20px}
-.semaforo.verde{background:var(--verde-f);border-color:var(--verde)}
-.semaforo.ambar{background:var(--ambar-f);border-color:var(--ambar)}
-.semaforo.rojo{background:var(--rojo-f);border-color:var(--rojo)}
-.semaforo h3{margin:0 0 4px;font:11px Verdana,Arial,sans-serif;letter-spacing:.14em;
-  text-transform:uppercase}
+.semaforo{border:1px solid var(--borde);border-left-width:4px;padding:9px 13px;
+  margin-bottom:16px;background:var(--gris)}
+.semaforo.verde{border-left-color:var(--verde)}
+.semaforo.ambar{border-left-color:var(--ambar)}
+.semaforo.rojo{border-left-color:var(--rojo)}
+.semaforo h3{margin:0 0 3px;font:600 11.5px ui-monospace,Consolas,monospace;
+  letter-spacing:.04em}
 .semaforo.verde h3{color:var(--verde)} .semaforo.ambar h3{color:var(--ambar)}
 .semaforo.rojo h3{color:var(--rojo)}
-.semaforo ul{margin:8px 0 2px;padding-left:17px;font-size:13.5px;color:var(--tinta2)}
-.semaforo li{margin:5px 0}
-.cifra{font-size:36px;margin:4px 0 2px;letter-spacing:.3px;
-  font-variant-numeric:tabular-nums}
-.rango{color:var(--tinta2);font-size:14px}
-.nota{color:var(--tinta2);font-size:13px;margin-top:12px;padding-top:10px;
-  border-top:1px dotted var(--filete)}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-th{font:10.5px Verdana,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--tinta3);font-weight:normal;text-align:left;padding:0 8px 7px;
-  border-bottom:1px solid var(--tinta3)}
-td{text-align:left;padding:8px;border-bottom:1px solid var(--filete)}
-td.num{text-align:right;font-variant-numeric:tabular-nums}
-.barra{height:6px;background:var(--azul);display:block;min-width:2px}
+.semaforo ul{margin:7px 0 1px;padding-left:16px;font-size:12.5px;color:var(--tinta2)}
+.semaforo li{margin:4px 0}
+.cifra{font-size:31px;font-weight:600;margin:2px 0;letter-spacing:-.5px}
+.rango{color:var(--tinta2);font-size:13px}
+.nota{color:var(--tinta2);font-size:12.5px;margin-top:12px;border-top:1px dashed var(--borde);
+  padding-top:8px}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+th{font-size:10.5px;color:var(--tinta3);font-weight:600;text-align:left;
+  padding:0 8px 5px;border-bottom:2px solid var(--borde);text-transform:lowercase}
+td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--borde)}
+tr:hover td{background:var(--gris)}
+td.num{text-align:right;font-size:12.5px}
+.barra{height:9px;background:var(--azul);display:block;min-width:2px}
 .barra.baja{background:var(--rojo)}
-.estado{font:10.5px Verdana,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.estado{font-size:10.5px;font-weight:600}
 .estado.verde{color:var(--verde)} .estado.ambar{color:var(--ambar)} .estado.rojo{color:var(--rojo)}
-h2{font-size:19px;font-weight:normal;margin:24px 0 4px}
+h2{font-size:15px;margin:20px 0 3px;font-weight:650}
 h2:first-child{margin-top:0}
-.sub{color:var(--tinta2);font-size:13.5px;margin:0 0 10px}
-.pildora{font:italic 12px Georgia,serif;color:var(--tinta3);
-  letter-spacing:0;text-transform:none;border:0;padding:0}
-footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--filete);
-  color:var(--tinta3);font-size:12.5px;line-height:1.7}
-.vacio{color:var(--tinta3);font-size:14.5px;padding:26px 0;font-style:italic}
-.aviso{color:var(--tinta3);font-size:12px;margin:6px 0 0;line-height:1.5;
-  font-family:Georgia,serif;text-transform:none;letter-spacing:0}
-.ejemplos{margin-top:16px;font-size:13px;color:var(--tinta3)}
+.sub{color:var(--tinta2);font-size:12.5px;margin:0 0 8px}
+.pildora{font-size:11px;color:var(--tinta3);font-weight:normal}
+footer{margin-top:26px;color:var(--tinta2);font-size:11.5px;line-height:1.8}
+#pie a{color:var(--azul);text-decoration:none}
+#pie a:hover{text-decoration:underline}
+.vacio{color:var(--tinta3);font-size:13px;padding:20px 0}
+.aviso{color:var(--tinta2);font-size:11.5px;margin:5px 0 0;line-height:1.45}
+.ejemplos{margin-top:12px;font-size:12px;color:var(--tinta2)}
 .ejemplos button{background:none;border:0;color:var(--azul);cursor:pointer;
-  font:inherit;text-decoration:underline;padding:0 2px}
+  font:inherit;font-family:inherit;text-decoration:none;padding:0 1px}
+.ejemplos button:hover{text-decoration:underline}
 a{color:var(--azul)}
-dialog{max-width:560px;border:1px solid var(--tinta3);border-radius:0;
-  background:var(--papel);color:var(--tinta);padding:26px;
-  font:14px/1.6 Georgia,serif}
-dialog::backdrop{background:rgba(40,38,30,.45)}
+.latencia{font-size:11px;color:var(--tinta3);margin-top:14px}
+details.json{margin-top:6px;font-size:11.5px}
+details.json summary{cursor:pointer;color:var(--azul);
+  font-family:ui-monospace,Consolas,monospace;font-size:11px}
+details.json pre{background:var(--gris);border:1px solid var(--borde);padding:10px;
+  overflow-x:auto;font-size:11px;line-height:1.45;margin:6px 0 0;max-height:340px}
+dialog{max-width:560px;border:1px solid var(--tinta);border-radius:0;
+  background:#fff;color:var(--tinta);padding:20px 22px;font:13.5px/1.55 inherit;
+  font-family:inherit}
+dialog::backdrop{background:rgba(15,20,25,.5)}
+dialog h2{font-size:15px}
+dialog table{font-size:12.5px}
 </style>
 </head>
 <body>
 <div class="envoltura">
 
-<div class="institucion">Universidad ESAN · Tesis de Ingeniería de Sistemas · Prototipo</div>
 <header>
-  <h1>Estimación salarial explicable</h1>
-  <p>Estima la compensación anual en el sector tecnológico a partir de la Stack Overflow
-     Developer Survey, explica de qué depende cada estimación y declara cuándo no
-     tiene datos suficientes para responder.</p>
+  <div class="topbar">
+    <h1>salarios · estimación salarial explicable</h1>
+    <span class="meta" id="estado-modelo"><span class="punto">●</span> cargando…</span>
+  </div>
+  <p>Prototipo de tesis (Ingeniería de Sistemas, Universidad ESAN). Estima la compensación
+     anual en el sector tecnológico sobre la Stack Overflow Developer Survey, explica cada
+     estimación con valores de Shapley y se abstiene cuando los datos no la respaldan.</p>
 </header>
 
 <div class="pestanas" role="tablist">
@@ -185,13 +199,17 @@ async function arrancar() {
   opciones("#lenguajes", c.lenguajes);
   opciones("#comparar_paises", c.Country);
   const m = CTX.modelo;
+  $("#estado-modelo").innerHTML =
+    `<span class="punto">●</span> en línea · ${m.algoritmo.toLowerCase()}/target · `
+    + `edición ${m.edicion} · semilla ${m.semilla} · artefacto ${m.generado}`;
   $("#pie").innerHTML =
-    `Tesis de Ingeniería de Sistemas, Universidad ESAN — C. Ramos Flores y A. Garay Concha. `
-    + `${m.algoritmo} sobre la edición ${m.edicion} de la Stack Overflow Developer Survey, `
-    + `${m.n_muestra.toLocaleString("es-PE")} observaciones en ${m.n_paises} países, `
-    + `R² de ${m.r2_prueba}. El servicio no guarda ninguna consulta. `
+    `C. Ramos Flores · A. Garay Concha — Universidad ESAN, 2026. `
+    + `n=${m.n_muestra.toLocaleString("en-US")} (${m.n_paises} países) · `
+    + `R²=${m.r2_prueba} · MAE=$${m.mae_usd.toLocaleString("en-US")} · sin persistencia de consultas<br>`
+    + `<a href="/api/salud">/api/salud</a> · <a href="/api/docs">/api/docs</a> · `
+    + `<a href="https://github.com/debugsito/tech-salary-prediction">código fuente</a> · `
     + `<button style="background:none;border:0;color:var(--azul);cursor:pointer;font:inherit;`
-    + `text-decoration:underline;padding:0" onclick="abrirAcerca()">Acerca de este sistema</button>`;
+    + `padding:0" onclick="abrirAcerca()">acerca de</button>`;
   $("#pais").value = "Germany";
   await cargarRoles();
   $("#pais").addEventListener("change", cargarRoles);
@@ -234,8 +252,15 @@ function perfil() {
   };
 }
 
-const TITULO = { verde: "Estimación respaldada", ambar: "Estimación con reservas",
-                 rojo: "Sin respaldo suficiente" };
+function traza(ruta, t0, datos) {
+  const ms = Math.round(performance.now() - t0);
+  return `<p class="latencia">${ruta} · ${ms} ms</p>
+    <details class="json"><summary>ver respuesta JSON</summary>
+    <pre>${JSON.stringify(datos, null, 1).replace(/</g, "&lt;")}</pre></details>`;
+}
+
+const TITULO = { verde: "OK · estimación respaldada", ambar: "AVISO · estimación con reservas",
+                 rojo: "SIN RESPALDO · no se entrega cifra" };
 
 function semaforo(f) {
   const lista = f.motivos.length
@@ -351,7 +376,11 @@ function vistaComparar(datos) {
 document.addEventListener("change", e => {
   if (e.target.id !== "escala-ppa") return;
   ESCALA_PPA = e.target.checked;
-  if (DATOS_COMPARAR) $("#resultado").innerHTML = vistaComparar(DATOS_COMPARAR);
+  if (DATOS_COMPARAR) {
+    const previa = document.querySelector("#resultado .latencia")?.outerHTML || "";
+    const json = document.querySelector("#resultado details.json")?.outerHTML || "";
+    $("#resultado").innerHTML = vistaComparar(DATOS_COMPARAR) + previa + json;
+  }
 });
 
 $(".pestanas").addEventListener("click", e => {
@@ -391,6 +420,7 @@ $("#formulario").addEventListener("submit", async e => {
   const previo = boton.textContent;
   boton.textContent = "Calculando…";
   try {
+    const t0 = performance.now();
     if (VISTA === "comparar") {
       const paises = [...$("#comparar_paises").selectedOptions].map(o => o.value).slice(0, 5);
       if (!paises.length) {
@@ -401,14 +431,17 @@ $("#formulario").addEventListener("submit", async e => {
       const r = await fetch("/api/comparar", {
         method: "POST", headers: {"Content-Type": "application/json"},
         body: JSON.stringify({perfil: perfil(), paises})});
-      $("#resultado").innerHTML = vistaComparar(await r.json());
+      const datos = await r.json();
+      $("#resultado").innerHTML = vistaComparar(datos)
+        + traza("POST /api/comparar", t0, datos);
     } else {
       const r = await fetch("/api/estimar", {
         method: "POST", headers: {"Content-Type": "application/json"},
         body: JSON.stringify(perfil())});
       const datos = await r.json();
-      $("#resultado").innerHTML = VISTA === "candidato"
-        ? vistaCandidato(datos) : vistaReclutador(datos);
+      $("#resultado").innerHTML = (VISTA === "candidato"
+        ? vistaCandidato(datos) : vistaReclutador(datos))
+        + traza("POST /api/estimar", t0, datos);
     }
   } catch (err) {
     $("#resultado").innerHTML = `<div class="vacio">No se pudo completar la consulta.</div>`;
