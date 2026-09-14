@@ -43,6 +43,11 @@ def evaluar(pais: str, rol: str | None, contexto: dict) -> dict:
     ref = contexto["referencia"]
     minimo = fia["n_minimo_celda"]
 
+    # Los motivos se muestran al usuario: el país va con su etiqueta en
+    # español, no con el valor crudo de la encuesta.
+    nombre = next((c["etiqueta"] for c in contexto.get("catalogos", {})
+                   .get("Country", []) if c["valor"] == pais), pais)
+
     n_pais = fia["n_pais"].get(pais, 0)
     n_celda = fia["n_pais_rol"].get(f"{pais}||{rol}", 0) if rol else 0
     grupo = ref["income_group"].get(pais)
@@ -58,7 +63,7 @@ def evaluar(pais: str, rol: str | None, contexto: dict) -> dict:
             "n_pais": 0, "n_celda": 0, "grupo": grupo,
             "error_relativo": error, "umbral_zeta": round(zeta, 4),
             "dispersion_intra_pais": None,
-            "motivos": [f"{pais} no figura en la muestra: la encuesta no reunió "
+            "motivos": [f"{nombre} no figura en la muestra: la encuesta no reunió "
                         f"las {minimo} respuestas mínimas que exige el estudio."],
             "resumen": "Sin datos para este país.",
         }
@@ -69,16 +74,16 @@ def evaluar(pais: str, rol: str | None, contexto: dict) -> dict:
         respalda_rol = n_pais >= minimo
         motivos.append(
             f"No se ha indicado el rol, de modo que la estimación se apoya en las "
-            f"{n_pais} respuestas de {pais} sin distinguir la función desempeñada.")
+            f"{n_pais} respuestas de {nombre} sin distinguir la función desempeñada.")
     else:
         respalda_rol = n_celda >= minimo
         if not respalda_rol:
             motivos.append(
-                f"Solo {n_celda} de las {n_pais} respuestas de {pais} corresponden a "
+                f"Solo {n_celda} de las {n_pais} respuestas de {nombre} corresponden a "
                 f"este rol, por debajo del mínimo de {minimo}. La estimación se apoya "
                 f"en el país, no en el rol."
                 if n_celda else
-                f"Ninguna de las {n_pais} respuestas de {pais} corresponde a este rol.")
+                f"Ninguna de las {n_pais} respuestas de {nombre} corresponde a este rol.")
 
     cumple_perdida = error is not None and error <= zeta
     if not cumple_perdida and error is not None:

@@ -9,10 +9,15 @@
 /* Herramienta, no página de aterrizaje: densa, cuadrada, con monoespaciada
    para todo lo que sea dato. Un solo tema. */
 :root{
-  --tinta:#1f2328; --tinta2:#57606a; --tinta3:#818b98;
-  --borde:#d0d7de; --fondo:#ffffff; --gris:#f6f8fa;
-  --azul:#0a5dab; --verde:#1a7f37; --ambar:#9a6700; --rojo:#cf222e;
+  --tinta:#26221c; --tinta2:#5c564c; --tinta3:#8f887a;
+  --borde:#ddd7ca; --fondo:#fbfaf6; --gris:#f3f1ea;
+  --azul:#0c7264; --verde:#187a4b; --ambar:#a06b00; --rojo:#bf3a2b;
 }
+mark{background:#ffe98f;color:inherit;padding:0 3px}
+.beta{font:10px ui-monospace,Consolas,monospace;color:var(--ambar);
+  border:1px solid var(--ambar);padding:1px 5px;margin-left:8px;
+  vertical-align:middle;letter-spacing:.05em}
+h1 .dominio{color:var(--tinta3);font-weight:400}
 *{box-sizing:border-box}
 body{margin:0;background:var(--fondo);color:var(--tinta);
   font:14px/1.5 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
@@ -29,7 +34,7 @@ header p{margin:8px 0 0;color:var(--tinta2);font-size:13.5px;max-width:78ch}
 .pestanas button{background:none;border:1px solid transparent;border-bottom:0;
   color:var(--azul);cursor:pointer;font:13.5px inherit;font-family:inherit;
   padding:7px 14px;margin-bottom:-1px}
-.pestanas button[aria-selected=true]{color:var(--tinta);font-weight:600;
+.pestanas button[aria-selected=true]{color:var(--azul);font-weight:600;
   border-color:var(--borde);background:var(--fondo);
   border-radius:0;border-bottom:1px solid var(--fondo)}
 .rejilla{display:grid;grid-template-columns:300px 1fr;gap:0;align-items:start;
@@ -42,15 +47,15 @@ label{display:block;font:11px ui-monospace,Consolas,monospace;color:var(--tinta2
   margin:11px 0 3px}
 label:first-of-type{margin-top:0}
 select,input{width:100%;padding:5px 7px;border:1px solid var(--borde);border-radius:0;
-  background:#fff;color:var(--tinta);font:13px inherit;font-family:inherit}
+  background:#fffefb;color:var(--tinta);font:13px inherit;font-family:inherit}
 select[multiple]{height:96px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
 select:focus,input:focus{outline:1px solid var(--azul);outline-offset:-1px}
 .dos{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end}
 .dos label{margin:11px 0 3px}
-button.principal{width:100%;margin-top:14px;padding:7px;background:var(--tinta);
-  color:#fff;border:1px solid var(--tinta);border-radius:0;font:13.5px inherit;
+button.principal{width:100%;margin-top:14px;padding:7px;background:var(--azul);
+  color:#fff;border:1px solid var(--azul);border-radius:0;font:13.5px inherit;
   font-family:inherit;font-weight:600;cursor:pointer}
-button.principal:hover{background:#000}
+button.principal:hover{background:#095e52}
 button.principal:disabled{opacity:.5;cursor:progress}
 .semaforo{border:1px solid var(--borde);border-left-width:4px;padding:9px 13px;
   margin-bottom:16px;background:var(--gris)}
@@ -110,12 +115,13 @@ dialog table{font-size:12.5px}
 
 <header>
   <div class="topbar">
-    <h1>salarios · estimación salarial explicable</h1>
+    <h1>salarios<span class="dominio">.debugsito.click</span><sup class="beta">beta</sup></h1>
     <span class="meta" id="estado-modelo"><span class="punto">●</span> cargando…</span>
   </div>
-  <p>Prototipo de tesis (Ingeniería de Sistemas, Universidad ESAN). Estima la compensación
-     anual en el sector tecnológico sobre la Stack Overflow Developer Survey, explica cada
-     estimación con valores de Shapley y se abstiene cuando los datos no la respaldan.</p>
+  <p>Entrené un modelo con 37,622 salarios reales del sector tecnológico (encuesta de
+     Stack Overflow, 78 países) para mi tesis. Estima, te explica de qué depende cada
+     estimación, y —la parte que más me costó— <mark>sabe decirte cuándo no tiene datos
+     suficientes para responderte</mark>.</p>
 </header>
 
 <div class="pestanas" role="tablist">
@@ -142,24 +148,29 @@ dialog table{font-size:12.5px}
     <label id="fila-comparar" hidden>Comparar con <span class="pildora">(hasta 5)</span>
       <select id="comparar_paises" multiple></select></label>
     <button class="principal" type="submit" id="enviar">Estimar</button>
-    <p class="ejemplos">Ejemplos:
-      <button type="button" data-ej="verde">con respaldo</button> ·
-      <button type="button" data-ej="ambar">con reservas</button> ·
-      <button type="button" data-ej="rojo">sin respaldo</button></p>
+    <p class="ejemplos">prueba rápida:
+      <button type="button" data-ej="verde">un caso con datos de sobra</button> ·
+      <button type="button" data-ej="ambar">uno justito</button> ·
+      <button type="button" data-ej="rojo">Perú</button>
+      <span class="pildora">(spoiler: con Perú se niega, y esa es la gracia)</span></p>
   </form>
 
   <main class="panel" id="resultado">
-    <div class="vacio">Completa el formulario y pulsa «Estimar».</div>
+    <div class="vacio">Elige país y rol (o prueba un ejemplo, abajo a la izquierda) y dale a Estimar.</div>
   </main>
 </div>
 
 <footer id="pie"></footer>
 
 <dialog id="acerca">
-  <h2 style="margin-top:0">Acerca de este sistema</h2>
-  <p class="sub" style="font-size:13px">Prototipo de la tesis <em>Estimación de compensaciones
-  en el sector tecnológico mediante aprendizaje automático explicable</em>, Universidad ESAN,
-  Facultad de Ingeniería, Carrera de Ingeniería de Sistemas.</p>
+  <h2 style="margin-top:0">acerca de</h2>
+  <p class="sub" style="font-size:13px">Las calculadoras de salario que existen te dan un número
+  y jamás te dicen qué tan confiable es. En la tesis medimos el error del modelo grupo por
+  grupo, y este prototipo hace lo que ninguna: usa esa medición para decidir si te responde.
+  Cuando se niega, no está fallando — está funcionando.</p>
+  <p class="sub" style="font-size:13px">Es el prototipo de la tesis <em>Estimación de compensaciones
+  en el sector tecnológico mediante aprendizaje automático explicable</em> (Universidad ESAN,
+  Ingeniería de Sistemas).</p>
   <p class="sub" style="font-size:13px"><strong>Autores:</strong> Carlos Sebastian Ramos Flores
   y Arian Antonio Garay Concha. <strong>Asesor:</strong> Wilfredo Mamani Ticona.</p>
   <div id="ficha-modelo" style="font-size:13px"></div>
@@ -200,8 +211,8 @@ async function arrancar() {
   opciones("#comparar_paises", c.Country);
   const m = CTX.modelo;
   $("#estado-modelo").innerHTML =
-    `<span class="punto">●</span> en línea · ${m.algoritmo.toLowerCase()}/target · `
-    + `edición ${m.edicion} · semilla ${m.semilla} · artefacto ${m.generado}`;
+    `<span class="punto">●</span> en línea · ${m.algoritmo.toLowerCase()} · `
+    + `datos ${m.edicion} · build ${m.generado}`;
   $("#pie").innerHTML =
     `C. Ramos Flores · A. Garay Concha — Universidad ESAN, 2026. `
     + `n=${m.n_muestra.toLocaleString("en-US")} (${m.n_paises} países) · `
@@ -278,7 +289,7 @@ function factores(lista) {
       <td style="width:46%"><span class="barra ${f.efecto < 0 ? "baja" : ""}"
           style="width:${Math.max(2, Math.abs(f.efecto) / max * 100)}%"></span></td>
       <td class="num">${f.efecto > 0 ? "+" : ""}${f.efecto.toFixed(3)}</td></tr>`).join("");
-  return `<h2>De qué depende esta estimación</h2>
+  return `<h2>de qué depende esta estimación</h2>
     <p class="sub">Cuánto separa cada bloque esta estimación de la media de la muestra.
        En positivo la empuja hacia arriba; en negativo, hacia abajo.
        <strong>Un valor cercano a cero no significa que el factor no importe</strong>,
@@ -293,7 +304,7 @@ function vistaCandidato(r) {
   if (!r.banda) return semaforo(r.fiabilidad) + sinCifra(r);
   const b = r.banda;
   return semaforo(r.fiabilidad) + `
-    <h2>Tu estimación</h2>
+    <h2>tu estimación</h2>
     <div class="cifra">${dinero(b.centro)}</div>
     <div class="rango">Entre ${dinero(b.inferior)} y ${dinero(b.superior)} al año,
       antes de impuestos.</div>
@@ -307,7 +318,7 @@ function vistaReclutador(r) {
   if (!r.banda) return semaforo(r.fiabilidad) + sinCifra(r);
   const b = r.banda;
   return semaforo(r.fiabilidad) + `
-    <h2>Banda sugerida para la oferta</h2>
+    <h2>banda sugerida para la oferta</h2>
     <div class="cifra">${dinero(b.inferior)} – ${dinero(b.superior)}</div>
     <div class="rango">Punto medio ${dinero(b.centro)}. Mediana del mercado local
       ${dinero(r.mediana_pais)}.</div>
@@ -318,7 +329,7 @@ function vistaReclutador(r) {
 }
 
 function sinCifra(r) {
-  return `<h2>No se entrega una cifra</h2>
+  return `<h2>no se entrega una cifra</h2>
     <p class="sub">Devolver un número aquí daría una apariencia de precisión que los
       datos no sostienen. La mediana declarada en el país, que sí procede de
       observaciones directas, es ${dinero(r.mediana_pais)}.</p>
@@ -365,7 +376,7 @@ function vistaComparar(datos) {
       <input type="checkbox" id="escala-ppa" ${ESCALA_PPA ? "checked" : ""}
              style="width:auto;vertical-align:middle"> ver en poder de compra
       (dólares de paridad, Banco Mundial 2023)</label></p>`;
-  return `<h2>El mismo perfil en distintos mercados</h2>
+  return `<h2>el mismo perfil en distintos mercados</h2>
     <p class="sub">Idéntica experiencia, rol y formación. Lo único que cambia es el país.</p>
     ${conmutador}
     <table><thead><tr><th>País</th><th></th><th class="num">Estimación</th>
@@ -392,8 +403,9 @@ $(".pestanas").addEventListener("click", e => {
   $("#fila-comparar").hidden = VISTA !== "comparar";
   $("#fila-lenguajes").hidden = VISTA === "comparar";
   $("#enviar").textContent = VISTA === "comparar" ? "Comparar" : "Estimar";
-  $("#resultado").innerHTML = `<div class="vacio">Completa el formulario y pulsa
-    «${VISTA === "comparar" ? "Comparar" : "Estimar"}».</div>`;
+  $("#resultado").innerHTML = `<div class="vacio">${VISTA === "comparar"
+    ? "Elige con qué países comparar y dale a Comparar."
+    : "Elige país y rol y dale a Estimar."}</div>`;
 });
 
 const EJEMPLOS = {
