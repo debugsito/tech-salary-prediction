@@ -194,8 +194,8 @@ def cargar_encuesta(anio: str = "2023",
         registro.append({"paso": 1, "criterio": "Reporta compensación anual",
                          "n": len(df), "descartados": n - len(df)})
 
-        # 2. Situación de empleo. Hasta 2023 es "Employed, full-time"; en 2025
-        # solo "Employed", sin jornada. Se filtra por prefijo.
+        # 2. Situación de empleo. Por prefijo "Employed": entran tiempo completo,
+        # parcial y empleo combinado con trabajo independiente (2025 no distingue jornada).
         if "Employment" in df.columns:
             n = len(df)
             emp = df["Employment"].astype("string")
