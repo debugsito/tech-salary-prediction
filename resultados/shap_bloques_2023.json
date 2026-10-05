@@ -1,0 +1,44 @@
+{
+  "anio": "2023",
+  "n_observaciones": 7525,
+  "replicas": 1000,
+  "semilla": 42,
+  "bloques": {
+    "Geográfico": {
+      "contribucion": 0.4788,
+      "ic_inferior": 0.4711,
+      "ic_superior": 0.4871,
+      "n_variables": 4
+    },
+    "Tecnologías": {
+      "contribucion": 0.3554,
+      "ic_inferior": 0.3533,
+      "ic_superior": 0.3574,
+      "n_variables": 106
+    },
+    "Capital humano": {
+      "contribucion": 0.301,
+      "ic_inferior": 0.2979,
+      "ic_superior": 0.3042,
+      "n_variables": 15
+    },
+    "Organizacional": {
+      "contribucion": 0.1876,
+      "ic_inferior": 0.1864,
+      "ic_superior": 0.189,
+      "n_variables": 27
+    },
+    "Demográfico": {
+      "contribucion": 0.0202,
+      "ic_inferior": 0.0199,
+      "ic_superior": 0.0205,
+      "n_variables": 7
+    },
+    "Adopción de IA": {
+      "contribucion": 0.0145,
+      "ic_inferior": 0.0144,
+      "ic_superior": 0.0146,
+      "n_variables": 3
+    }
+  }
+}

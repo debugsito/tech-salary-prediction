@@ -1,0 +1,38 @@
+{
+  "anio": "2022",
+  "n_observaciones": 5791,
+  "replicas": 1000,
+  "semilla": 42,
+  "bloques": {
+    "Geográfico": {
+      "contribucion": 0.5456,
+      "ic_inferior": 0.5359,
+      "ic_superior": 0.5551,
+      "n_variables": 4
+    },
+    "Tecnologías": {
+      "contribucion": 0.3463,
+      "ic_inferior": 0.3444,
+      "ic_superior": 0.3484,
+      "n_variables": 77
+    },
+    "Capital humano": {
+      "contribucion": 0.3329,
+      "ic_inferior": 0.3291,
+      "ic_superior": 0.3363,
+      "n_variables": 17
+    },
+    "Organizacional": {
+      "contribucion": 0.1547,
+      "ic_inferior": 0.1535,
+      "ic_superior": 0.1559,
+      "n_variables": 15
+    },
+    "Demográfico": {
+      "contribucion": 0.0182,
+      "ic_inferior": 0.0179,
+      "ic_superior": 0.0186,
+      "n_variables": 8
+    }
+  }
+}
