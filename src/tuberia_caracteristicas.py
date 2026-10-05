@@ -25,7 +25,7 @@ CAT_ALTA = ["Country", "DevType"]
 CAT_BAJA = ["EdLevel", "OrgSize", "RemoteWork", "Industry", "ICorPM",
             "Age", "income_group"]
 
-# Preguntas sobre inteligencia artificial, solo en la edición 2025.
+# Preguntas sobre inteligencia artificial: AISelect desde 2023, las cuatro en 2025.
 CAT_IA = ["AISelect", "AIThreat", "AIAgents", "LearnCodeAI"]
 
 NUMERICAS = ["YearsCode_num", "YearsCodePro_num", "WorkExp_num"]

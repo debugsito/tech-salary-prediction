@@ -33,7 +33,7 @@ MARCA_FIN = "<!-- MATRIZ_OPERACIONALIZACION:fin -->"
 CONCEPTO = {
     "YearsCodePro_num": ("Experiencia profesional",
                          "Años ejerciendo la programación de forma remunerada. "
-                         "Capital humano específico (Becker, 1964)"),
+                         "Capital humano adquirido en el ejercicio (Becker, 1964)"),
     "YearsCode_num": ("Antigüedad total programando",
                       "Años programando, incluida la formación previa al ejercicio "
                       "profesional. Capital humano general"),
@@ -67,14 +67,19 @@ CONCEPTO = {
 
 TECNOLOGIAS = ("Tecnologías dominadas",
                "Lenguajes, bases de datos y plataformas con que la persona declara "
-               "haber trabajado. Capital humano específico de carácter técnico")
+               "haber trabajado. Capital humano de carácter técnico")
+
+
+# Categorías con orden propio; el modelo no usa ese orden (van a one-hot).
+ORDINALES = {"EdLevel", "OrgSize", "Age", "income_group"}
 
 
 def escala(serie: pd.Series, cat: bool) -> str:
     if not cat:
-        return f"Razón, en años"
+        return "Razón, en años"
     n = serie[serie != CATEGORIA_AUSENTE].nunique()
-    return f"Nominal, {n} categorías"
+    tipo = "Ordinal" if serie.name in ORDINALES else "Nominal"
+    return f"{tipo}, {n} categorías"
 
 
 def cobertura(df: pd.DataFrame, col: str) -> str:
