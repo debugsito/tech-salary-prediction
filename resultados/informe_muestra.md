@@ -136,6 +136,7 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **4.54 : 1**.
 | `ICorPM` | 2 | 72.0 % |
 | `Age` | 7 | 100.0 % |
 | `income_group` | 3 | 100.0 % |
+| `AISelect` | 3 | 100.0 % |
 
 Lenguajes distintos declarados: **51**. Mediana por respondente: **5**.
 
@@ -202,6 +203,10 @@ Razón entre la mediana de Estados Unidos y la de América Latina: **4.26 : 1**.
 | `ICorPM` | 2 | 98.6 % |
 | `Age` | 6 | 99.9 % |
 | `income_group` | 3 | 100.0 % |
+| `AISelect` | 5 | 97.7 % |
+| `AIThreat` | 3 | 99.9 % |
+| `AIAgents` | 6 | 94.7 % |
+| `LearnCodeAI` | 5 | 99.9 % |
 
 Lenguajes distintos declarados: **42**. Mediana por respondente: **6**.
 

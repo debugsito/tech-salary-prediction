@@ -236,7 +236,8 @@
       "Industry": 12,
       "ICorPM": 2,
       "Age": 7,
-      "income_group": 3
+      "income_group": 3,
+      "AISelect": 3
     },
     "cobertura": {
       "Country": 100.0,
@@ -247,7 +248,8 @@
       "Industry": 61.6,
       "ICorPM": 72.0,
       "Age": 100.0,
-      "income_group": 100.0
+      "income_group": 100.0,
+      "AISelect": 100.0
     },
     "razon_usa_latam": 4.54,
     "lenguajes_distintos": 51,
@@ -362,7 +364,11 @@
       "Industry": 15,
       "ICorPM": 2,
       "Age": 6,
-      "income_group": 3
+      "income_group": 3,
+      "AISelect": 5,
+      "AIThreat": 3,
+      "AIAgents": 6,
+      "LearnCodeAI": 5
     },
     "cobertura": {
       "Country": 100.0,
@@ -373,7 +379,11 @@
       "Industry": 99.9,
       "ICorPM": 98.6,
       "Age": 99.9,
-      "income_group": 100.0
+      "income_group": 100.0,
+      "AISelect": 97.7,
+      "AIThreat": 99.9,
+      "AIAgents": 94.7,
+      "LearnCodeAI": 99.9
     },
     "razon_usa_latam": 4.26,
     "lenguajes_distintos": 42,

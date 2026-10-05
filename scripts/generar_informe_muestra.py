@@ -78,6 +78,13 @@ def caracterizar(df: pd.DataFrame, registro: pd.DataFrame) -> dict:
             datos["cardinalidad"][col] = int(df.loc[declarado, col].nunique())
             datos["cobertura"][col] = round(float(declarado.mean()) * 100, 1)
 
+    for col in ("AISelect", "AIThreat", "AIAgents", "LearnCodeAI"):
+        if col in df.columns:
+            s = df[col]
+            declarado = (s.notna() & (s.astype("string") != CATEGORIA_AUSENTE)).fillna(False)
+            datos["cardinalidad"][col] = int(s[declarado].nunique())
+            datos["cobertura"][col] = round(float(declarado.mean()) * 100, 1)
+
     if "LanguageHaveWorkedWith" in df.columns:
         langs = set()
         for v in df["LanguageHaveWorkedWith"].dropna():
