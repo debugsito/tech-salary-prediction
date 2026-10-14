@@ -383,6 +383,8 @@ def fig_residuos(salida, df, resultados: Path):
     ax2.get_lines()[0].set(marker="o", markersize=1.6, alpha=0.25,
                            color=AZUL, markeredgecolor="none")
     ax2.get_lines()[1].set(color=NARANJA, linewidth=1.2)
+    # probplot escribe su propio título centrado («Probability Plot»).
+    ax2.set_title("")
     ax2.set_title("Gráfico cuantil-cuantil normal", loc="left", fontsize=9.5)
     ax2.set_xlabel("Cuantiles teóricos")
     ax2.set_ylabel("Cuantiles observados")
@@ -391,7 +393,7 @@ def fig_residuos(salida, df, resultados: Path):
         ax.grid(alpha=0.6)
         ax.set_axisbelow(True)
     fig.suptitle("Diagnóstico de residuos del modelo seleccionado", x=0.02,
-                 ha="left", fontsize=11, fontweight="bold", y=1.04)
+                 ha="left", fontsize=11, fontweight="bold", y=1.08)
     fig.subplots_adjust(wspace=0.28)
     fig.text(0.02, -0.07,
              f"Asimetría de los residuos: {pd.Series(residuos).skew():.2f}. "
