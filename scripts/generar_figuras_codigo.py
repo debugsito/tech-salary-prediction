@@ -21,7 +21,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 FIGDIR = RAIZ / "figuras"
 
 FUENTE = "Liberation Mono"
-TAMANO = 13
+TAMANO = 24  # px a 200 ppp: unos 8.6 pt al tamaño de inserción
 
 
 def _rango(lineas: list[str], inicio: str, fin: str, extra: int = 0) -> tuple[int, int]:
@@ -43,8 +43,8 @@ def _render(codigo: str, lexer, primera_linea: int) -> Image.Image:
             line_number_start=primera_linea,
             line_number_bg="#f6f5f0",
             line_number_fg="#8a8880",
-            line_pad=4,
-            image_pad=12,
+            line_pad=7,
+            image_pad=22,
         ),
     )
     import io
@@ -63,19 +63,21 @@ def figura(nombre: str, archivo: str, rangos: list[tuple[str, str, int]], lexer=
         piezas.append(_render("\n".join(lineas[i:j]), lexer, i + 1))
 
     ancho = max(p.width for p in piezas)
-    cabecera, separador = 34, 26
+    cabecera, separador = 62, 48
     alto = cabecera + sum(p.height for p in piezas) + separador * (len(piezas) - 1) + 6
     lienzo = Image.new("RGB", (ancho, alto), "#ffffff")
     dibujo = ImageDraw.Draw(lienzo)
 
-    fuente = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 14)
-    dibujo.rectangle([0, 0, ancho, cabecera - 6], fill="#f6f5f0")
-    dibujo.text((14, 7), archivo, fill="#52514e", font=fuente)
+    fuente = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 26)
+    dibujo.rectangle([0, 0, ancho, cabecera - 11], fill="#f6f5f0")
+    dibujo.text((26, 13), archivo, fill="#52514e", font=fuente)
 
     y = cabecera
     for k, pieza in enumerate(piezas):
         if k:
-            dibujo.text((56, y - separador + 4), "···", fill="#8a8880", font=fuente)
+            dibujo.text((100, y - separador + 8), "···", fill="#8a8880", font=fuente)
+        # Fondo del tramo a todo el ancho, para que los tramos más cortos no dejen una franja blanca.
+        dibujo.rectangle([0, y, ancho, y + pieza.height - 1], fill=pieza.getpixel((pieza.width - 1, 0)))
         lienzo.paste(pieza, (0, y))
         y += pieza.height + separador
 

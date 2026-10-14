@@ -50,11 +50,11 @@ def main() -> None:
     # Carril superior: operación.
     ax.text(0.15, 5.38, "Operación", fontsize=9.5, color=TINTA, fontweight="bold")
     caja(ax, 0.15, 3.55, 2.1, 1.5, "Navegador", ["página estática", "sin dependencias"])
-    caja(ax, 3.35, 3.55, 2.2, 1.5, "Caddy", ["proxy inverso", "certificados TLS"])
+    caja(ax, 3.35, 3.55, 2.0, 1.5, "Caddy", ["proxy inverso", "certificados TLS"])
     caja(ax, 6.55, 3.55, 3.3, 1.5, "Contenedor",
          ["FastAPI + compuerta", "modelo.joblib 0.5 MB", "contexto.json"], borde=VERDE)
     flecha(ax, 2.25, 4.3, 3.35, 4.3, "HTTPS")
-    flecha(ax, 5.55, 4.3, 6.55, 4.3, "red int.")
+    flecha(ax, 5.35, 4.3, 6.55, 4.3, "red interna")
 
     # Carril inferior: construcción.
     ax.text(0.15, 2.62, "Construcción de la imagen", fontsize=9.5, color=TINTA, fontweight="bold")

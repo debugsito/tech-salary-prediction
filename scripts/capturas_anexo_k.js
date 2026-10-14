@@ -6,10 +6,17 @@ const puppeteer = require('puppeteer-core');
 const URL = 'https://salarios.debugsito.click';
 const SALIDA = __dirname + '/../figuras/servicio';
 
+// Recorta hasta el final de los paneles: sin el pie de página ni el hueco de debajo.
+async function hastaPaneles(p) {
+  const fin = await p.evaluate(() =>
+    document.querySelector('#formulario').parentElement.getBoundingClientRect().bottom + window.scrollY);
+  return {x: 0, y: 0, width: 900, height: Math.ceil(fin) + 16};
+}
+
 (async () => {
   const b = await puppeteer.launch({executablePath: '/usr/bin/chromium',
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
-    defaultViewport: {width: 1180, height: 900, deviceScaleFactor: 2}});
+    defaultViewport: {width: 900, height: 1200, deviceScaleFactor: 2}});
   const p = await b.newPage();
   const casos = [
     ['candidato', 'candidato', 'Germany', 'Developer, back-end', 8, [], false],
@@ -42,7 +49,7 @@ const SALIDA = __dirname + '/../figuras/servicio';
       await p.evaluate(() => document.querySelector('#escala-ppa').click());
       await new Promise(r => setTimeout(r, 800));
     }
-    await p.screenshot({path: `${SALIDA}/${nombre}.png`});
+    await p.screenshot({path: `${SALIDA}/${nombre}.png`, clip: await hastaPaneles(p)});
     console.log(nombre, 'capturada');
   }
   await b.close();

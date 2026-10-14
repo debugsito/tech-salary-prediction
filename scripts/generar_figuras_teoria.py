@@ -27,9 +27,11 @@ FIGDIR = Path(__file__).resolve().parent.parent / "figuras"
 
 plt.rcParams.update(
     {
+        "font.family": "DejaVu Sans",
         "font.size": 9,
-        "axes.edgecolor": TINTA_2,
-        "axes.labelcolor": TINTA,
+        "axes.edgecolor": REJILLA,
+        "axes.linewidth": 0.8,
+        "axes.labelcolor": TINTA_2,
         "xtick.color": TINTA_2,
         "ytick.color": TINTA_2,
         "axes.grid": True,
@@ -93,7 +95,7 @@ def fig_boosting() -> None:
         ax.scatter(x, y, s=6, color=TINTA_2, alpha=0.45, linewidths=0)
         ax.plot(malla, np.sin(malla) * 2.2 + 0.35 * malla, color=VERDE, lw=1.2, ls="--")
         ax.plot(malla, gb.predict(malla), color=NARANJA, lw=1.9)
-        ax.set_title(f"$M = {m}$ árboles", fontsize=9)
+        ax.set_title(f"$M = {m}$ " + ("árbol" if m == 1 else "árboles"), fontsize=9)
         ax.set_xticks([])
         ax.set_yticks([])
     axes[0].set_ylabel("respuesta")

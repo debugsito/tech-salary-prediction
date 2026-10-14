@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 import matplotlib
@@ -41,6 +42,12 @@ _VARIABLES = {
     "YearsCodePro_num": "Años de experiencia profesional",
     "YearsCode_num": "Años programando",
     "WorkExp_num": "Experiencia laboral total",
+    "income_group_High income": "País de renta alta",
+    "language__php": "Lenguaje: PHP",
+    "language__typescript": "Lenguaje: TypeScript",
+    "language__html_css": "Lenguaje: HTML/CSS",
+    "platform__amazon_web_services_(aws)": "Plataforma: Amazon Web Services",
+    "database__microsoft_sql_server": "Base de datos: Microsoft SQL Server",
 }
 _CATEGORIAS = {
     "10,000 or more employees": "10,000 o más empleados",
@@ -104,6 +111,12 @@ def estilo():
         "legend.frameon": False, "legend.fontsize": 8,
         "figure.facecolor": "white", "axes.facecolor": "white",
     })
+
+
+def nota(fig, texto: str):
+    """Nota al pie, ajustada al ancho de la figura para que no la ensanche."""
+    fig.text(0.02, -0.07, textwrap.fill(texto.replace("\n", " "), 100),
+             fontsize=8, color=TINTA_3, ha="left", va="top")
 
 
 def guardar(fig, nombre: str, salida: Path) -> str:
@@ -187,19 +200,21 @@ def fig_modelos(salida, resultados: Path):
 
     fig, ax = plt.subplots(figsize=(ANCHO, 3.6))
     y = np.arange(len(etiquetas))
-    ax.barh(y, medias, xerr=errores, color=colores, height=0.6,
-            error_kw={"ecolor": TINTA_3, "elinewidth": 1, "capsize": 2.5})
+    # Puntos y no barras: el eje no parte de cero y una barra exageraría las diferencias.
+    for i, (m, e, c) in enumerate(zip(medias, errores, colores)):
+        ax.errorbar(m, i, xerr=e, fmt="o", color=c, ecolor=TINTA_3,
+                    elinewidth=1, capsize=2.5, markersize=6)
     ax.set_yticks(y)
-    ax.set_yticklabels(etiquetas, fontsize=7.5)
+    ax.set_yticklabels(etiquetas, fontsize=8)
     for i, (m, e) in enumerate(zip(medias, errores)):
-        ax.text(m + e + 0.004, i, f"{m:.4f}", va="center", fontsize=7.5, color=TINTA_2)
+        ax.text(m + e + 0.004, i, f"{m:.4f}", va="center", fontsize=8, color=TINTA_2)
     ax.set_xlabel("R², media ± desviación típica entre 20 particiones", fontsize=8.5)
     ax.set_xlim(0.72, 0.81)
     ax.grid(axis="x", alpha=0.6)
     ax.set_axisbelow(True)
     ax.set_title("Desempeño por modelo y estrategia de codificación", loc="left")
-    ax.text(0.99, 0.03, "naranja: modelo lineal   ·   azul: ensamblados",
-            transform=ax.transAxes, ha="right", fontsize=7.5, color=TINTA_3)
+    ax.text(0.01, 0.98, "naranja: modelo lineal   ·   azul: ensamblados",
+            transform=ax.transAxes, ha="left", va="top", fontsize=8, color=TINTA_3)
     return guardar(fig, "comparacion_modelos", salida)
 
 
@@ -212,7 +227,7 @@ def fig_shap(salida, resultados: Path, etiqueta="XGBoost_target_2023", n=15):
 
     s = s.assign(etiqueta=[traducir_variable(v) for v in s["variable"]])
 
-    fig, ax = plt.subplots(figsize=(ANCHO, 4.2))
+    fig, ax = plt.subplots(figsize=(ANCHO, 4.2), layout="constrained")
     y = np.arange(len(s))
     colores = [NARANJA if v == "Country" else AZUL for v in s["variable"]]
     ax.barh(y, s["shap_medio_abs"], color=colores, height=0.62)
@@ -222,11 +237,11 @@ def fig_shap(salida, resultados: Path, etiqueta="XGBoost_target_2023", n=15):
         ax.errorbar(s["shap_medio_abs"], y, xerr=err, fmt="none",
                     ecolor=TINTA_3, elinewidth=1, capsize=2)
     ax.set_yticks(y)
-    ax.set_yticklabels(s["etiqueta"], fontsize=7.5)
+    ax.set_yticklabels(s["etiqueta"], fontsize=8)
     margen = s["shap_medio_abs"].max() * 0.035
     for i, (v, sup) in enumerate(zip(s["shap_medio_abs"], s["ic_superior"].fillna(s["shap_medio_abs"]))):
         ax.text(max(v, sup) + margen, i, f"{v:.3f}", va="center",
-                fontsize=7.5, color=TINTA_2)
+                fontsize=8, color=TINTA_2)
     ax.set_xlabel("Contribución media, mean(|SHAP|), en escala logarítmica del salario", fontsize=8.5)
     ax.set_xlim(0, s["shap_medio_abs"].max() * 1.22)
     ax.grid(axis="x", alpha=0.6)
@@ -261,7 +276,7 @@ def fig_equidad(salida, resultados: Path, anio="2023"):
                (TINTA_3 if not f[4] else AZUL) for f in filas]
     ax1.barh(y, [f[1] for f in filas], color=colores, height=0.6)
     for i, f in enumerate(filas):
-        ax1.text(f[1] + 1, i, f"{f[1]:.1f} %", va="center", fontsize=7.5, color=TINTA_2)
+        ax1.text(f[1] + 1, i, f"{f[1]:.1f} %", va="center", fontsize=8, color=TINTA_2)
     ax1.set_yticks(y)
     ax1.set_yticklabels(etiquetas, fontsize=8)
     ax1.set_xlabel("Error relativo (MAE / mediana del grupo)", fontsize=8.5)
@@ -271,7 +286,7 @@ def fig_equidad(salida, resultados: Path, anio="2023"):
     ax2.barh(y, [f[2] / 1000 for f in filas], color=TINTA_3, height=0.6)
     for i, f in enumerate(filas):
         ax2.text(f[2] / 1000 + 1, i, f"${f[2]/1000:.0f}k", va="center",
-                 fontsize=7.5, color=TINTA_2)
+                 fontsize=8, color=TINTA_2)
     ax2.set_xlabel("Error absoluto (MAE, miles de USD)", fontsize=8.5)
     ax2.set_xlim(0, max(f[2] for f in filas) / 1000 * 1.22)
     ax2.set_title("No comparable: invierte el orden", loc="left", fontsize=9.5)
@@ -281,11 +296,10 @@ def fig_equidad(salida, resultados: Path, anio="2023"):
         ax.set_axisbelow(True)
     fig.suptitle("Error del modelo por región económica", x=0.02, ha="left",
                  fontsize=11, fontweight="bold", y=1.04)
-    fig.text(0.02, -0.07,
+    nota(fig,
              "El grupo peor servido cambia según la medida empleada: en términos relativos es América Latina "
              "(naranja);\nen términos absolutos, Norteamérica. Solo la medida relativa es comparable entre "
-             "grupos de escala salarial dispar.",
-             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+             "grupos de escala salarial dispar.")
     return guardar(fig, "equidad_por_region", salida)
 
 
@@ -313,7 +327,7 @@ def fig_ia(salida, resultados: Path):
     ax1.set_yticklabels([trad.get(c, c)[:28] for c in t["categoria"]], fontsize=8)
     for i, (_, f) in enumerate(t.iterrows()):
         ax1.text(f.mediana_usd / 1000 + 1.2, i, f"${f.mediana_usd/1000:.1f}k",
-                 va="center", fontsize=7.5, color=TINTA_2)
+                 va="center", fontsize=8, color=TINTA_2)
     ax1.set_xlabel("Mediana de compensación (miles de USD)")
     ax1.set_xlim(0, t["mediana_usd"].max() / 1000 * 1.2)
     ax1.set_title("Asociación bruta observada", loc="left", fontsize=9.5)
@@ -334,7 +348,7 @@ def fig_ia(salida, resultados: Path):
             ax2.text(r.get_x() + r.get_width() / 2, v + 0.012, f"{v:.3f}",
                      ha="center", fontsize=8, color=TINTA_2)
         ax2.set_xticks(np.arange(3))
-        ax2.set_xticklabels(etq, fontsize=7.5, linespacing=1.3)
+        ax2.set_xticklabels(etq, fontsize=8, linespacing=1.3)
         ax2.set_ylabel("mean(|SHAP|)")
         ax2.set_ylim(0, max(vals) * 1.2)
         ax2.grid(axis="y", alpha=0.6)
@@ -346,11 +360,10 @@ def fig_ia(salida, resultados: Path):
     fig.suptitle("Adopción de inteligencia artificial y compensación (edición 2025)",
                  x=0.02, ha="left", fontsize=11, fontweight="bold", y=1.05)
     fig.subplots_adjust(wspace=0.42)
-    fig.text(0.02, -0.07,
+    nota(fig,
              "La diferencia bruta del 8.6 % entre uso diario y no uso se desvanece al condicionar: "
              "las 23 variables de IA suman\nuna contribución 6.7 veces inferior a la del país. "
-             "La asociación es un artefacto de composición de la muestra.",
-             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+             "La asociación es un artefacto de composición de la muestra.")
     return guardar(fig, "ia_compensacion", salida)
 
 
@@ -395,12 +408,11 @@ def fig_residuos(salida, df, resultados: Path):
     fig.suptitle("Diagnóstico de residuos del modelo seleccionado", x=0.02,
                  ha="left", fontsize=11, fontweight="bold", y=1.08)
     fig.subplots_adjust(wspace=0.28)
-    fig.text(0.02, -0.07,
+    nota(fig,
              f"Asimetría de los residuos: {pd.Series(residuos).skew():.2f}. "
              "La cola izquierda se aparta de la normalidad, de modo que el supuesto\n"
              "se cumple de forma aproximada. Los intervalos reportados en el documento "
-             "proceden de remuestreo, no de la hipótesis normal.",
-             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+             "proceden de remuestreo, no de la hipótesis normal.")
     return guardar(fig, "residuos", salida)
 
 
@@ -461,15 +473,19 @@ def fig_interaccion_experiencia(salida, resultados: Path, df):
     ax.set_ylabel("Contribución media al salario estimado\n(escala logarítmica)", fontsize=9)
     ax.set_title("Retorno de la experiencia según el nivel de renta del país",
                  loc="left")
-    ax.legend(loc="upper left", fontsize=8)
+    ax.legend(loc="lower right", fontsize=8)
     ax.grid(alpha=0.6)
     ax.set_axisbelow(True)
-    fig.text(0.02, -0.07,
+    nota(fig,
              "La contribución de la experiencia al salario estimado no es la misma en todos los mercados: "
              "su pendiente\ndifiere según el nivel de renta del país. Una medida de importancia por variable "
-             "asigna un único valor a la\nexperiencia y no puede expresar esta dependencia.",
-             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+             "asigna un único valor a la\nexperiencia y no puede expresar esta dependencia.")
     return guardar(fig, "interaccion_experiencia_renta", salida)
+
+
+# Reponderación y sobremuestreo quedan casi sobre el punto sin mitigación.
+DESPLAZAMIENTO_MITIGACION = {"sin_mitigacion": (0, 13, "center"), "reponderacion": (-12, 0, "right"),
+                             "sobremuestreo": (-12, -4, "right"), "submuestreo": (0, 13, "center")}
 
 
 def fig_mitigacion(salida, resultados: Path):
@@ -487,10 +503,11 @@ def fig_mitigacion(salida, resultados: Path):
         ax.scatter(r.razon_disparidad_renta, r.R2, s=150 if base else 110,
                    color=NARANJA if base else AZUL, zorder=3,
                    edgecolors="white", linewidths=1.5)
+        dx, dy, ha = DESPLAZAMIENTO_MITIGACION.get(r.estrategia, (0, 13, "center"))
         ax.annotate(etq.get(r.estrategia, r.estrategia),
                     (r.razon_disparidad_renta, r.R2),
-                    xytext=(0, 13), textcoords="offset points",
-                    ha="center", fontsize=8.5, color=TINTA_2,
+                    xytext=(dx, dy), textcoords="offset points",
+                    ha=ha, va="center", fontsize=8.5, color=TINTA_2,
                     fontweight="bold" if base else "normal")
     ax.set_xlabel("Razón de disparidad del error entre grupos de renta  →  peor equidad", fontsize=9)
     ax.set_ylabel("R² sobre el conjunto de prueba", fontsize=9)
@@ -498,11 +515,10 @@ def fig_mitigacion(salida, resultados: Path):
     ax.grid(alpha=0.6)
     ax.set_axisbelow(True)
     ax.margins(0.16, 0.22)
-    fig.text(0.02, -0.07,
+    nota(fig,
              "Ninguna estrategia de mitigación reduce la disparidad de forma apreciable. El submuestreo es "
              "la única que\nla mueve (−0.13), a costa de 0.036 puntos de R². La disparidad no procede del "
-             "desbalance de la muestra\nsino de la mayor heterogeneidad salarial intrínseca de esos mercados.",
-             fontsize=7.5, color=TINTA_3, ha="left", va="top")
+             "desbalance de la muestra\nsino de la mayor heterogeneidad salarial intrínseca de esos mercados.")
     return guardar(fig, "mitigacion_compromiso", salida)
 
 
@@ -522,14 +538,14 @@ def fig_ppp(salida, resultados: Path):
     bloques = list(nom.keys())
     y = np.arange(len(bloques))
     ax1.barh(y + 0.2, [nom[b] for b in bloques], height=0.38,
-             color=AZUL, label="Dólares nominales")
+             color=AZUL, label="Nominal")
     ax1.barh(y - 0.2, [ppa.get(b, 0) for b in bloques], height=0.38,
-             color=NARANJA, label="Dólares PPA")
+             color=NARANJA, label="PPA")
     ax1.set_yticks(y, bloques, fontsize=8)
     ax1.invert_yaxis()
     ax1.set_xlabel("% de la contribución SHAP total", fontsize=8.5)
-    ax1.set_title("Contribución por bloque", loc="left")
-    ax1.legend(loc="lower right", fontsize=7.5)
+    ax1.set_title("Contribución por bloque", loc="left", fontsize=9.5)
+    ax1.legend(loc="lower right", fontsize=8)
     ax1.grid(axis="x", alpha=0.6)
     ax1.set_axisbelow(True)
 
@@ -541,12 +557,12 @@ def fig_ppp(salida, resultados: Path):
     ax2.bar(x - 0.2, mn, width=0.38, color=AZUL, label="Nominal")
     ax2.bar(x + 0.2, mp, width=0.38, color=NARANJA, label="PPA")
     for i, (a, b) in enumerate(zip(mn, mp)):
-        ax2.text(i - 0.2, a + 2, f"{a:.0f}", ha="center", fontsize=7, color=TINTA_2)
-        ax2.text(i + 0.2, b + 2, f"{b:.0f}", ha="center", fontsize=7, color=TINTA_2)
+        ax2.text(i - 0.2, a + 2, f"{a:.0f}", ha="center", fontsize=8, color=TINTA_2)
+        ax2.text(i + 0.2, b + 2, f"{b:.0f}", ha="center", fontsize=8, color=TINTA_2)
     ax2.set_xticks(x, etiquetas, fontsize=8)
     ax2.set_ylabel("Mediana (miles de USD)", fontsize=8.5)
-    ax2.set_title("Mediana por nivel de renta", loc="left")
-    ax2.legend(fontsize=7.5)
+    ax2.set_title("Mediana por nivel de renta", loc="left", fontsize=9.5)
+    ax2.legend(fontsize=8)
     ax2.grid(axis="y", alpha=0.6)
     ax2.set_axisbelow(True)
 
