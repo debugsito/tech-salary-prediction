@@ -148,15 +148,17 @@ def factores(fila: pd.DataFrame, limite: int = 7) -> list[dict]:
             for k, v in orden[:limite] if abs(v) > 1e-4]
 
 
-app = FastAPI(title="Estimación salarial explicable", docs_url="/api/docs")
+app = FastAPI(title="Estimación salarial explicable", docs_url="/api/docs",
+              # Oculta el bloque de esquemas, que la documentación rotula en inglés.
+              swagger_ui_parameters={"defaultModelsExpandDepth": -1})
 
 
-@app.get("/api/salud")
+@app.get("/api/salud", tags=["servicio"], summary="Estado del servicio")
 def salud():
     return {"estado": "ok", "modelo": CONTEXTO["modelo"]}
 
 
-@app.get("/api/contexto")
+@app.get("/api/contexto", tags=["servicio"], summary="Catálogos y ficha del modelo")
 def contexto():
     """Catálogos del formulario y ficha del modelo."""
     return {
@@ -168,7 +170,7 @@ def contexto():
     }
 
 
-@app.get("/api/roles")
+@app.get("/api/roles", tags=["servicio"], summary="Roles del país y su respaldo")
 def api_roles(pais: str):
     """Roles del país con su respaldo, para que la interfaz ordene y marque el desplegable."""
     fia = CONTEXTO["fiabilidad"]
@@ -186,7 +188,7 @@ def api_roles(pais: str):
             "con_respaldo": sum(1 for r in salida if r["respaldado"])}
 
 
-@app.post("/api/estimar")
+@app.post("/api/estimar", tags=["estimación"], summary="Estimar la compensación de un perfil")
 def api_estimar(p: Perfil):
     evaluacion = fiabilidad.evaluar(p.pais, p.rol, CONTEXTO)
     respuesta = {
@@ -204,7 +206,7 @@ def api_estimar(p: Perfil):
     return respuesta
 
 
-@app.post("/api/comparar")
+@app.post("/api/comparar", tags=["estimación"], summary="Comparar el perfil entre países")
 def api_comparar(c: Comparacion):
     if not c.paises:
         raise HTTPException(400, "Indica al menos un país con el que comparar.")
@@ -226,6 +228,6 @@ def api_comparar(c: Comparacion):
 app.mount("/static", StaticFiles(directory=RAIZ / "static"), name="static")
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def inicio():
     return FileResponse(RAIZ / "static" / "index.html")

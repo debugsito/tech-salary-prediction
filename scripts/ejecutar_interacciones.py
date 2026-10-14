@@ -10,6 +10,7 @@ Uso:
 """
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -69,7 +70,7 @@ def grafico_dependencia(valores, X, nombres, i, j, salida: Path, etiquetas):
     ax.grid(alpha=0.5, color=REJILLA)
     ax.set_axisbelow(True)
 
-    nombre = f"shap_dependencia_{nombres[i].replace('_','').lower()[:20]}"
+    nombre = "shap_dependencia_" + re.sub(r"[^a-z0-9]+", "_", nombres[i].lower()).strip("_")
     ruta = salida / f"{nombre}.png"
     fig.savefig(ruta, dpi=200, bbox_inches="tight", pad_inches=0.15, facecolor="white")
     plt.close(fig)
@@ -121,6 +122,7 @@ def main():
         "DevType": "Rol (codificado por objetivo)",
         "WorkExp_num": "Experiencia laboral total",
         "income_group_High income": "País de renta alta",
+        "language__typescript": "Lenguaje: TypeScript",
     }
 
     print(f"Examinando interacciones entre las {len(principales)} variables principales\n")

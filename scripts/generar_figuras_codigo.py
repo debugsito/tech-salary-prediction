@@ -101,7 +101,7 @@ if __name__ == "__main__":
          '"La estimación se apoya en datos suficientes', 0),
     ])
     figura("codigo_api", "servicio/app.py", [
-        ('@app.post("/api/estimar")', 'respuesta["factores"] = factores(fila)', 1),
+        ('@app.post("/api/estimar"', 'respuesta["factores"] = factores(fila)', 1),
     ])
     figura("codigo_dockerfile", "servicio/Dockerfile", [
         ("Contexto de construcción", 'CMD ["uvicorn"', 0),

@@ -69,7 +69,11 @@ async function consultar(p, pais, rol, anios) {
   // Documentación que FastAPI genera sola.
   await p.goto(`${URL}/api/docs`, {waitUntil: 'networkidle0'});
   await new Promise(r => setTimeout(r, 1500));
-  await p.screenshot({path: `${SALIDA}/api_docs.png`, clip: {x: 0, y: 0, width: 900, height: 900}});
+  const finDocs = await p.evaluate(() => {
+    const secciones = document.querySelectorAll('.opblock-tag-section');
+    return Math.ceil(secciones[secciones.length - 1].getBoundingClientRect().bottom + scrollY) + 24;
+  });
+  await p.screenshot({path: `${SALIDA}/api_docs.png`, clip: {x: 0, y: 0, width: 900, height: finDocs}});
   console.log('api_docs capturada');
 
   await b.close();
